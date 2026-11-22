@@ -1,0 +1,317 @@
+{
+  "id": "sigpWF06Vencimen",
+  "name": "SIGp - WF-06 Vencimentos e alertas diários",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 7 * * *"
+            }
+          ]
+        }
+      },
+      "id": "f65bcdf3-812b-57be-a073-e76bf22f9575",
+      "name": "Todo dia às 07:00",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        200,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $env.SIGP_API_URL }}/api/alertas?dias=7",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "={{ $env.SIGP_API_KEY || '' }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "67dcb106-5ef7-54fb-bd34-8368deee1151",
+      "name": "Buscar alertas na API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        420,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Agrupa os alertas do dia por situação; sem alertas, encerra sem notificar.\nconst r = $input.first().json.body || {};\nconst itens = r.items || [];\nif (!itens.length) return [];\nconst grupos = {};\nfor (const a of itens) (grupos[a.status] = grupos[a.status] || []).push(a);\nconst nomes = { VENCIDO: 'Vencidos', VENCE_HOJE: 'Vencem hoje', VENCE_EM_BREVE: 'Vencem em breve',\n  DIVERGENCIA: 'Divergências', AGUARDANDO_FATURA: 'Aguardando fatura', FATURA_AUSENTE: 'Fatura não disponível',\n  PAGO_COM_ATRASO: 'Pagas com atraso', PAGO: 'Pagas no prazo',\n  LEITURA_GMAIL_PARADA: 'Leitura do Gmail parada', FATURA_NAO_RECEBIDA: 'Faturas que não chegaram',\n  FATURA_NA_CAIXA: 'Faturas na caixa sem associar' };\nconst ordem = ['LEITURA_GMAIL_PARADA', 'VENCIDO', 'VENCE_HOJE', 'FATURA_NAO_RECEBIDA', 'VENCE_EM_BREVE', 'DIVERGENCIA', 'FATURA_NA_CAIXA', 'PAGO_COM_ATRASO', 'AGUARDANDO_FATURA', 'FATURA_AUSENTE', 'PAGO'];\nconst linhas = [`Alertas SIGp de ${r.hoje} (${itens.length})`];\nfor (const s of ordem) {\n  if (!grupos[s]) continue;\n  linhas.push('', `${nomes[s]} (${grupos[s].length}):`);\n  grupos[s].slice(0, 20).forEach((a) => linhas.push(`- ${a.mensagem}`));\n  if (grupos[s].length > 20) linhas.push(`  … e mais ${grupos[s].length - 20}`);\n}\nconst texto = linhas.join('\\n');\nreturn [{ json: { escopo: 'SIG', titulo: `Alertas do dia ${r.hoje}`, referencia: `alertas-${r.hoje}`, conteudo: texto,\n  texto, assunto: `SIGp · ${itens.length} alerta(s) em ${r.hoje}`, dados: r.resumo || {} } }];"
+      },
+      "id": "3e2febe0-741b-57b8-9b4e-4a851aea2e87",
+      "name": "Montar resumo diário",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        640,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.SIGP_API_URL }}/api/analises",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "={{ $env.SIGP_API_KEY || '' }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          }
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ escopo: 'SIG', titulo: $json.titulo, referencia: $json.referencia, conteudo: $json.conteudo, modelo: 'regra fixa', dados: $json.dados, origem: 'n8n' }) }}"
+      },
+      "id": "b6d0ed9f-ca66-55af-b23d-9e7f27a6006c",
+      "name": "Gravar resumo no SIG",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        860,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{ json: $('Montar resumo diário').first().json }];"
+      },
+      "id": "45f1ea89-c0de-5190-bd41-65dcacb969d0",
+      "name": "Repassar mensagem",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1080,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "*/15 * * * *"
+            }
+          ]
+        }
+      },
+      "id": "da39da59-19f7-58b4-8177-6d72b792fffe",
+      "name": "A cada 15 minutos",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        200,
+        620
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.SIGP_API_URL }}/api/eventos/reenviar",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "={{ $env.SIGP_API_KEY || '' }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "03f9f252-b764-5419-849f-9e0940570dd5",
+      "name": "Reenviar eventos pendentes",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        420,
+        620
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "sendTo": "={{ $env.SIGP_RELATORIO_EMAIL }}",
+        "subject": "={{ $json.assunto }}",
+        "emailType": "text",
+        "message": "={{ $json.texto }}",
+        "options": {}
+      },
+      "id": "8bd26826-988a-5d94-8c4d-538390599209",
+      "name": "Gmail - relatório",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1300,
+        140
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $env.SIGP_TELEGRAM_CHAT_ID }}",
+        "text": "={{ $json.texto }}",
+        "additionalFields": {}
+      },
+      "id": "5fcd0404-11e5-512d-b060-0ddd9b7d6edc",
+      "name": "Telegram - alerta",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1300,
+        300
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.SIGP_WHATSAPP_URL }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $env.SIGP_WHATSAPP_APIKEY }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ number: $env.SIGP_WHATSAPP_NUMERO, text:  $json.texto }) }}",
+        "options": {}
+      },
+      "id": "7b6ca5de-f0d4-5b3b-b9cd-1bda5270d161",
+      "name": "WhatsApp - alerta (Evolution API)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1300,
+        460
+      ],
+      "disabled": true
+    }
+  ],
+  "connections": {
+    "Todo dia às 07:00": {
+      "main": [
+        [
+          {
+            "node": "Buscar alertas na API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar alertas na API": {
+      "main": [
+        [
+          {
+            "node": "Montar resumo diário",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Montar resumo diário": {
+      "main": [
+        [
+          {
+            "node": "Gravar resumo no SIG",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gravar resumo no SIG": {
+      "main": [
+        [
+          {
+            "node": "Repassar mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Repassar mensagem": {
+      "main": [
+        [
+          {
+            "node": "Gmail - relatório",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Telegram - alerta",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "WhatsApp - alerta (Evolution API)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "A cada 15 minutos": {
+      "main": [
+        [
+          {
+            "node": "Reenviar eventos pendentes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Sao_Paulo",
+    "errorWorkflow": "sigpWF99Erros000"
+  },
+  "active": false,
+  "pinData": {},
+  "tags": []
+}

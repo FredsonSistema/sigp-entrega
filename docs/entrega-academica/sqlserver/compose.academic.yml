@@ -1,0 +1,69 @@
+services:
+  sqlserver-academic:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sigp_sqlserver_academic
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Developer
+      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD:?Configure MSSQL_SA_PASSWORD in the local .env}
+    ports:
+      - "127.0.0.1:14333:1433"
+    volumes:
+      - sigp_academic_sql_data:/var/opt/mssql
+    restart: unless-stopped
+    networks:
+      - academic
+
+  ollama-academic:
+    image: ollama/ollama:latest
+    container_name: sigp_ollama_academic
+    volumes:
+      - sigp_ollama_academic_data:/root/.ollama
+    restart: unless-stopped
+    networks:
+      academic: {}
+      # O Ollama do SIGp (WF-08, WF-05) agora é o serviço "ollama" do docker-compose.yml principal.
+      # Este fica só para a API acadêmica; não usa mais o apelido "ollama" na rede do n8n (evita conflito de nome).
+
+  academic-ai:
+    build:
+      context: ../../..
+      dockerfile: docs/entrega-academica/ia/Dockerfile
+    container_name: sigp_academic_ai
+    environment:
+      SIGP_AI_API_KEY: ${SIGP_AI_API_KEY:?Configure SIGP_AI_API_KEY in .env.academic}
+      SIGP_AI_LOCAL_ID: LOC-001
+      SIGP_AI_REQUESTER: n8n-demo
+      SIGP_SQLCMD_SERVER: sqlserver-academic,1433
+      SIGP_SQLCMD_USER: sigp_ia_loc001
+      SIGP_SQLCMD_DATABASE: SIGpAcademic
+      SQLCMDPASSWORD: ${SIGP_AI_DB_PASSWORD_LOC001:?Configure SIGP_AI_DB_PASSWORD_LOC001 in .env.academic}
+      OLLAMA_URL: http://ollama-academic:11434
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen2.5:0.5b}
+      MODEL_BACKEND: ${MODEL_BACKEND:-ollama}
+      MODEL_URL: ${MODEL_URL:-http://ollama-academic:11434}
+      MODEL_NAME: ${OLLAMA_MODEL:-qwen2.5:0.5b}
+      MODEL_PROFILE: ${MODEL_PROFILE:-baseline}
+    ports:
+      - "127.0.0.1:5010:5010"
+    depends_on:
+      - sqlserver-academic
+      - ollama-academic
+    restart: unless-stopped
+    networks:
+      academic: {}
+      n8n:
+        aliases:
+          - academic-ai
+
+networks:
+  academic:
+    external: true
+    name: sqlserver_default
+  n8n:
+    external: true
+    name: sigp_n8n_default
+
+volumes:
+  sigp_academic_sql_data:
+  sigp_ollama_academic_data:

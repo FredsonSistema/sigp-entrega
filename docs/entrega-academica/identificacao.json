@@ -1,0 +1,37 @@
+{
+  "grupo": "",
+  "data": "16 de novembro de 2026",
+  "repositorio": "https://github.com/FredsonSistema/sigp",
+  "repositorio_pacote": "https://github.com/FredsonSistema/sigp-entrega",
+  "disciplinas": [
+    "Projeto de Inteligência Artificial",
+    "Segurança e Otimização de Banco de Dados"
+  ],
+  "integrantes": [
+    {
+      "nome": "Fredson Pereira de Oliveira Santos",
+      "matricula": "",
+      "contribuicao": "Coordenei o projeto e a arquitetura (Docker, API, n8n). Montei o fluxo n8n de ponta a ponta (webhook → API → SQL Server → RAG → Qwen) e o fluxo do Gmail com OCR e triagem pela IA local. Fiz os perfis e permissões da API (grupos, usuários com chave própria, auditoria) e a integração por variáveis de ambiente. Cuidei do repositório, do README e do registro de mudanças.",
+      "contribuicao_final": "Coordenei o projeto e a arquitetura. Montei a integração no n8n de ponta a ponta, o fluxo do Gmail com OCR e triagem pela IA local e os remetentes gerenciados pela tela do SIGp, com o cofre de chaves criptografado. Separei o pacote da entrega, com instalação em um comando e base fictícia, e cuidei da higiene do repositório (verificador de segredos e limpeza do histórico). Mantive o README, o histórico de evolução e o registro de mudanças."
+    },
+    {
+      "nome": "Maciel Lopes Francisco",
+      "matricula": "",
+      "contribuicao": "Fiquei com a parte de IA: escolha do Qwen local (qualidade, custo e privacidade) e estimativa de custo por 1.000 usos. Montei o corpus de 20 documentos fictícios e a busca do RAG, versionei os prompts (v1 a v4.2) e escrevi os 5 casos de teste com entrada, esperado e obtido. Medi latência e custo do 0,5B e do 3B.",
+      "contribuicao_final": "Fiquei com a IA: os 16 casos de teste com métricas e a análise de cada falha, a bateria de prompt injection e a validação cega congelada, com os intervalos de confiança. Corrigi o detector de injeção e documentei as defesas em camadas. Reduzi o prompt da API sem mudar nenhuma decisão e conduzi a escolha do modelo da triagem com o critério fixado antes da medição, além do custo por 1.000 usos."
+    },
+    {
+      "nome": "Aeverton Santos",
+      "matricula": "",
+      "contribuicao": "Fiquei com a segurança do banco: modelo de dados com cada coluna classificada (público, interno, sensível), SQL Server com RLS por local, papéis sigp_api, sigp_auditor e sigp_ia com GRANT e DENY, e os testes de acesso permitido e negado. Apliquei o mascaramento dinâmico com UNMASK só para o papel fiscal e a troca das senhas dos usuários da IA.",
+      "contribuicao_final": "Fiquei com a segurança do banco: o RLS por local com predicados BLOCK, depois de reproduzir e corrigir o ataque de escalonamento, a matriz de papéis e permissões medida no próprio banco, com cada DENY justificado, e o mascaramento dinâmico. Montei a trilha de auditoria \"quem fez o quê\" (gatilho e SQL Server Audit), tornei a trilha à prova de adulteração com ledger e liguei o TDE, com o certificado fora do banco."
+    },
+    {
+      "nome": "Jonatas de Jesus Souza",
+      "matricula": "",
+      "contribuicao": "Fiquei com a otimização e os testes de integração: carga de 100.020 notas, as duas consultas lentas, os planos de execução nas configurações A, B e C e os índices ajustados. Testei a IA sem permissão (o banco nega e a IA não devolve dado) e o prompt injection, e conferi a auditoria do que a IA consultou, quem pediu e quando. Executei o fine-tuning LoRA e a comparação com o modelo base.",
+      "contribuicao_final": "Fiquei com a otimização e a integração: a carga de volume, as duas consultas lentas com plano de execução, tempos antes e depois e o custo na gravação, e a explicação da linha de base. Testei a IA perfil por perfil, provando que ela não vaza o que o banco protege, e conferi a auditoria do que a IA respondeu. Executei o fine-tuning LoRA e a comparação em quatro configurações, com custo e latência."
+    }
+  ],
+  "data_final": "1º de dezembro de 2026"
+}

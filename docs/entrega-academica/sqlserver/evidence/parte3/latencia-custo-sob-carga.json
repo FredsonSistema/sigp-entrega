@@ -1,0 +1,92 @@
+{
+  "executado_em_utc": "2026-11-20T15:38:23.655254+00:00",
+  "maquina": {
+    "sistema": "Windows-11-10.0.26200-SP0",
+    "cpus_logicas": 12,
+    "gpu": "nenhuma (CPU)"
+  },
+  "metodo": "1 aquecimento + 20 chamadas medidas por alvo; temperatura 0; mesmo prompt",
+  "ollama": [
+    {
+      "modelo": "qwen2.5:0.5b",
+      "carga_na_primeira_chamada_ms": 2136.1,
+      "total_ms": {
+        "n": 20,
+        "mediana": 382.4,
+        "p95": 549.9,
+        "media": 410.8,
+        "min": 361.4,
+        "max": 659.3
+      },
+      "prompt_ms": {
+        "n": 20,
+        "mediana": 24.3,
+        "p95": 30.3,
+        "media": 25.0,
+        "min": 20.8,
+        "max": 34.5
+      },
+      "geracao_tokens_por_s": {
+        "n": 20,
+        "mediana": 40.0,
+        "p95": 42.2,
+        "media": 38.2,
+        "min": 22.4,
+        "max": 42.7
+      }
+    },
+    {
+      "modelo": "qwen2.5:3b",
+      "carga_na_primeira_chamada_ms": 21296.3,
+      "total_ms": {
+        "n": 20,
+        "mediana": 1263.0,
+        "p95": 1672.9,
+        "media": 1326.2,
+        "min": 1087.4,
+        "max": 1805.2
+      },
+      "prompt_ms": {
+        "n": 20,
+        "mediana": 104.2,
+        "p95": 179.0,
+        "media": 113.9,
+        "min": 92.7,
+        "max": 181.3
+      },
+      "geracao_tokens_por_s": {
+        "n": 20,
+        "mediana": 8.8,
+        "p95": 9.9,
+        "media": 8.6,
+        "min": 6.5,
+        "max": 10.3
+      }
+    }
+  ],
+  "api_academica_ponta_a_ponta": {
+    "descricao": "API -> SQL Server (RLS) -> RAG lexical -> qwen2.5:0.5b; decisão por regra",
+    "total_ms": {
+      "n": 20,
+      "mediana": 814.1,
+      "p95": 1023.5,
+      "media": 832.8,
+      "min": 741.1,
+      "max": 1023.5
+    }
+  },
+  "custo": {
+    "cobranca_por_token": 0,
+    "observacao": "Modelo local (Ollama/CPU); não há API paga.",
+    "tempo_cpu_por_1000_usos_qwen2.5:0.5b": "6.4 min",
+    "tempo_cpu_por_1000_usos_qwen2.5:3b": "21.1 min",
+    "energia_por_1000_usos_qwen2.5:0.5b": {
+      "kwh": 0.0016,
+      "reais": 0.002
+    },
+    "energia_por_1000_usos_qwen2.5:3b": {
+      "kwh": 0.0053,
+      "reais": 0.0065
+    }
+  }
+}

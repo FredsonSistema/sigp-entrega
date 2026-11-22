@@ -1,0 +1,13 @@
+Changed database context to 'SIGpAcademic'.
+verificacao|linhas_diferentes|linhas_do_resultado
+-----------|-----------------|-------------------
+mesma_resposta_consulta1_notas_x_resumo|0|36
+configuracao|consulta|execucoes|mediana_ms|p95_ms|media_ms
+------------|--------|---------|----------|------|--------
+A|1|30|168.735|207.603|171.642
+B|1|30|157.525|215.824|165.915
+C|1|30|121.011|152.274|123.731
+D|1|30|25.296|35.639|26.207
+A|2|30|54.420|73.849|57.769
+B|2|30|64.061|86.474|65.546
+C|2|30|10.685|16.844|11.194

@@ -1,0 +1,16 @@
+{
+  "type": "object",
+  "properties": {
+    "tipoDocumento": {"type": "string", "enum": ["boleto_fatura", "nota_fiscal", "fatura_e_nota", "lembrete", "outro"]},
+    "provedorNome": {"type": ["string", "null"], "maxLength": 120},
+    "empresaDestinataria": {"type": ["string", "null"], "maxLength": 160},
+    "numeroDocumento": {"type": ["string", "null"], "maxLength": 40},
+    "valor": {"type": ["number", "null"]},
+    "vencimento": {"type": ["string", "null"], "maxLength": 10},
+    "competencia": {"type": ["string", "null"], "maxLength": 7},
+    "confianca": {"type": "number"},
+    "motivo": {"type": "string", "maxLength": 200},
+    "evento": {"type": "string", "enum": ["fatura_nova", "segunda_via", "lembrete_vencimento", "aviso_atraso", "pagamento_confirmado"]}
+  },
+  "required": ["tipoDocumento", "provedorNome", "empresaDestinataria", "numeroDocumento", "valor", "vencimento", "competencia", "confianca", "motivo", "evento"]
+}

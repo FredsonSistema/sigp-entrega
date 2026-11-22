@@ -1,0 +1,26 @@
+# Modelo do nginx (a imagem oficial troca ${VARIAVEL} pelo valor do ambiente ao iniciar).
+# Os endereços padrão da tela vêm do .env (SIGP_PUBLIC_API_URL, SIGP_PUBLIC_N8N_URL), não do código.
+server {
+    listen 80;
+    server_name _;
+    root /usr/share/nginx/html;
+    # Sempre revalidar: a interface muda junto com o repositório.
+    add_header Cache-Control "no-cache" always;
+    location = / {
+        return 302 /agencias.html;
+    }
+    location = /health {
+        access_log off;
+        default_type text/plain;
+        return 200 "ok\n";
+    }
+    # Padrões da instalação para a tela (Configurações > Integração pode trocar por navegador).
+    location = /sigp-env.js {
+        default_type application/javascript;
+        add_header Cache-Control "no-cache" always;
+        return 200 'window.SIGP_ENV = { apiUrl: "${SIGP_PUBLIC_API_URL}", n8nUrl: "${SIGP_PUBLIC_N8N_URL}" };\n';
+    }
+    location / {
+        try_files $uri =404;
+    }
+}

@@ -1,0 +1,8 @@
+{
+  "executado_em_utc": "2026-11-21T21:46:39",
+  "estado": "SIGpAcademic|3|ENCRYPTED|AES|256|0.0",
+  "chave_fiscal_em_texto_no_backup_antes": 48,
+  "chave_fiscal_em_texto_no_backup_depois": 0,
+  "certificado_fora_do_banco": true,
+  "resultado": "APROVADO"
+}

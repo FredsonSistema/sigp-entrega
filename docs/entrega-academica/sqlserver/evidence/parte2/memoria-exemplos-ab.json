@@ -1,0 +1,38 @@
+{
+  "executado_em_utc": "2026-11-14T19:22:12.774Z",
+  "modelo": "qwen2.5:3b (temperatura 0)",
+  "documento": {
+    "remetente": "\"Reservas\" <reservas@hotel-exemplo.com.br>",
+    "assunto": "Faturamento Hotel - Técnico Ilhéus",
+    "nomeArquivo": "Nota_Fiscal_Hotel_Ilheus.pdf",
+    "corpo": "Segue a nota da hospedagem do técnico."
+  },
+  "texto": "NOTA FISCAL DE SERVIÇO ELETRÔNICA\nPrestador: POUSADA BEIRA MAR LTDA CNPJ 11.222.333/0001-81\nTomador: ROTA TRANSPORTES RODOVIARIOS LTDA\nDiscriminação do serviço: Hospedagem de técnico - 3 diárias - serviço de internet Wi-Fi incluso\nValor total: R$ 450,00\nVencimento: 25/11/2026",
+  "exemplos": [
+    {
+      "id": "nrec-ceb5b929",
+      "rotulo": "nao_cobranca",
+      "remetente": "reservas@hotel-exemplo.com.br",
+      "assunto": "Faturamento Hotel - Técnico Itabuna",
+      "motivo": "Não é cobrança de internet/telecom"
+    }
+  ],
+  "rodadas": [
+    {
+      "comExemplos": false,
+      "latencia_ms": 64944,
+      "tipoDocumento": "nota_fiscal",
+      "confianca": 1,
+      "motivo": "Nota fiscal de hospedagem de técnico sem cobrança de internet/telecom",
+      "provedorNome": null
+    },
+    {
+      "comExemplos": true,
+      "latencia_ms": 25571,
+      "tipoDocumento": "outro",
+      "confianca": 0.9,
+      "motivo": "É uma nota fiscal de hospedagem, não de internet/telecom",
+      "provedorNome": null
+    }
+  ]
+}

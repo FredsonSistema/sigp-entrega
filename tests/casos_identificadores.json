@@ -1,0 +1,96 @@
+[
+  {
+    "nome": "contrato no pagador",
+    "texto": "EMPRESA EXEMPLO TRANSPORTES LTDA Contrato: 4821\nPagador Contrato: 4821",
+    "esperado": [
+      [
+        "contrato",
+        "4821"
+      ]
+    ]
+  },
+  {
+    "nome": "código do cliente e nº do contrato",
+    "texto": "CÓD. DO CLIENTE: 5174\nNº do Contrato: 5290",
+    "esperado": [
+      [
+        "cliente",
+        "5174"
+      ],
+      [
+        "contrato",
+        "5290"
+      ]
+    ]
+  },
+  {
+    "nome": "código do cliente seguido de linha digitável",
+    "texto": "CÓD. DO CLIENTE: 31457 1111 2222 3333 4444",
+    "esperado": [
+      [
+        "cliente",
+        "31457"
+      ]
+    ]
+  },
+  {
+    "nome": "número do contrato (ID)",
+    "texto": "Número do contrato (ID): 60231",
+    "esperado": [
+      [
+        "contrato",
+        "60231"
+      ]
+    ]
+  },
+  {
+    "nome": "ref. a contrato com zeros",
+    "texto": "Ref. a contrato 00077120, Parcela 2/12",
+    "esperado": [
+      [
+        "contrato",
+        "00077120"
+      ]
+    ]
+  },
+  {
+    "nome": "endereço de instalação",
+    "texto": "INSTALAÇÃO: RUA EXEMPLO 100, BAIRRO MODELO, SALVADOR/BA",
+    "esperado": [
+      [
+        "instalacao",
+        "RUA EXEMPLO 100, BAIRRO MODELO, SALVADOR/BA"
+      ]
+    ]
+  },
+  {
+    "nome": "contrato sem número não vale",
+    "texto": "Contrato: MO Doc. Rateado: 11.111.111/0001-11=38.70",
+    "esperado": []
+  },
+  {
+    "nome": "texto de cláusula não vale",
+    "texto": "Após 60 dias da suspensão o contrato poderá ser rescindido",
+    "esperado": []
+  },
+  {
+    "nome": "código em coluna (não pega a inscrição estadual)",
+    "texto": " Inscrição Estadual                                         Código do cliente                                           Telefone\n 099887766                                                  48127                                                       (73)0000-0000",
+    "esperado": [
+      [
+        "cliente",
+        "48127"
+      ]
+    ]
+  },
+  {
+    "nome": "código alfanumérico em coluna (não pega o número do endereço)",
+    "texto": " Inscrição estadual 99887766                                                                                                            Código cliente\n R DAS FLORES 01234 LJ 1 BAIRRO CENTRO                                                                                                  N090001234567",
+    "esperado": [
+      [
+        "cliente",
+        "N090001234567"
+      ]
+    ]
+  }
+]

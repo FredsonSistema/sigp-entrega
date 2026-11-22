@@ -1,0 +1,138 @@
+{
+  "tema": "locais",
+  "descricao": "Agências, rodoviárias e garagens: endereço, cidade, responsáveis (nome, telefone, e-mail), provedores de internet e o valor e o vencimento da conta de cada local.",
+  "ferramentas": {
+    "buscar_local": "Mostra um local pelo nome ou cidade: endereço, contatos, provedores, valor e vencimento da conta. Parâmetros: local (nome ou cidade), assunto (endereco, valor, contato, provedor ou vazio para tudo).",
+    "listar_locais": "Lista os locais. Parâmetros: tipo (agencia, rodoviaria, garagem ou vazio), cidade, provedor, marcador (marcador ou grupo, ex.: Regional Itabuna)."
+  },
+  "termos": {
+    "agências": "agencia",
+    "agencias": "agencia",
+    "agência": "agencia",
+    "rodoviárias": "rodoviaria",
+    "rodoviarias": "rodoviaria",
+    "rodoviária": "rodoviaria",
+    "garagens": "garagem",
+    "endereço": "endereco",
+    "onde fica": "endereco",
+    "localização": "endereco",
+    "localizacao": "endereco",
+    "quanto custa": "valor",
+    "quanto é": "valor",
+    "quanto e": "valor",
+    "preço": "valor",
+    "preco": "valor",
+    "mensalidade": "valor",
+    "telefone": "contato",
+    "whatsapp": "contato",
+    "responsável": "contato",
+    "responsavel": "contato",
+    "e-mail": "contato",
+    "email": "contato",
+    "internet de": "provedor",
+    "operadora": "provedor",
+    "link": "provedor",
+    "endereco": "endereco",
+    "valor": "valor",
+    "valores": "valor",
+    "custa": "valor",
+    "conta de": "valor",
+    "fatura de": "valor",
+    "contato": "contato",
+    "contatos": "contato",
+    "telefones": "contato",
+    "provedor": "provedor",
+    "provedores": "provedor",
+    "internet": "provedor",
+    "pagamos": "valor",
+    "pago": "valor",
+    "paga": "valor",
+    "quanto pagamos": "valor",
+    "quanto sai": "valor",
+    "quem eu procuro": "contato",
+    "procuro": "contato",
+    "falar com": "contato",
+    "quem e o responsavel": "contato",
+    "quem atende": "contato"
+  },
+  "exemplos": [
+    {
+      "pergunta": "qual o endereço da agência de Itacaré?",
+      "ferramenta": "buscar_local",
+      "parametros": {
+        "local": "Itacaré",
+        "assunto": "endereco"
+      }
+    },
+    {
+      "pergunta": "qual o valor da conta de Itacaré?",
+      "ferramenta": "buscar_local",
+      "parametros": {
+        "local": "Itacaré",
+        "assunto": "valor"
+      }
+    },
+    {
+      "pergunta": "quem é o responsável da rodoviária de Jequié?",
+      "ferramenta": "buscar_local",
+      "parametros": {
+        "local": "Jequié",
+        "assunto": "contato"
+      }
+    },
+    {
+      "pergunta": "qual a internet da garagem de Salvador?",
+      "ferramenta": "buscar_local",
+      "parametros": {
+        "local": "Salvador",
+        "assunto": "provedor"
+      }
+    },
+    {
+      "pergunta": "me fala da agência de Ilhéus",
+      "ferramenta": "buscar_local",
+      "parametros": {
+        "local": "Ilhéus",
+        "assunto": ""
+      }
+    },
+    {
+      "pergunta": "quais agências temos em Itabuna?",
+      "ferramenta": "listar_locais",
+      "parametros": {
+        "tipo": "agencia",
+        "cidade": "Itabuna"
+      }
+    },
+    {
+      "pergunta": "liste as garagens",
+      "ferramenta": "listar_locais",
+      "parametros": {
+        "tipo": "garagem"
+      }
+    },
+    {
+      "pergunta": "quais locais usam a Claro?",
+      "ferramenta": "listar_locais",
+      "parametros": {
+        "provedor": "Claro"
+      }
+    },
+    {
+      "pergunta": "quanto pagamos de internet em Itacaré?",
+      "ferramenta": "buscar_local",
+      "parametros": {
+        "local": "Itacaré",
+        "assunto": "valor"
+      }
+    },
+    {
+      "pergunta": "com quem eu falo na agência de Ilhéus?",
+      "ferramenta": "buscar_local",
+      "parametros": {
+        "local": "Ilhéus",
+        "assunto": "contato"
+      }
+    }
+  ]
+}

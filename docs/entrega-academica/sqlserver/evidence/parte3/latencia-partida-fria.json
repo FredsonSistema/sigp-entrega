@@ -1,0 +1,19 @@
+{
+  "executado_em_utc": "2026-11-21T16:54:05.894005+00:00",
+  "caso": "IA-001",
+  "modelo": "qwen2.5:0.5b",
+  "prompt_version": "3.1",
+  "metodo": "ollama stop + vencimento único por pedido",
+  "primeira_apos_descarregar": {
+    "cliente_ms": 11715.3,
+    "http": 200,
+    "classification": "CONTRATADO",
+    "model_classification": "REVISAR"
+  },
+  "logo_depois": {
+    "cliente_ms": 1041.2,
+    "http": 200,
+    "classification": "CONTRATADO",
+    "model_classification": "REVISAR"
+  }
+}

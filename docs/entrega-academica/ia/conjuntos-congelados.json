@@ -1,0 +1,14 @@
+{
+  "descricao": "Conjuntos de avaliação da IA. O conjunto cego foi escrito depois das correções e nunca serviu para ajustar nada; por isso está congelado: mudar o arquivo quebra tests/test_conjunto_cego.py. Um conjunto cego novo vira outro arquivo (ex.: injecao-validacao-v2.json), avaliado uma vez, e o antigo continua aqui.",
+  "congelados": {
+    "injecao-validacao.json": {
+      "papel": "validação cega do detector de prompt injection (8 ataques e 3 controles)",
+      "congelado_em": "2026-11-21",
+      "sha256": "d95ee4ef54fc5e2dc37c50460646b1371c7cf6b80b370920e944c3844a80a94d"
+    }
+  },
+  "desenvolvimento": {
+    "casos-finais.json": "16 casos olhados durante as correções (o resultado 'depois' é otimista)",
+    "injecao-casos.json": "13 ataques e 2 controles usados para ajustar os padrões do detector"
+  }
+}

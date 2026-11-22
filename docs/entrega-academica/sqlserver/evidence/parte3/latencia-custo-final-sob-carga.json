@@ -1,0 +1,141 @@
+{
+  "executado_em_utc": "2026-11-20T16:08:12.921497+00:00",
+  "caminho": "API -> SQL Server (RLS) -> RAG lexical -> qwen2.5:0.5b (Ollama, CPU) -> regra -> auditoria",
+  "metodo": "1 aquecimento + 16 faturas diferentes (casos-finais.json), uma chamada cada; vencimento único por rodada: prompt novo a cada chamada (sem cache)",
+  "prompt_em_cache": false,
+  "cpu_maquina_percent": {
+    "antes": 45.2,
+    "depois": 43.6
+  },
+  "respostas_200": "16/16",
+  "latencia_servidor_ms": {
+    "n": 16,
+    "media": 31313.0,
+    "mediana": 34567.9,
+    "p95": 36129.7,
+    "min": 5146.6,
+    "max": 37617.1
+  },
+  "latencia_cliente_ms": {
+    "n": 16,
+    "media": 31384.4,
+    "mediana": 34634.4,
+    "p95": 36199.6,
+    "min": 5203.5,
+    "max": 37710.7
+  },
+  "custo_por_1000_usos": {
+    "tempo_cpu_min": 521.9,
+    "energia_kwh_15w": 0.1305,
+    "energia_kwh_55w": 0.4784,
+    "reais_15w": 0.162,
+    "reais_55w": 0.5941,
+    "cobranca_por_token": 0,
+    "parametros": {
+      "potencia_w": [
+        15,
+        55
+      ],
+      "tarifa_r_kwh": 1.2418
+    },
+    "observacao": "Energia só do processador, estimada a partir do tempo medido."
+  },
+  "medidas": [
+    {
+      "id": "IA-001",
+      "http": 200,
+      "cliente_ms": 34987.9,
+      "servidor_ms": 34912.8
+    },
+    {
+      "id": "IA-002",
+      "http": 200,
+      "cliente_ms": 33530.9,
+      "servidor_ms": 33471.58
+    },
+    {
+      "id": "IA-003",
+      "http": 200,
+      "cliente_ms": 34397.4,
+      "servidor_ms": 34306.98
+    },
+    {
+      "id": "IA-004",
+      "http": 200,
+      "cliente_ms": 37710.7,
+      "servidor_ms": 37617.07
+    },
+    {
+      "id": "IA-005",
+      "http": 200,
+      "cliente_ms": 5251.8,
+      "servidor_ms": 5175.65
+    },
+    {
+      "id": "IA-006",
+      "http": 200,
+      "cliente_ms": 34574.1,
+      "servidor_ms": 34510.98
+    },
+    {
+      "id": "IA-007",
+      "http": 200,
+      "cliente_ms": 34694.8,
+      "servidor_ms": 34624.72
+    },
+    {
+      "id": "IA-008",
+      "http": 200,
+      "cliente_ms": 36199.6,
+      "servidor_ms": 36129.74
+    },
+    {
+      "id": "IA-009",
+      "http": 200,
+      "cliente_ms": 35712.6,
+      "servidor_ms": 35641.16
+    },
+    {
+      "id": "IA-010",
+      "http": 200,
+      "cliente_ms": 35648.3,
+      "servidor_ms": 35576.86
+    },
+    {
+      "id": "IA-011",
+      "http": 200,
+      "cliente_ms": 36127.0,
+      "servidor_ms": 36046.62
+    },
+    {
+      "id": "IA-012",
+      "http": 200,
+      "cliente_ms": 34283.5,
+      "servidor_ms": 34214.64
+    },
+    {
+      "id": "IA-013",
+      "http": 200,
+      "cliente_ms": 34495.0,
+      "servidor_ms": 34420.27
+    },
+    {
+      "id": "IA-014",
+      "http": 200,
+      "cliente_ms": 34390.9,
+      "servidor_ms": 34326.25
+    },
+    {
+      "id": "IA-015",
+      "http": 200,
+      "cliente_ms": 34942.7,
+      "servidor_ms": 34885.55
+    },
+    {
+      "id": "IA-016",
+      "http": 200,
+      "cliente_ms": 5203.5,
+      "servidor_ms": 5146.6
+    }
+  ]
+}

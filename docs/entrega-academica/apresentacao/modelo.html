@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SIGp — apresentação da entrega final</title>
+<style>
+:root{--bg:#0a0e13;--panel:#10171f;--panel2:#0c1218;--line:#1c2733;--line2:#2a3646;--txt:#e6edf3;--muted:#8b98a9;--faint:#5f6c7d;
+--accent:#2dd4bf;--accentbg:rgba(45,212,191,.12);--ok:#22c55e;--warn:#f59e0b;--bad:#ef4444;--blue:#60a5fa;--violet:#a78bfa}
+*{box-sizing:border-box}html{font-size:15px}
+body{margin:0;background:var(--bg);color:var(--txt);font-family:Inter,system-ui,"Segoe UI",Roboto,sans-serif;line-height:1.5}
+a{color:var(--accent)}
+header{padding:28px 32px 18px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#0f1922,var(--bg))}
+header h1{margin:0;font-size:24px;font-weight:650}header h1 span{color:var(--accent)}
+header p{margin:6px 0 0;color:var(--muted)}
+.integrantes{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chip{border:1px solid var(--line2);background:#131c26;border-radius:999px;padding:3px 12px;font-size:12.5px;color:var(--muted)}
+nav{position:sticky;top:0;z-index:5;display:flex;gap:4px;flex-wrap:wrap;padding:10px 32px;background:rgba(10,14,19,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(6px)}
+nav button{background:none;border:1px solid transparent;color:var(--muted);padding:7px 13px;border-radius:8px;cursor:pointer;font:inherit;font-size:14px}
+nav button:hover{color:var(--txt);background:#141c27}
+nav button[aria-current="true"]{color:var(--txt);background:var(--accentbg);border-color:rgba(45,212,191,.35)}
+main{padding:24px 32px 60px;max-width:1240px}
+section{display:none}section.ativa{display:block;animation:surge .25s ease}
+@keyframes surge{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+h2{font-size:20px;margin:0 0 4px}h3{font-size:15px;margin:22px 0 10px;color:var(--txt)}
+.sub{color:var(--muted);margin:0 0 18px}
+.grade{display:grid;gap:14px}.g4{grid-template-columns:repeat(4,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.kpi span{display:block;font-size:11.5px;letter-spacing:.6px;text-transform:uppercase;color:var(--faint)}
+.kpi .v{display:flex;align-items:baseline;gap:8px;margin-top:6px;flex-wrap:wrap}
+.kpi .antes{color:var(--muted);font-size:16px;text-decoration:line-through;text-decoration-color:rgba(239,68,68,.6)}
+.kpi .seta{color:var(--faint)}.kpi .depois{font-size:24px;font-weight:650;color:var(--accent)}
+.kpi small{display:block;margin-top:6px;color:var(--faint);font-size:12px}
+.fonte{font-size:11.5px;color:var(--faint);margin-top:8px}.fonte code{color:#9ec5fe}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{text-align:left;font-size:11px;font-weight:500;color:var(--faint);text-transform:uppercase;letter-spacing:.6px;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap;position:sticky;top:0;background:var(--panel)}
+td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}tbody tr:hover td{background:#131c26}
+.tw{overflow:auto;max-height:560px;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+.pill{display:inline-block;border-radius:999px;padding:1px 9px;font-size:12px;border:1px solid var(--line2);background:#141c27;white-space:nowrap}
+.ok{border-color:rgba(34,197,94,.45);color:#86e0a5;background:rgba(34,197,94,.08)}
+.bad{border-color:rgba(239,68,68,.45);color:#f87171;background:rgba(239,68,68,.08)}
+.warn{border-color:rgba(245,158,11,.45);color:#fbbf24;background:rgba(245,158,11,.08)}
+.info{border-color:rgba(96,165,250,.45);color:#93c5fd;background:rgba(96,165,250,.08)}
+.seg{display:inline-flex;border:1px solid var(--line2);border-radius:9px;overflow:hidden;margin:0 8px 12px 0}
+.seg button{background:none;border:0;color:var(--muted);padding:6px 14px;cursor:pointer;font:inherit;font-size:13.5px}
+.seg button[aria-pressed="true"]{background:var(--accentbg);color:var(--txt)}
+.filtros{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-bottom:12px}
+.filtros button{background:#131c26;border:1px solid var(--line2);color:var(--muted);border-radius:999px;padding:3px 12px;cursor:pointer;font:inherit;font-size:12.5px}
+.filtros button[aria-pressed="true"]{color:var(--txt);border-color:var(--accent);background:var(--accentbg)}
+.fluxo{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px}
+.passo{flex:1 1 150px;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.passo b{display:block;font-size:13.5px}.passo span{font-size:12.5px;color:var(--muted)}
+.passo.destaque{border-color:rgba(45,212,191,.45)}
+.flecha{align-self:center;color:var(--faint)}
+.linha-tempo{position:relative;padding-left:22px;border-left:2px solid var(--line2);margin-left:6px}
+.marco{position:relative;margin:0 0 16px}.marco::before{content:"";position:absolute;left:-29px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--accentbg)}
+.marco h4{margin:0;font-size:14.5px}.marco p{margin:3px 0 0;color:var(--muted);font-size:13.5px}
+.barras{display:flex;flex-direction:column;gap:7px}
+.barra{display:grid;grid-template-columns:200px minmax(0,1fr) 90px;align-items:center;gap:10px;font-size:13px}
+.barra .trilho{height:16px;background:#141c27;border-radius:6px;overflow:hidden}
+.barra .enche{height:100%;border-radius:6px;background:var(--accent);transition:width .5s ease}
+.barra .valor{text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
+.empilhada{display:flex;height:16px;border-radius:6px;overflow:hidden;background:#141c27}
+.empilhada i{display:block;height:100%}
+.legenda{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin:6px 0 10px}
+.legenda i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+details.item{background:var(--panel);border:1px solid var(--line);border-radius:10px;margin-bottom:8px}
+details.item>summary{list-style:none;cursor:pointer;padding:10px 14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+details.item>summary::-webkit-details-marker{display:none}
+details.item>summary::before{content:"▸";color:var(--faint);transition:transform .15s}details.item[open]>summary::before{transform:rotate(90deg)}
+details.item .corpo{padding:2px 16px 14px 34px;color:var(--muted);font-size:13.5px}
+details.item .corpo b{color:var(--txt);font-weight:600}
+.mono{font-family:ui-monospace,Consolas,monospace;font-size:12.5px}
+.nota{font-size:12.5px;color:var(--faint)}
+.matriz td,.matriz th{text-align:center}.matriz td:first-child,.matriz th:first-child{text-align:left}
+.sim{color:#86e0a5;font-weight:600}.nao{color:var(--faint)}
+.camadas{counter-reset:c;list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.camadas li{counter-increment:c;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px 12px 10px 44px;position:relative;font-size:13.5px}
+.camadas li::before{content:counter(c);position:absolute;left:12px;top:9px;width:22px;height:22px;border-radius:50%;background:var(--accentbg);color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+@media (max-width:900px){.g4,.g3,.g2{grid-template-columns:1fr}.barra{grid-template-columns:120px minmax(0,1fr) 70px}main,header,nav{padding-left:14px;padding-right:14px}}
+@media print{nav{display:none}section{display:block!important;page-break-after:always}body{background:#fff;color:#000}.card,.tw,details.item{background:#fff;border-color:#ccc}}
+</style>
+</head>
+<body>
+<header>
+  <h1><span>SIGp</span> · gestão de contas de provedores com IA local e banco seguro</h1>
+  <p id="cabecalho"></p>
+  <div class="integrantes" id="integrantes"></div>
+</header>
+<nav aria-label="Seções da apresentação" id="menu"></nav>
+<main>
+
+<section id="visao" data-titulo="Visão geral">
+  <h2>O problema e a arquitetura</h2>
+  <p class="sub">Um grupo de empresas de transporte paga dezenas de contas de internet de agências, rodoviárias e garagens. As faturas chegam por e-mail, em PDF e XML, e precisam ser conferidas com o contrato antes do financeiro pagar. A conferência manual atrasa e deixa passar cobrança indevida.</p>
+  <div class="card">
+    <div class="fluxo" id="fluxo"></div>
+    <p class="nota" style="margin:10px 0 0">A <b>regra</b> decide sobre a evidência estruturada. A LLM local só sugere, e a concordância dela é medida. Nada é pago automaticamente.</p>
+  </div>
+  <h3>Antes e depois, em números</h3>
+  <div class="grade g4" id="kpis"></div>
+</section>
+
+<section id="llm" data-titulo="Evolução da IA">
+  <h2>Como a IA evoluiu</h2>
+  <p class="sub">Da entrega 2 à entrega final: prompts, casos de teste, ataques e modelo ajustado. Cada marco aponta para a evidência.</p>
+  <div class="grade g2">
+    <div class="card"><h3 style="margin-top:0">Linha do tempo dos resultados</h3><div class="linha-tempo" id="tempoIa"></div></div>
+    <div class="card"><h3 style="margin-top:0">Versões do prompt</h3><div id="prompts"></div></div>
+  </div>
+  <div class="card" style="margin-top:14px"><h3 style="margin-top:0">Qual modelo o pacote da entrega baixa: medido antes de escolher (1ª medição e depois da correção)</h3>
+    <p class="sub" style="margin:0 0 8px">O critério foi escrito e versionado antes da medição. Mesmo prompt e JSON Schema do WF-08, documentos fictícios com o esperado tirado do prompt; três variantes: o pedido como era, com limite de 512 tokens e corrigido (<code>maxLength</code> no schema e limite de 400 tokens).</p>
+    <div class="tw"><table><thead><tr><th>Modelo</th><th>Variante</th><th>Download</th><th>Campos certos</th><th>Respostas válidas</th><th>Tempo esgotado</th><th>Erros graves</th><th>Média</th></tr></thead><tbody id="tabTriagem"></tbody></table></div>
+    <div class="nota" id="notaTriagem" style="margin-top:8px"></div>
+    <div class="fonte" id="fonteTriagem"></div></div>
+</section>
+
+<section id="casos" data-titulo="Casos de teste">
+  <h2>16 casos de teste da IA</h2>
+  <p class="sub">O esperado vem das regras e dos contratos, não da saída do sistema. Troque entre a rodada antes e a depois das correções e clique numa linha para ver o motivo.</p>
+  <div><div class="seg" id="segCasos"></div><div class="seg" id="segCat"></div></div>
+  <div class="grade g4" id="kpiCasos" style="margin-bottom:14px"></div>
+  <div class="grade g2">
+    <div class="tw"><table><thead><tr><th>Caso</th><th>Tipo</th><th>Esperado</th><th>Obtido</th><th>Modelo</th></tr></thead><tbody id="tabCasos"></tbody></table></div>
+    <div class="card"><h3 style="margin-top:0">Matriz de confusão (esperado × obtido)</h3><div id="matrizConf"></div><div id="detalheCaso" class="nota" style="margin-top:14px">Clique num caso para ver o detalhe.</div></div>
+  </div>
+  <div class="card" style="margin-top:14px"><h3 style="margin-top:0">Quanto esses números valem (intervalo de 95%)</h3>
+    <p class="sub" style="margin:0 0 8px">Com 16 casos ou 8 ataques, um resultado perfeito ainda deixa uma faixa larga. Onde o acerto real provavelmente está:</p>
+    <div class="tw"><table><thead><tr><th>Medida</th><th>Observado</th><th>Faixa provável (95%)</th><th>Conjunto</th></tr></thead><tbody id="tabConf"></tbody></table></div>
+    <div class="nota" id="notaConf" style="margin-top:8px"></div></div>
+  <div class="fonte">Fonte: <code>sqlserver/evidence/parte3/ia-avaliacao-antes.json</code>, <code>ia-avaliacao-depois.json</code> e <code>ia/conjuntos-congelados.json</code></div>
+</section>
+
+<section id="injecao" data-titulo="Prompt injection">
+  <h2>Prompt injection: ataques, detecção e defesa</h2>
+  <p class="sub">A bateria foi escrita antes da correção. A validação cega foi escrita depois e não serviu para ajustar nada: é ela que mede se a defesa generaliza.</p>
+  <div class="grade g3" id="kpiInj" style="margin-bottom:14px"></div>
+  <div class="seg" id="segInj"></div>
+  <div class="tw"><table><thead><tr><th>Caso</th><th>Técnica</th><th>Pede</th><th>Antes</th><th>Depois</th><th>Modelo</th></tr></thead><tbody id="tabInj"></tbody></table></div>
+  <h3>Por que um ataque não detectado ainda não aprova nada</h3>
+  <ol class="camadas" id="camadas"></ol>
+  <div class="fonte">Fonte: <code>ia/injecao-casos.json</code>, <code>ia/injecao-validacao.json</code> e as avaliações em <code>sqlserver/evidence/parte3/</code></div>
+</section>
+
+<section id="ft" data-titulo="Fine-tuning">
+  <h2>Fine-tuning: base × base com RAG × ajustado × ajustado com RAG</h2>
+  <p class="sub">Mesmo modelo, mesmas condições: o "base" é o ajustado com o adaptador desligado. Mede-se o modelo sozinho, sem a decisão da regra no prompt.</p>
+  <div class="seg" id="segFt"></div>
+  <div class="grade g2">
+    <div class="card"><h3 style="margin-top:0">Acerto</h3><div class="barras" id="ftAcerto"></div>
+      <h3>Falsas aprovações (CONTRATADO indevido)</h3><div class="barras" id="ftFalsas"></div></div>
+    <div class="card"><h3 style="margin-top:0">O que cada configuração respondeu</h3>
+      <div class="legenda"><span><i style="background:var(--ok)"></i>CONTRATADO</span><span><i style="background:var(--warn)"></i>DIVERGENTE</span><span><i style="background:var(--blue)"></i>REVISAR</span></div>
+      <div class="barras" id="ftResp"></div>
+      <h3>Latência e custo por 1.000 usos</h3><div class="tw" style="max-height:none"><table><thead><tr><th>Configuração</th><th>Tokens</th><th>Latência média</th><th>CPU</th><th>Energia</th></tr></thead><tbody id="ftCusto"></tbody></table></div></div>
+  </div>
+  <div class="card" style="margin-top:14px" id="ftConclusao"></div>
+  <div class="fonte">Fonte: <code>sqlserver/evidence/parte3/finetuning-comparacao.json</code> · análise em <code>ia/finetuning/comparacao-final.md</code></div>
+</section>
+
+<section id="seg" data-titulo="Segurança">
+  <h2>Testes de segurança</h2>
+  <p class="sub">Cada teste rodou antes e depois da correção. Escolha o teste.</p>
+  <div class="seg" id="segSeg"></div>
+  <div id="painelSeg"></div>
+</section>
+
+<section id="otim" data-titulo="Otimização">
+  <h2>Duas consultas lentas, antes e depois</h2>
+  <p class="sub">100.020 notas. 30 execuções medidas por configuração, na mesma rodada. A = só chaves primárias · B = índices candidatos · C = índices ajustados · D = resumo diário (desnormalização).</p>
+  <div class="grade g2">
+    <div class="card"><h3 style="margin-top:0">Consulta 1: total por local, provedor e mês (mediana)</h3><div class="barras" id="q1"></div><p class="nota" id="q1nota"></p></div>
+    <div class="card"><h3 style="margin-top:0">Consulta 2: pendentes vencidas sem conciliação (mediana)</h3><div class="barras" id="q2"></div><p class="nota">Técnica: índice filtrado só com as notas pendentes, já na ordem pedida.</p></div>
+  </div>
+  <div class="grade g2" style="margin-top:14px">
+    <div class="card"><h3 style="margin-top:0">O resumo diário está certo e protegido?</h3><div id="resumoTestes"></div></div>
+    <div class="card"><h3 style="margin-top:0">O preço da desnormalização</h3><div id="custoGravacao"></div></div>
+  </div>
+  <div class="fonte">Fonte: <code>sqlserver/evidence/parte3/otimizacao/</code> · planos de execução <code>.sqlplan</code> na mesma pasta</div>
+</section>
+
+<section id="lat" data-titulo="Latência e custo">
+  <h2>Latência e custo do sistema no ar</h2>
+  <p class="sub">API → SQL Server (RLS) → RAG → Qwen 0,5B (Ollama, CPU) → regra → auditoria. O modelo é local: não há cobrança por token.</p>
+  <div class="grade g3" id="kpiLat"></div>
+  <div class="card" style="margin-top:14px"><h3 style="margin-top:0">Por que a fatura nova era lenta, e o que mudou</h3>
+    <p class="sub" style="margin:0">No prompt 3.0, dois terços do que ia ao modelo eram 20 linhas de contexto do banco (notas de carga que a regra não usa). O prompt 3.1 manda 3 linhas, só com os campos úteis, os 3 primeiros documentos e a fatura por último, para o Ollama reaproveitar o começo do prompt. As decisões não mudaram: 16/16 nos casos e os mesmos resultados de injeção e da validação cega. O Ollama guarda os últimos 16 prompts em cache: repetir faturas já vistas mede só o cache. O número que vale para o uso real é o da fatura nova.</p></div>
+</section>
+
+<section id="hist" data-titulo="Histórico">
+  <h2>Histórico de evolução</h2>
+  <p class="sub">Todo teste que reprovou, a causa, a correção e o reteste. Também os erros dos nossos próprios testes, porque um teste errado esconde uma falha real.</p>
+  <div class="filtros" id="filtroHist"></div>
+  <div id="listaHist"></div>
+  <div class="fonte">Fonte: <code>historico-evolucao.md</code></div>
+</section>
+
+</main>
+<script id="dados" type="application/json">/*__DADOS__*/</script>
+<script>
+(() => {
+const D = JSON.parse(document.getElementById('dados').textContent);
+const $ = (s) => document.querySelector(s);
+const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
+const br = (v, c = 1) => (v === null || v === undefined || v === '') ? '—' : Number(v).toLocaleString('pt-BR', {minimumFractionDigits: c, maximumFractionDigits: c});
+const pill = (t, cls = '') => `<span class="pill ${cls}">${esc(t)}</span>`;
+const corClasse = (c) => c === 'CONTRATADO' ? 'ok' : c === 'DIVERGENTE' ? 'warn' : c === 'REVISAR' ? 'info' : 'bad';
+
+/* ---------- menu */
+const secoes = [...document.querySelectorAll('main section')];
+$('#menu').innerHTML = secoes.map((s) => `<button type="button" data-ir="${s.id}">${esc(s.dataset.titulo)}</button>`).join('');
+function ir(id) {
+  secoes.forEach((s) => s.classList.toggle('ativa', s.id === id));
+  document.querySelectorAll('#menu button').forEach((b) => b.setAttribute('aria-current', b.dataset.ir === id));
+  history.replaceState(null, '', '#' + id);
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+$('#menu').addEventListener('click', (e) => { const b = e.target.closest('[data-ir]'); if (b) ir(b.dataset.ir); });
+document.addEventListener('keydown', (e) => {
+  if (e.target.closest('input,textarea,select')) return;
+  const i = secoes.findIndex((s) => s.classList.contains('ativa'));
+  if (e.key === 'ArrowRight' && i < secoes.length - 1) ir(secoes[i + 1].id);
+  if (e.key === 'ArrowLeft' && i > 0) ir(secoes[i - 1].id);
+});
+function segmento(alvo, opcoes, atual, aoMudar) {
+  const el = $(alvo);
+  const desenha = (v) => { el.innerHTML = opcoes.map(([k, t]) => `<button type="button" data-v="${k}" aria-pressed="${k === v}">${esc(t)}</button>`).join(''); };
+  desenha(atual);
+  el.addEventListener('click', (e) => { const b = e.target.closest('[data-v]'); if (!b) return; desenha(b.dataset.v); aoMudar(b.dataset.v); });
+}
+function barras(alvo, itens, fmt, max, cor) {
+  const m = max ?? Math.max(...itens.map((x) => x.v), 1);
+  $(alvo).innerHTML = itens.map((x) => `<div class="barra"><span>${esc(x.rot)}</span><div class="trilho"><div class="enche" style="width:0;background:${x.cor || cor || 'var(--accent)'}" data-w="${Math.max(2, 100 * x.v / m)}"></div></div><span class="valor">${fmt(x)}</span></div>`).join('');
+  requestAnimationFrame(() => document.querySelectorAll(`${alvo} .enche`).forEach((e) => { e.style.width = e.dataset.w + '%'; }));
+}
+const kpi = (rot, antes, depois, nota = '', cls = '') =>
+  `<div class="card kpi"><span>${esc(rot)}</span><div class="v">${antes !== null ? `<b class="antes">${esc(antes)}</b><b class="seta">→</b>` : ''}<b class="depois" ${cls ? `style="color:var(--${cls})"` : ''}>${esc(depois)}</b></div>${nota ? `<small>${esc(nota)}</small>` : ''}</div>`;
+
+/* ---------- cabeçalho */
+$('#cabecalho').textContent = `${(D.projeto.disciplinas || []).join(' · ')} · entrega final`;
+$('#integrantes').innerHTML = (D.projeto.integrantes || []).map((i) => `<span class="chip">${esc(i.nome)}</span>`).join('');
+
+/* ---------- visão geral */
+const passos = [
+  ['Gmail', 'faturas, boletos e NF-e dos provedores'], ['n8n (WF-08)', 'busca, OCR do PDF e leitura do XML'],
+  ['SIGp', 'associa a nota ao local e ao provedor'], ['SQL Server', 'RLS por local, mascaramento, auditoria', true],
+  ['RAG', 'contratos do local e do provedor'], ['LLM local (Qwen)', 'sugere; não decide', true],
+  ['Regra', 'decide sobre a evidência', true], ['Trilha', 'quem pediu, o que leu, o que a IA respondeu'],
+];
+$('#fluxo').innerHTML = passos.map(([t, s, d], i) => `${i ? '<span class="flecha">→</span>' : ''}<div class="passo ${d ? 'destaque' : ''}"><b>${esc(t)}</b><span>${esc(s)}</span></div>`).join('');
+const A = D.ia_antes, B = D.ia_depois, S = D.seguranca, O = D.otimizacao;
+const q = (cfg, c) => (O.tempos.find((t) => t.cfg === cfg && t.consulta === c) || {}).mediana;
+const escAntes = S.escalonamento.filter((x) => x.fase === 'antes' && x.obtido === 'PERMITIDO').length;
+const escDepois = S.escalonamento.filter((x) => x.fase === 'depois' && x.veredito === 'OK').length;
+const tAntes = (S.trilha.antes || []).filter((x) => x.veredito === 'FALHA').length;
+const tDepois = (S.trilha.depois || []).filter((x) => x.veredito === 'OK').length;
+$('#kpis').innerHTML = [
+  kpi('Decisão certa (16 casos)', `${A.metricas.acertos}/16`, `${B.metricas.acertos}/16`, `F1 macro ${br(A.metricas.f1_macro, 3)} → ${br(B.metricas.f1_macro, 3)}`),
+  kpi('Falsas aprovações', String(A.metricas.falsas_aprovacoes.length), String(B.metricas.falsas_aprovacoes.length), 'CONTRATADO onde não devia'),
+  kpi('Ataques de injeção detectados', `${A.injecao_metricas.ataques_detectados}/${A.injecao_metricas.ataques}`, `${B.injecao_metricas.ataques_detectados}/${B.injecao_metricas.ataques}`, 'bateria (13 técnicas)'),
+  kpi('Validação cega da injeção', null, `${B.validacao_metricas.ataques_detectados}/${B.validacao_metricas.ataques}`, 'frases novas, sem ajuste: o número honesto', 'warn'),
+  kpi('Escalonamento de privilégio', `${escAntes} passaram`, `${escDepois}/${S.escalonamento.filter((x) => x.fase === 'depois').length} OK`, 'operador gravava no local de outro'),
+  kpi('Trilha de auditoria', `${tAntes} falhas`, `${tDepois}/${(S.trilha.depois || []).length}`, 'quem fez o quê, sem como forjar'),
+  S.ledger ? kpi('Trilha à prova de adulteração', `sa apagou ${S.ledger.antes.DELETE ?? '?'}`, S.ledger.resultado === 'APROVADO' ? 'ninguém altera' : S.ledger.resultado, 'ledger do SQL Server 2022; digest no Git', S.ledger.resultado === 'APROVADO' ? '' : 'bad') : '',
+  kpi('Consulta 1 (mediana)', `${br(q('A', 1))} ms`, `${br(q('D', 1))} ms`, 'desnormalização: resumo diário'),
+  kpi('Consulta 2 (mediana)', `${br(q('A', 2))} ms`, `${br(q('C', 2))} ms`, 'índice filtrado'),
+].join('');
+
+/* ---------- escolha do modelo da triagem */
+const TM = D.triagem_modelos;
+if (TM) {
+  $('#tabTriagem').innerHTML = TM.linhas.map((x) => `<tr><td class="mono">${esc(x.modelo)}</td><td>${esc(x.variante.replace(/_/g, ' '))}</td><td>${esc(x.tamanho || '—')}</td>
+    <td class="mono">${esc(x.campos)}</td><td>${pill(x.validas, x.validas.startsWith('0/') ? 'bad' : (x.validas.split('/')[0] === x.validas.split('/')[1] ? 'ok' : 'warn'))}</td>
+    <td>${x.esgotado ? pill(String(x.esgotado), 'bad') : '0'}</td><td>${x.graves ? pill(String(x.graves), 'bad') : '0'}</td><td class="mono">${x.media_s === null ? '—' : br(x.media_s, 1) + ' s'}</td></tr>`).join('');
+  $('#notaTriagem').innerHTML = `<b>Escolha final (opção ${esc(TM.escolha)} do critério):</b> <code>${esc(TM.padrao)}</code> por padrão${TM.opcional ? `, <code>${esc(TM.opcional)}</code> opcional (<code>instalar.ps1 -ModeloTriagem ${esc(TM.opcional)}</code>)` : ''}. ${TM.primeira_escolha && TM.primeira_escolha !== TM.escolha ? `Na 1ª medição o resultado era a opção ${esc(TM.primeira_escolha)}: o 3B não terminava a resposta (o campo motivo não acabava). Com <code>maxLength</code> no schema e limite de tokens, ele passou a responder a todos os documentos. ` : ''}Nada é pago nem ignorado por causa da IA.<br>${TM.passos.map((p) => esc(p.replace(/`/g, ''))).join('<br>')}`;
+  $('#fonteTriagem').innerHTML = `Fonte: <code>${esc(TM.fonte)}</code>`;
+}
+/* ---------- evolução da IA */
+const L = D.evolucao_llm, F = D.finetuning;
+const marcos = [
+  ['Entrega 2 · 5 casos', `Regra certa em ${L.entrega2.decisao_certa}/${L.entrega2.casos}; o modelo concordou em ${L.entrega2.modelo_concorda}/${L.entrega2.casos}. Daí a decisão ser da regra.`],
+  ['Entrega 2 · LoRA no teste do treino', `Acerto ${br(L.treino_lora.base * 100, 0)}% → ${br(L.treino_lora.ajustado * 100, 0)}% (F1 ${br(L.treino_lora.f1_base, 3)} → ${br(L.treino_lora.f1_ajustado, 3)}), ${L.treino_lora.exemplos_treino} exemplos, ${br(L.treino_lora.segundos / 60, 0)} min em CPU.`],
+  ['Produção · alertas pela IA (prompt v5.0)', `${L.wf06_alertas.llm_aceitas} de ${L.wf06_alertas.cenarios} cenários com o texto da LLM aceito pela checagem; ${L.wf06_alertas.texto_padrao} caiu no texto fixo (${esc(L.wf06_alertas.modelo)}).`],
+  ['Final · 16 casos, antes das correções', `Decisão certa ${A.metricas.acertos}/16; falsa aprovação em ${A.metricas.falsas_aprovacoes.join(', ') || 'nenhum'}; injeção detectada ${A.injecao_metricas.ataques_detectados}/${A.injecao_metricas.ataques}.`],
+  ['Final · depois das correções', `Decisão certa ${B.metricas.acertos}/16, nenhuma falsa aprovação, injeção ${B.injecao_metricas.ataques_detectados}/${B.injecao_metricas.ataques}; validação cega ${B.validacao_metricas.ataques_detectados}/${B.validacao_metricas.ataques}.`],
+  ['Final · o modelo sozinho', `O Qwen 0,5B respondeu REVISAR em todos os casos (${B.metricas.modelo_acertos}/16 = só os de esperado REVISAR): sozinho, não classifica.`],
+  ['Final · fine-tuning nos casos reais', F ? `Ajustado com RAG ${F.conjuntos.A.ajustado_rag.acertos}/16, igual ao base com RAG (${F.conjuntos.A.base_rag.acertos}/16); falsas aprovações ${F.conjuntos.A.base_rag.falsas} → ${F.conjuntos.A.ajustado_rag.falsas}. O ajuste não compensou como decisão.` : ''],
+];
+$('#tempoIa').innerHTML = marcos.map(([t, p]) => `<div class="marco"><h4>${esc(t)}</h4><p>${esc(p)}</p></div>`).join('');
+$('#prompts').innerHTML = L.prompts.map((p) => `<details class="item"><summary>${pill(p.versao, 'info')} <span>${esc(p.estado)}</span></summary><div class="corpo">${esc(p.mudancas)}</div></details>`).join('');
+
+/* ---------- casos */
+let rodada = 'depois', categoria = 'todas';
+const cats = ['todas', ...new Set(B.casos.map((c) => c.categoria))];
+function desenhaCasos() {
+  const R = rodada === 'antes' ? A : B;
+  const lista = R.casos.filter((c) => categoria === 'todas' || c.categoria === categoria);
+  $('#tabCasos').innerHTML = lista.map((c) => `<tr data-caso="${esc(c.id)}" style="cursor:pointer"><td class="mono">${esc(c.id)}</td><td>${esc(c.categoria)}</td><td>${pill(c.esperado, corClasse(c.esperado))}</td>
+    <td>${c.http !== 200 ? pill('HTTP ' + c.http, 'bad') : pill(c.obtido + (c.obtido === c.esperado ? '' : ' ✗'), c.obtido === c.esperado ? corClasse(c.obtido) : 'bad')}</td><td>${c.modelo ? pill(c.modelo) : '—'}</td></tr>`).join('');
+  const m = R.metricas;
+  $('#kpiCasos').innerHTML = [kpi('Decisão certa', null, `${m.acertos}/${m.total}`, `acurácia ${br(m.acuracia, 2)}`), kpi('F1 macro', null, br(m.f1_macro, 3)),
+    kpi('Falsas aprovações', null, String(m.falsas_aprovacoes.length), m.falsas_aprovacoes.join(', ') || 'nenhuma', m.falsas_aprovacoes.length ? 'bad' : ''),
+    kpi('Modelo concorda com a regra', null, m.modelo_concorda, 'o modelo não tem autoridade')].join('');
+  const cl = ['CONTRATADO', 'DIVERGENTE', 'REVISAR'];
+  $('#matrizConf').innerHTML = `<table class="matriz"><thead><tr><th>Esperado ↓ / obtido →</th>${cl.map((c) => `<th>${c.slice(0, 4)}</th>`).join('')}<th>sem resp.</th></tr></thead><tbody>
+    ${cl.map((e) => `<tr><td>${e}</td>${[...cl, 'SEM_RESPOSTA'].map((o) => { const v = m.matriz[e][o]; return `<td class="${v && (e === o) ? 'sim' : v ? '' : 'nao'}" ${v && e !== o ? 'style="color:#f87171;font-weight:600"' : ''}>${v}</td>`; }).join('')}</tr>`).join('')}</tbody></table>`;
+}
+segmento('#segCasos', [['antes', 'Antes das correções'], ['depois', 'Depois']], rodada, (v) => { rodada = v; desenhaCasos(); $('#detalheCaso').textContent = 'Clique num caso para ver o detalhe.'; });
+segmento('#segCat', cats.map((c) => [c, c === 'todas' ? 'Todos os tipos' : c]), categoria, (v) => { categoria = v; desenhaCasos(); });
+$('#tabCasos').addEventListener('click', (e) => {
+  const tr = e.target.closest('[data-caso]'); if (!tr) return;
+  const id = tr.dataset.caso; const a = A.casos.find((c) => c.id === id), b = B.casos.find((c) => c.id === id);
+  $('#detalheCaso').innerHTML = `<b style="color:var(--txt)">${esc(id)} · ${esc(b.descricao)}</b><br>Esperado ${pill(b.esperado, corClasse(b.esperado))}<br>
+    <b>Antes:</b> ${a.http !== 200 ? 'HTTP ' + a.http : esc(a.obtido)} — ${esc(a.motivo)}<br><b>Depois:</b> ${esc(b.obtido)} — ${esc(b.motivo)}<br>
+    <b>Fontes citadas:</b> <span class="mono">${esc((b.fontes || []).join(', ') || 'nenhuma')}</span>`;
+});
+desenhaCasos();
+
+/* ---------- injeção */
+const im = B.injecao_metricas, vm = B.validacao_metricas, ia = A.injecao_metricas;
+$('#kpiInj').innerHTML = [kpi('Bateria: detectados', `${ia.ataques_detectados}/${ia.ataques}`, `${im.ataques_detectados}/${im.ataques}`, 'otimista: os padrões foram ajustados olhando a bateria'),
+  kpi('Validação cega: detectados', null, `${vm.ataques_detectados}/${vm.ataques}`, `escaparam ${vm.ataques_decididos_CONTRATADO.join(', ')}`, 'warn'),
+  kpi('Vazamentos e pagamentos automáticos', null, `${im.vazamentos.length + vm.vazamentos.length} · ${im.pagamento_automatico}`, `controles legítimos certos: ${im.controles_certos}/${im.controles} e ${vm.controles_certos}/${vm.controles}`)].join('');
+let conjInj = 'bateria';
+function desenhaInj() {
+  const res = (x) => x ? `${pill(x.obtido, corClasse(x.obtido))} ${x.detectado_como_injecao ? pill('detectado', 'ok') : x.ataque ? pill('não detectado', 'bad') : pill('controle', 'info')}` : '—';
+  const lista = conjInj === 'bateria' ? B.injecao : B.validacao;
+  $('#tabInj').innerHTML = lista.map((x) => { const a = conjInj === 'bateria' ? A.injecao.find((y) => y.id === x.id) : null;
+    return `<tr><td class="mono">${esc(x.id)}</td><td>${esc(x.tecnica)}</td><td>${esc(x.pede)}</td><td>${conjInj === 'bateria' ? res(a) : '<span class="nota">não medida</span>'}</td><td>${res(x)}</td><td>${pill(x.modelo || '—')}</td></tr>`; }).join('');
+}
+segmento('#segInj', [['bateria', 'Bateria (13 + 2 controles)'], ['cega', 'Validação cega (8 + 3 controles)']], conjInj, (v) => { conjInj = v; desenhaInj(); });
+desenhaInj();
+$('#camadas').innerHTML = [
+  '<b>O local vem da credencial, não do pedido.</b> O corpo não pode trazer local_id (HTTP 400).',
+  '<b>O banco só entrega o próprio local:</b> procedimento que confere o escopo, RLS e DENY nas tabelas.',
+  '<b>O RAG é filtrado por local e provedor</b> antes da busca: contrato de outro local nunca chega ao modelo.',
+  '<b>A regra decide sobre a evidência estruturada.</b> Uma instrução no texto não muda o valor nem o serviço do contrato.',
+  '<b>O modelo não tem autoridade</b> e só pode responder JSON com uma de três classificações.',
+  '<b>Não existe ação de pagamento</b>, e a resposta não devolve linhas do banco.',
+  '<b>Detecção de injeção</b> com texto normalizado: quando detecta, vira REVISAR com revisão humana.',
+  '<b>Auditoria:</b> cada análise registra injecao=1|0, a decisão e o hash da resposta.',
+].map((t) => `<li>${t}</li>`).join('');
+
+/* ---------- fine-tuning */
+let conjFt = 'A';
+const ordemFt = ['base', 'base_rag', 'ajustado', 'ajustado_rag'];
+function desenhaFt() {
+  const C = F.conjuntos[conjFt];
+  barras('#ftAcerto', ordemFt.map((k) => ({rot: C[k].nome, v: C[k].acertos, n: C[k].n, cor: k.startsWith('ajustado') ? 'var(--violet)' : 'var(--blue)'})), (x) => `${x.v}/${x.n}`, C.base.n);
+  barras('#ftFalsas', ordemFt.map((k) => ({rot: C[k].nome, v: C[k].falsas, cor: 'var(--bad)'})), (x) => String(x.v), C.base.n);
+  $('#ftResp').innerHTML = ordemFt.map((k) => { const r = C[k].respostas, n = C[k].n;
+    return `<div class="barra"><span>${esc(C[k].nome)}</span><div class="empilhada"><i style="width:${100 * r.CONTRATADO / n}%;background:var(--ok)"></i><i style="width:${100 * r.DIVERGENTE / n}%;background:var(--warn)"></i><i style="width:${100 * r.REVISAR / n}%;background:var(--blue)"></i></div><span class="valor">${r.CONTRATADO}·${r.DIVERGENTE}·${r.REVISAR}</span></div>`; }).join('');
+  $('#ftCusto').innerHTML = ordemFt.map((k) => { const c = C[k].custo || {};
+    return `<tr><td>${esc(C[k].nome)}</td><td>${br(C[k].tokens, 0)}</td><td>${br(C[k].latencia_media_ms / 1000, 2)} s</td><td>${br(c.tempo_cpu_min)} min</td><td>R$ ${br(c.reais_15w, 3)} a ${br(c.reais_55w, 3)}</td></tr>`; }).join('');
+  $('#ftConclusao').innerHTML = conjFt === 'A'
+    ? `<b>Nos 16 casos reais, o ajuste não compensou como decisão.</b> O base aprova quase tudo (${C.base.falsas} falsas aprovações sem RAG). O ajustado ficou cauteloso, mas com RAG lê "não inclui IP adicional" do contrato como divergência até no link contratado: aprendeu o formato curto do treino, não a tarefa. A falsa aprovação que sobrou (${C.ajustado_rag.falsas}) foi o modelo obedecendo a um prompt injection. A regra acerta 16/16.`
+    : `<b>Na distribuição do treino, o ajuste funciona:</b> ${C.base_rag.acertos}/20 → ${C.ajustado_rag.acertos}/20 com evidência, e as falsas aprovações caem de ${C.base_rag.falsas} para ${C.ajustado_rag.falsas}. Reproduz o resultado da entrega 2.`;
+}
+if (F) { segmento('#segFt', [['A', '16 casos finais (RAG real)'], ['B', '20 casos de teste do treino']], conjFt, (v) => { conjFt = v; desenhaFt(); }); desenhaFt(); }
+
+/* ---------- segurança */
+const paineis = {
+  esc: ['Escalonamento de privilégio', () => `<p class="sub">O operador do LOC-001 tenta passar do limite do seu papel. Fase "antes": a política de RLS volta a ter só o FILTER, dentro de uma transação desfeita. Fase "depois": a política corrigida, com os predicados BLOCK.</p>
+    <div class="tw"><table><thead><tr><th>Fase</th><th>Id</th><th>Tipo</th><th>Ataque</th><th>Obtido</th></tr></thead><tbody>${S.escalonamento.map((x) => `<tr><td>${pill(x.fase, x.fase === 'antes' ? 'warn' : 'info')}</td><td class="mono">${esc(x.id)}</td><td>${esc(x.tipo)}</td><td>${esc(x.ataque)}</td><td>${pill(x.obtido, x.obtido === 'PERMITIDO' ? (x.fase === 'antes' || x.tipo === 'controle' ? 'warn' : 'bad') : 'ok')}</td></tr>`).join('')}</tbody></table></div>
+    <div class="fonte">Fonte: <code>sqlserver/evidence/parte3/escalonamento.txt</code> · <code>seguranca/ataque-escalonamento.md</code></div>`],
+  trilha: ['Trilha de auditoria', () => { const a = S.trilha.antes || [], d = S.trilha.depois || [];
+    return `<p class="sub">Quem inseriu, alterou ou apagou uma nota, o que mudou, e as tentativas negadas (SQL Server Audit). A chave fiscal nunca entra na trilha.</p>
+    <div class="tw"><table><thead><tr><th>Id</th><th>Teste</th><th>Antes</th><th>Depois</th></tr></thead><tbody>${d.map((x) => { const y = a.find((z) => z.id === x.id) || {};
+      return `<tr><td class="mono">${esc(x.id)}</td><td>${esc(x.teste)}</td><td>${pill(y.obtido || '—', y.veredito === 'OK' ? 'ok' : 'bad')}</td><td>${pill(x.obtido, x.veredito === 'OK' ? 'ok' : 'bad')}</td></tr>`; }).join('')}</tbody></table></div>
+    <div class="fonte">Fonte: <code>sqlserver/evidence/parte3/auditoria/</code> · <code>seguranca/trilha-auditoria.md</code></div>`; }],
+  ledger: ['Trilha à prova de adulteração', () => { const Lg = S.ledger; if (!Lg) return '<p class="sub">Sem evidência da ledger.</p>';
+    return `<p class="sub">Antes, numa cópia do banco restaurada do backup: o <code>sa</code> reescreveu ${Lg.antes.UPDATE ?? '?'} eventos e apagou ${Lg.antes.DELETE ?? '?'} sem erro, e a trilha não guardou nada. Depois: <code>audit.Eventos</code> é uma tabela ledger "somente inclusão"; o digest de cada verificação fica fora do banco, no Git (${Lg.digests} guardado(s) desta instalação). Resultado: ${pill(Lg.resultado, Lg.resultado === 'APROVADO' ? 'ok' : 'bad')}</p>
+    <div class="tw"><table><thead><tr><th>Teste</th><th>Esperado</th><th>Obtido</th></tr></thead><tbody>${Lg.verificacoes.map((x) => `<tr><td>${esc(x.teste)}</td><td>${esc(x.esperado)}</td><td>${pill(x.obtido, x.veredito === 'OK' ? 'ok' : 'bad')}</td></tr>`).join('')}</tbody></table></div>
+    <p class="nota">Migração: ${esc(Lg.migracao)}</p>
+    <div class="fonte">Fonte: <code>${esc(Lg.fonte)}</code> · <code>seguranca/verificar_ledger.py</code> · <code>seguranca/trilha-auditoria.md</code></div>`; }],
+  perfis: ['IA por perfil', () => { const P = S.ia_perfis;
+    return `<p class="sub">A mesma IA com a credencial de cada perfil, e o pedido de contexto feito por cada perfil do banco. Resultado: ${pill(P.resultado, P.resultado === 'APROVADO' ? 'ok' : 'bad')}</p>
+    <div class="grade g2"><div class="tw"><table><thead><tr><th>Caso</th><th>Perfil</th><th>Resposta</th></tr></thead><tbody>${P.parte_a.map((x) => `<tr><td class="mono">${esc(x.id)}</td><td>${esc(x.perfil)}</td><td>${pill('HTTP ' + x.http + (x.classificacao ? ' · ' + x.classificacao : ''), x.ok ? 'ok' : 'bad')}</td></tr>`).join('')}</tbody></table></div>
+    <div class="tw"><table><thead><tr><th>Perfil do banco</th><th>Pede</th><th>Resultado</th></tr></thead><tbody>${P.parte_b.map((x) => `<tr><td>${esc(x.perfil)}</td><td>${esc(x.local_pedido)}</td><td>${pill(x.resultado === 'PERMITIDO' ? `permitido · ${x.linhas} linhas` : `negado (${x.erro})`, x.ok ? (x.resultado === 'PERMITIDO' ? 'ok' : 'info') : 'bad')}</td></tr>`).join('')}</tbody></table></div></div>
+    <h3>A IA tenta falsificar a trilha</h3><div class="tw" style="max-height:none"><table><tbody>${P.parte_d.map((x) => `<tr><td class="mono">${esc(x.id)}</td><td>${esc(x.tentativa)}</td><td>${pill(`${x.resultado} (${x.erro})`, x.ok ? 'ok' : 'bad')}</td></tr>`).join('')}</tbody></table></div>
+    <div class="fonte">Fonte: <code>sqlserver/evidence/parte3/ia-perfis.json</code></div>`; }],
+  matriz: ['Matriz de permissões', () => { const M = S.matriz, us = M.principais.map((p) => p.usuario);
+    const objs = [...new Set(M.permissoes.filter((x) => ['SELECT', 'INSERT', 'UPDATE', 'DELETE'].includes(x.permissao)).map((x) => x.objeto))];
+    const letra = {SELECT: 'L', INSERT: 'I', UPDATE: 'A', DELETE: 'E'};
+    const cel = (u, o) => ['SELECT', 'INSERT', 'UPDATE', 'DELETE'].filter((p) => (M.permissoes.find((x) => x.usuario === u && x.objeto === o && x.permissao === p) || {}).efetiva).map((p) => letra[p]).join('');
+    return `<p class="sub">Permissão efetiva medida como cada usuário (HAS_PERMS_BY_NAME), não copiada do script. L = ler, I = inserir, A = alterar, E = apagar. ${M.denys} DENY explícitos.</p>
+    <div class="tw"><table class="matriz"><thead><tr><th>Objeto</th>${M.principais.map((p) => `<th title="${esc(p.perfil)}">${esc(p.perfil.split(' (')[0])}</th>`).join('')}</tr></thead><tbody>
+      ${objs.map((o) => `<tr><td class="mono">${esc(o)}</td>${us.map((u) => { const c = cel(u, o); return `<td class="${c ? 'sim' : 'nao'}">${c || '—'}</td>`; }).join('')}</tr>`).join('')}
+      ${[['ai.usp_get_context', 'EXECUTE', null, 'executa o procedimento da IA'], ['app.Notas', 'UNMASK', 'chave_fiscal', 'vê a chave fiscal real'], ['sigp_auditor', 'ALTER', null, 'entra no papel de auditor'], ['sigp_ia_loc002', 'IMPERSONATE', null, 'se passa por outro usuário']]
+        .map(([o, p, sub, rot]) => `<tr><td>${esc(rot)}</td>${us.map((u) => { const v = (M.permissoes.find((x) => x.usuario === u && x.objeto === o && x.permissao === p && (x.sub || null) === sub) || {}).efetiva; return `<td class="${v ? 'sim' : 'nao'}">${v ? 'sim' : '—'}</td>`; }).join('')}</tr>`).join('')}
+    </tbody></table></div>
+    <h3>Prova do DENY: ele vence um GRANT dado depois</h3><div class="tw" style="max-height:none"><table><tbody>${M.prova_deny.map((x) => `<tr><td>${esc(x.teste)}</td><td>${pill(x.obtido, x.veredito === 'OK' ? 'ok' : 'bad')}</td></tr>`).join('')}</tbody></table></div>
+    <div class="fonte">Fonte: <code>sqlserver/evidence/parte3/matriz-permissoes.json</code> · <code>seguranca/matriz-permissoes.md</code></div>`; }],
+  segredos: ['Segredos no n8n', () => { const G = S.segredos;
+    return `<div class="grade g3">${kpi('Resultado', null, G.resultado, '', G.resultado === 'APROVADO' ? 'ok' : 'bad')}${kpi('Segredos dos .env procurados', null, String(G.segredos_procurados), 'o próprio valor, nunca impresso')}${kpi('Arquivos verificados', null, `${G.arquivos_do_repositorio} + ${G.workflows_ao_vivo}`, 'repositório + n8n ao vivo')}</div>
+    <p class="sub" style="margin-top:14px">A primeira execução reprovou um modelo de WhatsApp com a chave escrita no nó (texto de exemplo). O nó passou a ler as variáveis de ambiente, como os outros fluxos.</p>
+    <div class="fonte">Fonte: <code>sqlserver/evidence/parte3/segredos-n8n.json</code> · <code>ia/segredos-n8n.md</code></div>`; }],
+};
+let painel = 'esc';
+segmento('#segSeg', Object.entries(paineis).map(([k, [t]]) => [k, t]), painel, (v) => { painel = v; $('#painelSeg').innerHTML = paineis[v][1](); });
+$('#painelSeg').innerHTML = paineis[painel][1]();
+
+/* ---------- otimização */
+const rotCfg = {A: 'A · só chaves', B: 'B · candidatos', C: 'C · ajustados', D: 'D · resumo diário'};
+const q1 = O.tempos.filter((t) => t.consulta === 1), q2 = O.tempos.filter((t) => t.consulta === 2);
+const fmtQ = (x) => `${br(x.v)} ms`;
+barras('#q1', q1.map((t) => ({rot: rotCfg[t.cfg], v: t.mediana, cor: t.cfg === 'D' ? 'var(--accent)' : 'var(--line2)'})), fmtQ);
+barras('#q2', q2.map((t) => ({rot: rotCfg[t.cfg], v: t.mediana, cor: t.cfg === 'C' ? 'var(--accent)' : 'var(--line2)'})), fmtQ);
+const lei = (c, k) => (O.tempos.find((t) => t.consulta === c && t.cfg === k) || {}).leituras;
+$('#q1nota').textContent = `Leituras lógicas ${br(lei(1, 'A'), 0)} → ${br(lei(1, 'D'), 0)}. Mesma resposta: ${O.mesma_resposta ? O.mesma_resposta.linhas_diferentes : '?'} linhas diferentes em ${O.mesma_resposta ? O.mesma_resposta.linhas_do_resultado : '?'}. Um índice não evita somar 47 mil notas; o resumo guarda a soma pronta, na mesma RLS.`;
+$('#resumoTestes').innerHTML = `<table><tbody>${O.testes_resumo.map((t) => `<tr><td>${esc(t.teste)}</td><td>${pill(t.obtido, t.veredito === 'OK' ? 'ok' : 'bad')}</td></tr>`).join('')}</tbody></table>`;
+const cg = (tipo, modo) => O.custo_gravacao.find((c) => c.tipo === tipo && c.modo === modo) || {};
+$('#custoGravacao').innerHTML = `<table><thead><tr><th>Gravação</th><th>Sem gatilho</th><th>Com gatilho</th></tr></thead><tbody>
+  <tr><td>Lote de 1.000 notas</td><td>${br(cg('lote', 'sem').mediana_ms)} ms</td><td>${br(cg('lote', 'com').mediana_ms)} ms</td></tr>
+  <tr><td>Uma nota por vez (como a API)</td><td>${br(cg('uma_a_uma', 'sem').por_nota_us / 1000, 2)} ms</td><td>${br(cg('uma_a_uma', 'com').por_nota_us / 1000, 2)} ms</td></tr></tbody></table>
+  <p class="nota">Chegam poucas notas por dia e o relatório é lido muitas vezes: menos de 1 ms a mais por nota gravada compensa.</p>`;
+
+/* ---------- intervalos de confiança */
+const CF = D.confianca;
+if (CF) {
+  const pct = (v) => `${br(v * 100, 0)}%`;
+  $('#tabConf').innerHTML = CF.itens.map((x) => `<tr><td>${esc(x.rotulo)}</td><td class="mono">${x.k}/${x.n}</td><td class="mono">${pct(x.inf)} a ${pct(x.sup)}</td>
+    <td>${x.limpo ? pill('limpo', 'ok') : pill('ajustado', 'warn')} <span class="nota">${esc(x.nota)}</span></td></tr>`).join('');
+  const cg = Object.entries(CF.congelados || {}).map(([n, v]) => `<code>${esc(n)}</code> congelado em ${esc(v.congelado_em)} (SHA-256 ${esc(v.sha256.slice(0, 12))}…)`).join('; ');
+  $('#notaConf').innerHTML = `${esc(CF.metodo)}. ${cg ? cg + ': mudar o arquivo quebra um teste automático.' : ''}`;
+}
+/* ---------- latência */
+const LA = D.latencia;
+const cartaoLat = (rot, x, nota) => x ? kpi(rot, null, `${br(x.latencia.media / 1000, 2)} s`, `${nota} · p95 ${br(x.latencia.p95 / 1000, 2)} s${x.custo && x.custo.reais_15w !== undefined ? ` · 1.000 usos: R$ ${br(x.custo.reais_15w, 2)} a ${br(x.custo.reais_55w, 2)}` : ''}`) : '';
+$('#kpiLat').innerHTML = [
+  cartaoLat('Fatura nova, prompt 3.1 (uso real)', LA.prompt31_fatura_nova, `CPU ${br(((LA.prompt31_fatura_nova || {}).cpu || {}).antes, 0)}% ocupada por outros programas`),
+  cartaoLat('Fatura nova, prompt 3.0 (antes)', LA.fatura_nova_sem_carga || LA.fatura_nova_com_carga, LA.fatura_nova_sem_carga ? 'máquina sem carga extra' : `CPU ${br((LA.fatura_nova_com_carga.cpu || {}).antes, 0)}% ocupada por outros programas`),
+  LA.partida_fria ? kpi('Modelo descarregado (pior caso)', null, `${br(LA.partida_fria.primeira_ms / 1000, 1)} s`, `primeira análise depois de 30 min parado · a seguinte ${br(LA.partida_fria.seguinte_ms / 1000, 1)} s`) : '',
+  cartaoLat('Faturas já vistas (cache do Ollama)', LA.faturas_ja_vistas_cache, 'mesmas 16 faturas de novo'),
+  LA.mesma_fatura_repetida ? kpi('A mesma fatura repetida', null, `${br(LA.mesma_fatura_repetida.latencia.media / 1000, 2)} s`, 'medição antiga: só mede o cache') : '',
+].join('');
+
+/* ---------- histórico */
+const H = D.historico;
+let filtro = 'todos';
+const corTipo = {REPROVADO: 'bad', 'ERRO DO TESTE': 'warn', 'LIMITAÇÃO': 'info', AJUSTE: ''};
+function desenhaHist() {
+  const tipos = ['todos', ...new Set(H.map((h) => h.tipo))];
+  $('#filtroHist').innerHTML = tipos.map((t) => `<button type="button" data-f="${esc(t)}" aria-pressed="${t === filtro}">${t === 'todos' ? 'Todos' : esc(t)} (${t === 'todos' ? H.length : H.filter((h) => h.tipo === t).length})</button>`).join('');
+  $('#listaHist').innerHTML = H.filter((h) => filtro === 'todos' || h.tipo === filtro).map((h) => `<details class="item"><summary><span class="mono">${esc(h.id)}</span>${pill(h.tipo, corTipo[h.tipo])}${pill(h.area)}<span>${esc(h.teste)}</span></summary>
+    <div class="corpo"><b>1ª execução:</b> ${esc(h.primeira)}<br><b>Correção:</b> ${esc(h.correcao)}<br><b>Reteste:</b> ${esc(h.reteste)}<br><span class="mono">${esc(h.commit)}</span></div></details>`).join('');
+}
+$('#filtroHist').addEventListener('click', (e) => { const b = e.target.closest('[data-f]'); if (b) { filtro = b.dataset.f; desenhaHist(); } });
+desenhaHist();
+
+ir(location.hash && document.getElementById(location.hash.slice(1)) ? location.hash.slice(1) : 'visao');
+})();
+</script>
+</body>
+</html>

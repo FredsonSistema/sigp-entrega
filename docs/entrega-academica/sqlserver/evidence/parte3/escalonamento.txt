@@ -1,0 +1,17 @@
+﻿Changed database context to 'SIGpAcademic'.
+fase|id|tipo|quem|ataque|esperado|obtido|veredito
+----|--|----|----|------|--------|------|--------
+antes|E6|horizontal|sigp_operador_loc001|Nota gravada em local fora do escopo (INSERT no LOC-002)|PASSA|PERMITIDO|OK
+antes|E7|horizontal|sigp_operador_loc001|Nota movida para outro local (UPDATE local_id)|PASSA|PERMITIDO|OK
+depois|C1|controle|sigp_operador_loc001|Gravar e atualizar nota no PRÓPRIO local (LOC-001)|PERMITIDO|PERMITIDO|OK
+depois|E1|horizontal|sigp_ia_loc001|IA grava o próprio escopo (security.LocalScope)|BARRADO|BARRADO (erro 229)|OK
+depois|E2|horizontal|sigp_ia_loc001|IA personifica a identidade do LOC-002 (EXECUTE AS)|BARRADO|BARRADO (erro 15517)|OK
+depois|E3|vertical|sigp_operador_loc001|Operador entra no papel sigp_auditor (ALTER ROLE)|BARRADO|BARRADO (erro 15151)|OK
+depois|E4|vertical|sigp_operador_loc001|Operador apaga a trilha de auditoria (DELETE)|BARRADO|BARRADO (erro 37359)|OK
+depois|E5|vertical|sigp_operador_loc001|Operador reescreve a trilha de auditoria (UPDATE)|BARRADO|BARRADO (erro 37359)|OK
+depois|E6|horizontal|sigp_operador_loc001|Nota gravada em local fora do escopo (INSERT no LOC-002)|BARRADO|BARRADO (erro 33504)|OK
+depois|E7|horizontal|sigp_operador_loc001|Nota movida para outro local (UPDATE local_id)|BARRADO|BARRADO (erro 33504)|OK
+depois|E8|injeção|sigp_ia_loc001|SQL Injection em @local_id do ai.usp_get_context|BARRADO|BARRADO (erro 51001)|OK
+resultado_final
+---------------
+APROVADO: falha reproduzida na fase 1; na fase 2 todos os ataques barrados e o controle positivo funciona

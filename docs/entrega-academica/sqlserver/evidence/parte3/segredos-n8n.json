@@ -1,0 +1,397 @@
+{
+  "executado_em_utc": "2026-11-22T01:41:18.890686+00:00",
+  "segredos_procurados": 10,
+  "arquivos_do_repositorio": 21,
+  "workflows_ao_vivo": 14,
+  "arquivos_com_falha": [],
+  "arquivos_com_aviso": [
+    "n8n-ao-vivo/WF-08 - Receber notas fiscais do Gmail.json",
+    "n8n-ao-vivo/SIGp - Extrair fatura PDF de provedor.json",
+    "n8n-ao-vivo/SIGp Acadêmico - RAG e Análise.json",
+    "n8n-ao-vivo/SIGp - Backup e manutenção do banco.json",
+    "n8n-ao-vivo/SIGp - WF-01 Receber nota lançada.json",
+    "n8n-ao-vivo/SIGp - WF-02 Receber nota paga.json",
+    "n8n-ao-vivo/SIGp - WF-05 Eventos: análise LLM local, SIG (gerente) e SIE (executivo).json",
+    "n8n-ao-vivo/WF-06 utilitário - gerar resumo de alertas agora.json",
+    "n8n-ao-vivo/SIGp - WF-06 Vencimentos e alertas diários (texto amigável pela IA local).json",
+    "n8n-ao-vivo/SIGp - Tomada de decisão manual.json",
+    "n8n-ao-vivo/WF-08 utilitário - Reaplicar SIGp/Importado.json",
+    "n8n-ao-vivo/WF-08 utilitário - Reprocessar mensagens (sem tirar etiquetas).json",
+    "n8n-ao-vivo/SIGp - WF-99 Erros.json",
+    "n8n-ao-vivo/WF-09 - Aplicar etiquetas Gmail às notas associadas.json"
+  ],
+  "resultado": "APROVADO",
+  "arquivos": [
+    {
+      "arquivo": "docs/entrega-academica/ia/n8n_workflow_academic_ai.json",
+      "falhas": [],
+      "avisos": [],
+      "ok": true,
+      "origem": "repositório"
+    },
+    {
+      "arquivo": "n8n/wf06/base_wf06.json",
+      "falhas": [],
+      "avisos": [],
+      "ok": true,
+      "origem": "repositório"
+    },
+    {
+      "arquivo": "n8n/wf06/n8n_workflow_wf06_agora.json",
+      "falhas": [],
+      "avisos": [],
+      "ok": true,
+      "origem": "repositório"
+    },
+    {
+      "arquivo": "n8n/wf08/n8n_workflow_wf08_reprocessar.json",
+      "falhas": [],
+      "avisos": [],
+      "ok": true,
+      "origem": "repositório"
+    },
+    {
+      "arquivo": "n8n/wf08/n8n_workflow_wf08_reprocessar.legado.json",
+      "falhas": [],
+      "avisos": [],
+      "ok": true,
+      "origem": "repositório"
+    },
+    {
+      "arquivo": "n8n_workflow_contas_provedores.json",
+      "falhas": [],
+      "avisos": [],
+      "ok": true,
+      "origem": "repositório"
+    },
+    {
+      "arquivo": "n8n_workflow_extrair_fatura_pdf.json",
+      "falhas": [],
+      "avisos": [],
+      "ok": true,
+      "origem": "repositório"
+    },
+    {
+      "arquivo": "n8n_workflow_extrair_fatura_pdf.legado.json",
+      "falhas": [],
+      "avisos": [],
+      "ok": true,
+      "origem": "repositório"
+    },
+    {
+      "arquivo": "n8n_workflow_manutencao_banco.json",
+      "falhas": [],
+      "avisos": [],
+      "ok": true,
+      "origem": "repositório"
+    },
+    {
+      "arquivo": "n8n_workflow_nfse_conciliacao.json",
+      "falhas": [],
+      "avisos": [],
+      "ok": true,
+      "origem": "repositório"
+    },
+    {
+      "arquivo": "n8n_workflow_wf01_nota_lancada.json",
+      "falhas": [],
+      "avisos": [],
+      "ok": true,
+      "origem": "repositório"
+    },
+    {
+      "arquivo": "n8n_workflow_wf02_nota_paga.json",
+      "falhas": [],
+      "avisos": [],
+      "ok": true,
+      "origem": "repositório"
+    },
+    {
+      "arquivo": "n8n_workflow_wf05_eventos.json",
+      "falhas": [],
+      "avisos": [],
+      "ok": true,
+      "origem": "repositório"
+    },
+    {
+      "arquivo": "n8n_workflow_wf05_eventos.legado.json",
+      "falhas": [],
+      "avisos": [],
+      "ok": true,
+      "origem": "repositório"
+    },
+    {
+      "arquivo": "n8n_workflow_wf06_vencimentos.json",
+      "falhas": [],
+      "avisos": [],
+      "ok": true,
+      "origem": "repositório"
+    },
+    {
+      "arquivo": "n8n_workflow_wf06_vencimentos.legado.json",
+      "falhas": [],
+      "avisos": [],
+      "ok": true,
+      "origem": "repositório"
+    },
+    {
+      "arquivo": "n8n_workflow_wf07_decisoes.json",
+      "falhas": [],
+      "avisos": [],
+      "ok": true,
+      "origem": "repositório"
+    },
+    {
+      "arquivo": "n8n_workflow_wf08_gmail_inbox.json",
+      "falhas": [],
+      "avisos": [],
+      "ok": true,
+      "origem": "repositório"
+    },
+    {
+      "arquivo": "n8n_workflow_wf08_reetiquetar.json",
+      "falhas": [],
+      "avisos": [],
+      "ok": true,
+      "origem": "repositório"
+    },
+    {
+      "arquivo": "n8n_workflow_wf09_etiquetas_gmail.json",
+      "falhas": [],
+      "avisos": [],
+      "ok": true,
+      "origem": "repositório"
+    },
+    {
+      "arquivo": "n8n_workflow_wf99_erros.json",
+      "falhas": [],
+      "avisos": [],
+      "ok": true,
+      "origem": "repositório"
+    },
+    {
+      "arquivo": "n8n-ao-vivo/WF-08 - Receber notas fiscais do Gmail.json",
+      "falhas": [],
+      "avisos": [
+        {
+          "regra": "email_no_arquivo",
+          "quantidade": 1,
+          "exemplos": [
+            "f***@ftc.edu.br"
+          ]
+        }
+      ],
+      "ok": true,
+      "origem": "n8n em execução (exportação temporária)",
+      "ativo": true
+    },
+    {
+      "arquivo": "n8n-ao-vivo/SIGp - Extrair fatura PDF de provedor.json",
+      "falhas": [],
+      "avisos": [
+        {
+          "regra": "email_no_arquivo",
+          "quantidade": 1,
+          "exemplos": [
+            "f***@ftc.edu.br"
+          ]
+        }
+      ],
+      "ok": true,
+      "origem": "n8n em execução (exportação temporária)",
+      "ativo": true
+    },
+    {
+      "arquivo": "n8n-ao-vivo/SIGp Acadêmico - RAG e Análise.json",
+      "falhas": [],
+      "avisos": [
+        {
+          "regra": "email_no_arquivo",
+          "quantidade": 1,
+          "exemplos": [
+            "f***@ftc.edu.br"
+          ]
+        }
+      ],
+      "ok": true,
+      "origem": "n8n em execução (exportação temporária)",
+      "ativo": true
+    },
+    {
+      "arquivo": "n8n-ao-vivo/SIGp - Backup e manutenção do banco.json",
+      "falhas": [],
+      "avisos": [
+        {
+          "regra": "email_no_arquivo",
+          "quantidade": 1,
+          "exemplos": [
+            "f***@ftc.edu.br"
+          ]
+        }
+      ],
+      "ok": true,
+      "origem": "n8n em execução (exportação temporária)",
+      "ativo": true
+    },
+    {
+      "arquivo": "n8n-ao-vivo/SIGp - WF-01 Receber nota lançada.json",
+      "falhas": [],
+      "avisos": [
+        {
+          "regra": "email_no_arquivo",
+          "quantidade": 1,
+          "exemplos": [
+            "f***@ftc.edu.br"
+          ]
+        }
+      ],
+      "ok": true,
+      "origem": "n8n em execução (exportação temporária)",
+      "ativo": true
+    },
+    {
+      "arquivo": "n8n-ao-vivo/SIGp - WF-02 Receber nota paga.json",
+      "falhas": [],
+      "avisos": [
+        {
+          "regra": "email_no_arquivo",
+          "quantidade": 1,
+          "exemplos": [
+            "f***@ftc.edu.br"
+          ]
+        }
+      ],
+      "ok": true,
+      "origem": "n8n em execução (exportação temporária)",
+      "ativo": true
+    },
+    {
+      "arquivo": "n8n-ao-vivo/SIGp - WF-05 Eventos: análise LLM local, SIG (gerente) e SIE (executivo).json",
+      "falhas": [],
+      "avisos": [
+        {
+          "regra": "email_no_arquivo",
+          "quantidade": 1,
+          "exemplos": [
+            "f***@ftc.edu.br"
+          ]
+        }
+      ],
+      "ok": true,
+      "origem": "n8n em execução (exportação temporária)",
+      "ativo": true
+    },
+    {
+      "arquivo": "n8n-ao-vivo/WF-06 utilitário - gerar resumo de alertas agora.json",
+      "falhas": [],
+      "avisos": [
+        {
+          "regra": "email_no_arquivo",
+          "quantidade": 1,
+          "exemplos": [
+            "f***@ftc.edu.br"
+          ]
+        }
+      ],
+      "ok": true,
+      "origem": "n8n em execução (exportação temporária)",
+      "ativo": false
+    },
+    {
+      "arquivo": "n8n-ao-vivo/SIGp - WF-06 Vencimentos e alertas diários (texto amigável pela IA local).json",
+      "falhas": [],
+      "avisos": [
+        {
+          "regra": "email_no_arquivo",
+          "quantidade": 1,
+          "exemplos": [
+            "f***@ftc.edu.br"
+          ]
+        }
+      ],
+      "ok": true,
+      "origem": "n8n em execução (exportação temporária)",
+      "ativo": true
+    },
+    {
+      "arquivo": "n8n-ao-vivo/SIGp - Tomada de decisão manual.json",
+      "falhas": [],
+      "avisos": [
+        {
+          "regra": "email_no_arquivo",
+          "quantidade": 1,
+          "exemplos": [
+            "f***@ftc.edu.br"
+          ]
+        }
+      ],
+      "ok": true,
+      "origem": "n8n em execução (exportação temporária)",
+      "ativo": true
+    },
+    {
+      "arquivo": "n8n-ao-vivo/WF-08 utilitário - Reaplicar SIGp/Importado.json",
+      "falhas": [],
+      "avisos": [
+        {
+          "regra": "email_no_arquivo",
+          "quantidade": 1,
+          "exemplos": [
+            "f***@ftc.edu.br"
+          ]
+        }
+      ],
+      "ok": true,
+      "origem": "n8n em execução (exportação temporária)",
+      "ativo": true
+    },
+    {
+      "arquivo": "n8n-ao-vivo/WF-08 utilitário - Reprocessar mensagens (sem tirar etiquetas).json",
+      "falhas": [],
+      "avisos": [
+        {
+          "regra": "email_no_arquivo",
+          "quantidade": 1,
+          "exemplos": [
+            "f***@ftc.edu.br"
+          ]
+        }
+      ],
+      "ok": true,
+      "origem": "n8n em execução (exportação temporária)",
+      "ativo": true
+    },
+    {
+      "arquivo": "n8n-ao-vivo/SIGp - WF-99 Erros.json",
+      "falhas": [],
+      "avisos": [
+        {
+          "regra": "email_no_arquivo",
+          "quantidade": 1,
+          "exemplos": [
+            "f***@ftc.edu.br"
+          ]
+        }
+      ],
+      "ok": true,
+      "origem": "n8n em execução (exportação temporária)",
+      "ativo": true
+    },
+    {
+      "arquivo": "n8n-ao-vivo/WF-09 - Aplicar etiquetas Gmail às notas associadas.json",
+      "falhas": [],
+      "avisos": [
+        {
+          "regra": "email_no_arquivo",
+          "quantidade": 1,
+          "exemplos": [
+            "f***@ftc.edu.br"
+          ]
+        }
+      ],
+      "ok": true,
+      "origem": "n8n em execução (exportação temporária)",
+      "ativo": true
+    }
+  ]
+}

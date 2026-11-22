@@ -1,0 +1,75 @@
+{
+  "id": "R7lKILedIMV89Jay",
+  "name": "SIGp Acadêmico - RAG e Análise",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "sigp-academic-ai",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "d97f527e-65a0-4b9e-88b6-62fd94ea1501",
+      "name": "Receber fatura sintética",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        260,
+        300
+      ],
+      "webhookId": "c1b6bbd2-8c08-4373-89cf-19570cfa8456"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://academic-ai:5010/api/analyze",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "={{ $env.SIGP_ACADEMIC_AI_KEY }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ { invoice: $json.body } }}",
+        "options": {
+          "timeout": 150000
+        }
+      },
+      "id": "a5bc823d-ec87-48d3-8ac7-8fd1b3658407",
+      "name": "Consultar RAG, SQL e LLM",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        520,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Receber fatura sintética": {
+      "main": [
+        [
+          {
+            "node": "Consultar RAG, SQL e LLM",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f40d0e7f-25bc-480e-991b-7cae8c40e93e",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "tags": []
+}

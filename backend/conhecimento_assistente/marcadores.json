@@ -1,0 +1,71 @@
+{
+  "tema": "marcadores",
+  "descricao": "Marcadores e grupos de localidades. Marcador é uma etiqueta posta à mão no local (Regional Itabuna, Regional Jequié, Terceirizado, Propria e as empresas RT, CS, EB, VM). Grupo é uma regra só com dados do cadastro (provedor, cidade, tipo, link reserva, marcador). Situação da conta (vencida etc.) não é marcador nem grupo.",
+  "ferramentas": {
+    "listar_marcadores": "Lista as regionais, empresas (RT, CS, EB, VM) e demais marcadores e grupos, com quantos locais em cada. Parâmetro: so_regionais (sim para só as regionais)."
+  },
+  "regras": [
+    "Quando a pergunta citar um marcador ou grupo (ex.: Regional Itabuna, grupo He-Net, Rota, Cidade Sol), preencha o parâmetro marcador com o nome dele em listar_locais, listar_contas, contar_contas ou gerar_relatorio.",
+    "Siglas das empresas: RT = Rota Transportes Rodoviários (Rota); CS = Viação Jequié Cidade Sol (Cidade Sol); EB = Expresso Brasileiro; VM = Via Metro (Viação Metropolitana de Ilhéus).",
+    "Nome de cidade é cidade, não marcador (ex.: 'agências em Ilhéus' usa cidade)."
+  ],
+  "termos": {
+    "regional": "marcadores",
+    "regionais": "marcadores",
+    "qual empresa": "marcadores",
+    "de qual empresa": "marcadores",
+    "marcador": "marcadores",
+    "marcadores": "marcadores",
+    "etiqueta": "marcadores",
+    "etiquetas": "marcadores"
+  },
+  "exemplos": [
+    {
+      "pergunta": "quais as contas vencidas da Regional Itabuna?",
+      "ferramenta": "listar_contas",
+      "parametros": {
+        "situacao": "vencida",
+        "marcador": "Regional Itabuna"
+      }
+    },
+    {
+      "pergunta": "de qual regional é a agência de Itacaré?",
+      "ferramenta": "buscar_local",
+      "parametros": {
+        "local": "Itacaré",
+        "assunto": "marcadores"
+      }
+    },
+    {
+      "pergunta": "quais regionais existem?",
+      "ferramenta": "listar_marcadores",
+      "parametros": {
+        "so_regionais": "sim"
+      }
+    },
+    {
+      "pergunta": "quais locais são da Rota?",
+      "ferramenta": "listar_locais",
+      "parametros": {
+        "marcador": "RT"
+      }
+    },
+    {
+      "pergunta": "gere um relatório do grupo He-Net",
+      "ferramenta": "gerar_relatorio",
+      "parametros": {
+        "base": "locais",
+        "marcador": "He-Net"
+      }
+    },
+    {
+      "pergunta": "quantas agências da Cidade Sol estão atrasadas?",
+      "ferramenta": "contar_contas",
+      "parametros": {
+        "situacao": "vencida",
+        "tipo": "agencia",
+        "marcador": "CS"
+      }
+    }
+  ]
+}

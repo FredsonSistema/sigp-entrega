@@ -1,0 +1,18 @@
+{
+  "tema": "relatorios",
+  "descricao": "Relatórios para baixar em PDF e em Excel (CSV): lista de locais ou de contas, com os mesmos filtros das perguntas.",
+  "ferramentas": {
+    "gerar_relatorio": "Gera o relatório em PDF e CSV. Parâmetros: base (locais ou contas), situacao (só para contas), tipo, cidade, provedor."
+  },
+  "termos": {
+    "relatório": "relatorio", "relatorio": "relatorio", "planilha": "relatorio", "excel": "relatorio", "csv": "relatorio", "pdf": "relatorio",
+    "exportar": "relatorio", "exporte": "relatorio", "imprimir": "relatorio"
+  },
+  "exemplos": [
+    {"pergunta": "crie um relatório com a lista de agências", "ferramenta": "gerar_relatorio", "parametros": {"base": "locais", "tipo": "agencia"}},
+    {"pergunta": "gere um relatório das contas vencidas", "ferramenta": "gerar_relatorio", "parametros": {"base": "contas", "situacao": "vencida"}},
+    {"pergunta": "planilha das rodoviárias com endereço e contato", "ferramenta": "gerar_relatorio", "parametros": {"base": "locais", "tipo": "rodoviaria"}},
+    {"pergunta": "exporte as contas que vencem esta semana", "ferramenta": "gerar_relatorio", "parametros": {"base": "contas", "situacao": "vence_em_breve"}},
+    {"pergunta": "relatório de todos os locais em pdf", "ferramenta": "gerar_relatorio", "parametros": {"base": "locais"}}
+  ]
+}

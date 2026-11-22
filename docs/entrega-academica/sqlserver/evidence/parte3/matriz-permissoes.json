@@ -1,0 +1,2182 @@
+{
+  "gerado_em_utc": "2026-11-21T17:53:56.019521+00:00",
+  "principais": [
+    {
+      "usuario": "sigp_api_test",
+      "perfil": "API do sistema (papel sigp_api)",
+      "ordem": 1,
+      "papeis": "sigp_api",
+      "escopo_rls": "LOC-001,LOC-002,LOC-003"
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "perfil": "Operador regional do LOC-001 (papel sigp_api)",
+      "ordem": 2,
+      "papeis": "sigp_api",
+      "escopo_rls": "LOC-001"
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "perfil": "Auditor (papel sigp_auditor)",
+      "ordem": 3,
+      "papeis": "sigp_auditor",
+      "escopo_rls": "LOC-001,LOC-002,LOC-003"
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "perfil": "Fiscal (papel sigp_fiscal)",
+      "ordem": 4,
+      "papeis": "sigp_fiscal",
+      "escopo_rls": "LOC-001"
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "perfil": "IA do LOC-001 (papel sigp_ia)",
+      "ordem": 5,
+      "papeis": "sigp_ia",
+      "escopo_rls": "LOC-001"
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "perfil": "Sem papel",
+      "ordem": 6
+    }
+  ],
+  "matriz": [
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "app.Notas",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 10
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "app.Notas",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 10
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "app.Notas",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 10
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "app.Notas",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 10
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "app.Notas",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 10
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "app.Notas",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 10
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "app.Notas",
+      "permissao": "INSERT",
+      "efetiva": true,
+      "ordem": 10
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "app.Notas",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 10
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "app.Notas",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 10
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "app.Notas",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 10
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "app.Notas",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 10
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "app.Notas",
+      "permissao": "INSERT",
+      "efetiva": true,
+      "ordem": 10
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "app.Notas",
+      "permissao": "SELECT",
+      "efetiva": true,
+      "ordem": 10
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "app.Notas",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 10
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "app.Notas",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 10
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "app.Notas",
+      "permissao": "SELECT",
+      "efetiva": true,
+      "ordem": 10
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "app.Notas",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 10
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "app.Notas",
+      "permissao": "SELECT",
+      "efetiva": true,
+      "ordem": 10
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "app.Notas",
+      "permissao": "UPDATE",
+      "efetiva": true,
+      "ordem": 10
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "app.Notas",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 10
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "app.Notas",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 10
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "app.Notas",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 10
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "app.Notas",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 10
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "app.Notas",
+      "permissao": "UPDATE",
+      "efetiva": true,
+      "ordem": 10
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "app.ItensNota",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 11
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "app.ItensNota",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 11
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "app.ItensNota",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 11
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "app.ItensNota",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 11
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "app.ItensNota",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 11
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "app.ItensNota",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 11
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "app.ItensNota",
+      "permissao": "INSERT",
+      "efetiva": true,
+      "ordem": 11
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "app.ItensNota",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 11
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "app.ItensNota",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 11
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "app.ItensNota",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 11
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "app.ItensNota",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 11
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "app.ItensNota",
+      "permissao": "INSERT",
+      "efetiva": true,
+      "ordem": 11
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "app.ItensNota",
+      "permissao": "SELECT",
+      "efetiva": true,
+      "ordem": 11
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "app.ItensNota",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 11
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "app.ItensNota",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 11
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "app.ItensNota",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 11
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "app.ItensNota",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 11
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "app.ItensNota",
+      "permissao": "SELECT",
+      "efetiva": true,
+      "ordem": 11
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "app.ItensNota",
+      "permissao": "UPDATE",
+      "efetiva": true,
+      "ordem": 11
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "app.ItensNota",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 11
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "app.ItensNota",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 11
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "app.ItensNota",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 11
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "app.ItensNota",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 11
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "app.ItensNota",
+      "permissao": "UPDATE",
+      "efetiva": true,
+      "ordem": 11
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "app.Pagamentos",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 12
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "app.Pagamentos",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 12
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "app.Pagamentos",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 12
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "app.Pagamentos",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 12
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "app.Pagamentos",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 12
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "app.Pagamentos",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 12
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "app.Pagamentos",
+      "permissao": "INSERT",
+      "efetiva": true,
+      "ordem": 12
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "app.Pagamentos",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 12
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "app.Pagamentos",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 12
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "app.Pagamentos",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 12
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "app.Pagamentos",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 12
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "app.Pagamentos",
+      "permissao": "INSERT",
+      "efetiva": true,
+      "ordem": 12
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "app.Pagamentos",
+      "permissao": "SELECT",
+      "efetiva": true,
+      "ordem": 12
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "app.Pagamentos",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 12
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "app.Pagamentos",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 12
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "app.Pagamentos",
+      "permissao": "SELECT",
+      "efetiva": true,
+      "ordem": 12
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "app.Pagamentos",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 12
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "app.Pagamentos",
+      "permissao": "SELECT",
+      "efetiva": true,
+      "ordem": 12
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "app.Pagamentos",
+      "permissao": "UPDATE",
+      "efetiva": true,
+      "ordem": 12
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "app.Pagamentos",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 12
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "app.Pagamentos",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 12
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "app.Pagamentos",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 12
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "app.Pagamentos",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 12
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "app.Pagamentos",
+      "permissao": "UPDATE",
+      "efetiva": true,
+      "ordem": 12
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "app.Conciliacoes",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 13
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "app.Conciliacoes",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 13
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "app.Conciliacoes",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 13
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "app.Conciliacoes",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 13
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "app.Conciliacoes",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 13
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "app.Conciliacoes",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 13
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "app.Conciliacoes",
+      "permissao": "INSERT",
+      "efetiva": true,
+      "ordem": 13
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "app.Conciliacoes",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 13
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "app.Conciliacoes",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 13
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "app.Conciliacoes",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 13
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "app.Conciliacoes",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 13
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "app.Conciliacoes",
+      "permissao": "INSERT",
+      "efetiva": true,
+      "ordem": 13
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "app.Conciliacoes",
+      "permissao": "SELECT",
+      "efetiva": true,
+      "ordem": 13
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "app.Conciliacoes",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 13
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "app.Conciliacoes",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 13
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "app.Conciliacoes",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 13
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "app.Conciliacoes",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 13
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "app.Conciliacoes",
+      "permissao": "SELECT",
+      "efetiva": true,
+      "ordem": 13
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "app.Conciliacoes",
+      "permissao": "UPDATE",
+      "efetiva": true,
+      "ordem": 13
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "app.Conciliacoes",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 13
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "app.Conciliacoes",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 13
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "app.Conciliacoes",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 13
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "app.Conciliacoes",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 13
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "app.Conciliacoes",
+      "permissao": "UPDATE",
+      "efetiva": true,
+      "ordem": 13
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "app.Locais",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 14
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "app.Locais",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 14
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "app.Locais",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 14
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "app.Locais",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 14
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "app.Locais",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 14
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "app.Locais",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 14
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "app.Locais",
+      "permissao": "INSERT",
+      "efetiva": true,
+      "ordem": 14
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "app.Locais",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 14
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "app.Locais",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 14
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "app.Locais",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 14
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "app.Locais",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 14
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "app.Locais",
+      "permissao": "INSERT",
+      "efetiva": true,
+      "ordem": 14
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "app.Locais",
+      "permissao": "SELECT",
+      "efetiva": true,
+      "ordem": 14
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "app.Locais",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 14
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "app.Locais",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 14
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "app.Locais",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 14
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "app.Locais",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 14
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "app.Locais",
+      "permissao": "SELECT",
+      "efetiva": true,
+      "ordem": 14
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "app.Locais",
+      "permissao": "UPDATE",
+      "efetiva": true,
+      "ordem": 14
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "app.Locais",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 14
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "app.Locais",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 14
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "app.Locais",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 14
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "app.Locais",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 14
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "app.Locais",
+      "permissao": "UPDATE",
+      "efetiva": true,
+      "ordem": 14
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "app.Provedores",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 15
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "app.Provedores",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 15
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "app.Provedores",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 15
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "app.Provedores",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 15
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "app.Provedores",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 15
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "app.Provedores",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 15
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "app.Provedores",
+      "permissao": "INSERT",
+      "efetiva": true,
+      "ordem": 15
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "app.Provedores",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 15
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "app.Provedores",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 15
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "app.Provedores",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 15
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "app.Provedores",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 15
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "app.Provedores",
+      "permissao": "INSERT",
+      "efetiva": true,
+      "ordem": 15
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "app.Provedores",
+      "permissao": "SELECT",
+      "efetiva": true,
+      "ordem": 15
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "app.Provedores",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 15
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "app.Provedores",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 15
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "app.Provedores",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 15
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "app.Provedores",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 15
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "app.Provedores",
+      "permissao": "SELECT",
+      "efetiva": true,
+      "ordem": 15
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "app.Provedores",
+      "permissao": "UPDATE",
+      "efetiva": true,
+      "ordem": 15
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "app.Provedores",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 15
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "app.Provedores",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 15
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "app.Provedores",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 15
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "app.Provedores",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 15
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "app.Provedores",
+      "permissao": "UPDATE",
+      "efetiva": true,
+      "ordem": 15
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "app.ResumoDiario",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 16
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "app.ResumoDiario",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 16
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "app.ResumoDiario",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 16
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "app.ResumoDiario",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 16
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "app.ResumoDiario",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 16
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "app.ResumoDiario",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 16
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "app.ResumoDiario",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 16
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "app.ResumoDiario",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 16
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "app.ResumoDiario",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 16
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "app.ResumoDiario",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 16
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "app.ResumoDiario",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 16
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "app.ResumoDiario",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 16
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "app.ResumoDiario",
+      "permissao": "SELECT",
+      "efetiva": true,
+      "ordem": 16
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "app.ResumoDiario",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 16
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "app.ResumoDiario",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 16
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "app.ResumoDiario",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 16
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "app.ResumoDiario",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 16
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "app.ResumoDiario",
+      "permissao": "SELECT",
+      "efetiva": true,
+      "ordem": 16
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "app.ResumoDiario",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 16
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "app.ResumoDiario",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 16
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "app.ResumoDiario",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 16
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "app.ResumoDiario",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 16
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "app.ResumoDiario",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 16
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "app.ResumoDiario",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 16
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "security.LocalScope",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 20
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "security.LocalScope",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 20
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "security.LocalScope",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 20
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "security.LocalScope",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 20
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "security.LocalScope",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 20
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "security.LocalScope",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 20
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "security.LocalScope",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 20
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "security.LocalScope",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 20
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "security.LocalScope",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 20
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "security.LocalScope",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 20
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "security.LocalScope",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 20
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "security.LocalScope",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 20
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "security.LocalScope",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 20
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "security.LocalScope",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 20
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "security.LocalScope",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 20
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "security.LocalScope",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 20
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "security.LocalScope",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 20
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "security.LocalScope",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 20
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "security.LocalScope",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 20
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "security.LocalScope",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 20
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "security.LocalScope",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 20
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "security.LocalScope",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 20
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "security.LocalScope",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 20
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "security.LocalScope",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 20
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "audit.Eventos",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 30
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "audit.Eventos",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 30
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "audit.Eventos",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 30
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "audit.Eventos",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 30
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "audit.Eventos",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 30
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "audit.Eventos",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 30
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "audit.Eventos",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 30
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "audit.Eventos",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 30
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "audit.Eventos",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 30
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "audit.Eventos",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 30
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "audit.Eventos",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 30
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "audit.Eventos",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 30
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "audit.Eventos",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 30
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "audit.Eventos",
+      "permissao": "SELECT",
+      "efetiva": true,
+      "ordem": 30
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "audit.Eventos",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 30
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "audit.Eventos",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 30
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "audit.Eventos",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 30
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "audit.Eventos",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 30
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "audit.Eventos",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 30
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "audit.Eventos",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 30
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "audit.Eventos",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 30
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "audit.Eventos",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 30
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "audit.Eventos",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 30
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "audit.Eventos",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 30
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "ai.vw_contexto_minimo",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 40
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "ai.vw_contexto_minimo",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 40
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "ai.vw_contexto_minimo",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 40
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "ai.vw_contexto_minimo",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 40
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "ai.vw_contexto_minimo",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 40
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "ai.vw_contexto_minimo",
+      "permissao": "DELETE",
+      "efetiva": false,
+      "ordem": 40
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "ai.vw_contexto_minimo",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 40
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "ai.vw_contexto_minimo",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 40
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "ai.vw_contexto_minimo",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 40
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "ai.vw_contexto_minimo",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 40
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "ai.vw_contexto_minimo",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 40
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "ai.vw_contexto_minimo",
+      "permissao": "INSERT",
+      "efetiva": false,
+      "ordem": 40
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "ai.vw_contexto_minimo",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 40
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "ai.vw_contexto_minimo",
+      "permissao": "SELECT",
+      "efetiva": true,
+      "ordem": 40
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "ai.vw_contexto_minimo",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 40
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "ai.vw_contexto_minimo",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 40
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "ai.vw_contexto_minimo",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 40
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "ai.vw_contexto_minimo",
+      "permissao": "SELECT",
+      "efetiva": false,
+      "ordem": 40
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "ai.vw_contexto_minimo",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 40
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "ai.vw_contexto_minimo",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 40
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "ai.vw_contexto_minimo",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 40
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "ai.vw_contexto_minimo",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 40
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "ai.vw_contexto_minimo",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 40
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "ai.vw_contexto_minimo",
+      "permissao": "UPDATE",
+      "efetiva": false,
+      "ordem": 40
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "ai.usp_get_context",
+      "permissao": "EXECUTE",
+      "efetiva": false,
+      "ordem": 50
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "ai.usp_get_context",
+      "permissao": "EXECUTE",
+      "efetiva": false,
+      "ordem": 50
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "ai.usp_get_context",
+      "permissao": "EXECUTE",
+      "efetiva": false,
+      "ordem": 50
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "ai.usp_get_context",
+      "permissao": "EXECUTE",
+      "efetiva": false,
+      "ordem": 50
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "ai.usp_get_context",
+      "permissao": "EXECUTE",
+      "efetiva": true,
+      "ordem": 50
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "ai.usp_get_context",
+      "permissao": "EXECUTE",
+      "efetiva": false,
+      "ordem": 50
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "ai.usp_log_sources",
+      "permissao": "EXECUTE",
+      "efetiva": false,
+      "ordem": 51
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "ai.usp_log_sources",
+      "permissao": "EXECUTE",
+      "efetiva": false,
+      "ordem": 51
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "ai.usp_log_sources",
+      "permissao": "EXECUTE",
+      "efetiva": false,
+      "ordem": 51
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "ai.usp_log_sources",
+      "permissao": "EXECUTE",
+      "efetiva": false,
+      "ordem": 51
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "ai.usp_log_sources",
+      "permissao": "EXECUTE",
+      "efetiva": true,
+      "ordem": 51
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "ai.usp_log_sources",
+      "permissao": "EXECUTE",
+      "efetiva": false,
+      "ordem": 51
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "ai.usp_log_response",
+      "permissao": "EXECUTE",
+      "efetiva": false,
+      "ordem": 52
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "ai.usp_log_response",
+      "permissao": "EXECUTE",
+      "efetiva": false,
+      "ordem": 52
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "ai.usp_log_response",
+      "permissao": "EXECUTE",
+      "efetiva": false,
+      "ordem": 52
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "ai.usp_log_response",
+      "permissao": "EXECUTE",
+      "efetiva": false,
+      "ordem": 52
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "ai.usp_log_response",
+      "permissao": "EXECUTE",
+      "efetiva": true,
+      "ordem": 52
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "ai.usp_log_response",
+      "permissao": "EXECUTE",
+      "efetiva": false,
+      "ordem": 52
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "app.Notas",
+      "permissao": "UNMASK",
+      "sub": "chave_fiscal",
+      "efetiva": false,
+      "ordem": 60
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "app.Notas",
+      "permissao": "UNMASK",
+      "sub": "chave_fiscal",
+      "efetiva": false,
+      "ordem": 60
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "app.Notas",
+      "permissao": "UNMASK",
+      "sub": "chave_fiscal",
+      "efetiva": false,
+      "ordem": 60
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "app.Notas",
+      "permissao": "UNMASK",
+      "sub": "chave_fiscal",
+      "efetiva": true,
+      "ordem": 60
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "app.Notas",
+      "permissao": "UNMASK",
+      "sub": "chave_fiscal",
+      "efetiva": false,
+      "ordem": 60
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "app.Notas",
+      "permissao": "UNMASK",
+      "sub": "chave_fiscal",
+      "efetiva": false,
+      "ordem": 60
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "app.Pagamentos",
+      "permissao": "UNMASK",
+      "sub": "referencia",
+      "efetiva": false,
+      "ordem": 61
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "app.Pagamentos",
+      "permissao": "UNMASK",
+      "sub": "referencia",
+      "efetiva": false,
+      "ordem": 61
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "app.Pagamentos",
+      "permissao": "UNMASK",
+      "sub": "referencia",
+      "efetiva": false,
+      "ordem": 61
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "app.Pagamentos",
+      "permissao": "UNMASK",
+      "sub": "referencia",
+      "efetiva": true,
+      "ordem": 61
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "app.Pagamentos",
+      "permissao": "UNMASK",
+      "sub": "referencia",
+      "efetiva": false,
+      "ordem": 61
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "app.Pagamentos",
+      "permissao": "UNMASK",
+      "sub": "referencia",
+      "efetiva": false,
+      "ordem": 61
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "sigp_auditor",
+      "permissao": "ALTER",
+      "efetiva": false,
+      "ordem": 70
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "sigp_auditor",
+      "permissao": "ALTER",
+      "efetiva": false,
+      "ordem": 70
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "sigp_auditor",
+      "permissao": "ALTER",
+      "efetiva": false,
+      "ordem": 70
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "sigp_auditor",
+      "permissao": "ALTER",
+      "efetiva": false,
+      "ordem": 70
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "sigp_auditor",
+      "permissao": "ALTER",
+      "efetiva": false,
+      "ordem": 70
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "sigp_auditor",
+      "permissao": "ALTER",
+      "efetiva": false,
+      "ordem": 70
+    },
+    {
+      "usuario": "sigp_api_test",
+      "objeto": "sigp_ia_loc002",
+      "permissao": "IMPERSONATE",
+      "efetiva": false,
+      "ordem": 71
+    },
+    {
+      "usuario": "sigp_auditor_test",
+      "objeto": "sigp_ia_loc002",
+      "permissao": "IMPERSONATE",
+      "efetiva": false,
+      "ordem": 71
+    },
+    {
+      "usuario": "sigp_denied_test",
+      "objeto": "sigp_ia_loc002",
+      "permissao": "IMPERSONATE",
+      "efetiva": false,
+      "ordem": 71
+    },
+    {
+      "usuario": "sigp_fiscal_test",
+      "objeto": "sigp_ia_loc002",
+      "permissao": "IMPERSONATE",
+      "efetiva": false,
+      "ordem": 71
+    },
+    {
+      "usuario": "sigp_ia_loc001",
+      "objeto": "sigp_ia_loc002",
+      "permissao": "IMPERSONATE",
+      "efetiva": false,
+      "ordem": 71
+    },
+    {
+      "usuario": "sigp_operador_loc001",
+      "objeto": "sigp_ia_loc002",
+      "permissao": "IMPERSONATE",
+      "efetiva": false,
+      "ordem": 71
+    }
+  ],
+  "denys": [
+    {
+      "papel": "sigp_api",
+      "permissao": "DELETE",
+      "alvo": "app.ResumoDiario"
+    },
+    {
+      "papel": "sigp_api",
+      "permissao": "INSERT",
+      "alvo": "app.ResumoDiario"
+    },
+    {
+      "papel": "sigp_api",
+      "permissao": "UPDATE",
+      "alvo": "app.ResumoDiario"
+    },
+    {
+      "papel": "sigp_api",
+      "permissao": "DELETE",
+      "alvo": "audit.Eventos"
+    },
+    {
+      "papel": "sigp_api",
+      "permissao": "INSERT",
+      "alvo": "audit.Eventos"
+    },
+    {
+      "papel": "sigp_api",
+      "permissao": "SELECT",
+      "alvo": "audit.Eventos"
+    },
+    {
+      "papel": "sigp_api",
+      "permissao": "UPDATE",
+      "alvo": "audit.Eventos"
+    },
+    {
+      "papel": "sigp_api",
+      "permissao": "DELETE",
+      "alvo": "SCHEMA::app"
+    },
+    {
+      "papel": "sigp_ia",
+      "permissao": "DELETE",
+      "alvo": "ai.vw_contexto_minimo"
+    },
+    {
+      "papel": "sigp_ia",
+      "permissao": "INSERT",
+      "alvo": "ai.vw_contexto_minimo"
+    },
+    {
+      "papel": "sigp_ia",
+      "permissao": "SELECT",
+      "alvo": "ai.vw_contexto_minimo"
+    },
+    {
+      "papel": "sigp_ia",
+      "permissao": "UPDATE",
+      "alvo": "ai.vw_contexto_minimo"
+    },
+    {
+      "papel": "sigp_ia",
+      "permissao": "DELETE",
+      "alvo": "SCHEMA::ai"
+    },
+    {
+      "papel": "sigp_ia",
+      "permissao": "INSERT",
+      "alvo": "SCHEMA::ai"
+    },
+    {
+      "papel": "sigp_ia",
+      "permissao": "UPDATE",
+      "alvo": "SCHEMA::ai"
+    },
+    {
+      "papel": "sigp_ia",
+      "permissao": "DELETE",
+      "alvo": "SCHEMA::app"
+    },
+    {
+      "papel": "sigp_ia",
+      "permissao": "INSERT",
+      "alvo": "SCHEMA::app"
+    },
+    {
+      "papel": "sigp_ia",
+      "permissao": "SELECT",
+      "alvo": "SCHEMA::app"
+    },
+    {
+      "papel": "sigp_ia",
+      "permissao": "UPDATE",
+      "alvo": "SCHEMA::app"
+    },
+    {
+      "papel": "sigp_ia",
+      "permissao": "DELETE",
+      "alvo": "SCHEMA::audit"
+    },
+    {
+      "papel": "sigp_ia",
+      "permissao": "INSERT",
+      "alvo": "SCHEMA::audit"
+    },
+    {
+      "papel": "sigp_ia",
+      "permissao": "SELECT",
+      "alvo": "SCHEMA::audit"
+    },
+    {
+      "papel": "sigp_ia",
+      "permissao": "UPDATE",
+      "alvo": "SCHEMA::audit"
+    }
+  ],
+  "prova_deny": [
+    {
+      "teste": "API no papel db_datawriter (DELETE em tudo)",
+      "esperado": "membro",
+      "obtido": "membro",
+      "veredito": "OK"
+    },
+    {
+      "teste": "Com db_datawriter, apagar uma nota (schema app, DENY DELETE)",
+      "esperado": "negado (229)",
+      "obtido": "negado (229)",
+      "veredito": "OK"
+    },
+    {
+      "teste": "Controle: com db_datawriter, apagar em security.LocalScope (sem DENY)",
+      "esperado": "permitido",
+      "obtido": "permitido",
+      "veredito": "OK"
+    },
+    {
+      "teste": "Depois do ROLLBACK, o escopo de RLS continua com todas as linhas",
+      "esperado": "13 linhas",
+      "obtido": "13 linhas",
+      "veredito": "OK"
+    },
+    {
+      "teste": "Depois do ROLLBACK, a API voltou a não ter db_datawriter",
+      "esperado": "não",
+      "obtido": "não",
+      "veredito": "OK"
+    }
+  ]
+}

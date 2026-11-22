@@ -1,0 +1,8 @@
+Banco restaurado do backup antes-ledger (copia descartavel). Tentativas do sa na trilha, antes da ledger:
+tipo_da_tabela
+--------------
+NON_LEDGER_TABLE
+UPDATE: PERMITIDO (280 eventos reescritos)
+DELETE: PERMITIDO (61 eventos apagados)
+eventos antes: 1255 / depois: 1194 (a trilha da aplicacao nao guarda nada da alteracao; a auditoria nativa guardaria o comando, mas o sa pode desliga-la)
+copia apagada

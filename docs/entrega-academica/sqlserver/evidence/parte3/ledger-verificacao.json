@@ -1,0 +1,80 @@
+{
+  "executado_em_utc": "2026-11-21T21:47:41+00:00",
+  "resultado": "APROVADO",
+  "tabela": {
+    "tipo": "APPEND_ONLY_LEDGER_TABLE",
+    "banco_criado_em": "2026-10-28T04:20:42.497    ",
+    "eventos": 1313
+  },
+  "verificacoes": [
+    {
+      "teste": "A trilha é uma tabela ledger somente inclusão",
+      "esperado": "APPEND_ONLY_LEDGER_TABLE",
+      "obtido": "APPEND_ONLY_LEDGER_TABLE",
+      "veredito": "OK"
+    },
+    {
+      "teste": "Ledger confere com os 4 digest(s) guardados fora do banco",
+      "esperado": "verificada",
+      "obtido": "verificada",
+      "veredito": "OK"
+    },
+    {
+      "teste": "Controle: digest adulterado é recusado",
+      "esperado": "erro 37392",
+      "obtido": "erro 37392",
+      "veredito": "OK"
+    },
+    {
+      "teste": "O sa altera um evento (UPDATE)",
+      "esperado": "negado (erro 37359)",
+      "obtido": "negado (erro 37359)",
+      "veredito": "OK"
+    },
+    {
+      "teste": "O sa apaga eventos (DELETE)",
+      "esperado": "negado (erro 37359)",
+      "obtido": "negado (erro 37359)",
+      "veredito": "OK"
+    },
+    {
+      "teste": "O sa esvazia a trilha (TRUNCATE)",
+      "esperado": "negado (erro 13545)",
+      "obtido": "negado (erro 13545)",
+      "veredito": "OK"
+    },
+    {
+      "teste": "Nenhum evento sumiu depois das tentativas",
+      "esperado": ">= 1313",
+      "obtido": "1313",
+      "veredito": "OK"
+    },
+    {
+      "teste": "Migração registrada na própria trilha (LEDGER_ATIVADA)",
+      "esperado": "1 evento com contagem e SHA-256",
+      "obtido": "eventos_copiados=1255; sha256_antes=0x67528BBE3BCF117B69E703…",
+      "veredito": "OK"
+    }
+  ],
+  "historico_da_tabela": [
+    {
+      "operacao": "CREATE",
+      "quando": "2026-11-21 17:37:07",
+      "quem": "sa"
+    }
+  ],
+  "evento_de_migracao": {
+    "id": 45067,
+    "criado_em": "2026-11-21 17:37:07",
+    "detalhe": "eventos_copiados=1255; sha256_antes=0x67528BBE3BCF117B69E7039D3895DF7B9A24DD6C7EDC76BA074DED38363697BE; daqui em diante nenhum evento pode ser alterado nem apagado; o que mudou antes desta cópia não é detectável"
+  },
+  "digests_guardados": 4,
+  "digests_desta_instalacao": 4,
+  "ultimo_digest": {
+    "database_name": "SIGpAcademic",
+    "block_id": 2,
+    "hash": "0xA61D797377EED17460AAB074E2A53287BC430303B2BC65A70C7ADBE651F2CC1D",
+    "last_transaction_commit_time": "2026-11-21T21:47:39.0633333",
+    "digest_time": "2026-11-21T21:47:39.7301857"
+  }
+}

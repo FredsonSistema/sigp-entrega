@@ -1,0 +1,608 @@
+{
+  "executado_em_utc": "2026-11-22T03:50:11+00:00",
+  "observacao": "403 = perfil sem permissão; 401 = sem chave; 400/404/409 = permitido, mas os dados de teste são incompletos.",
+  "matriz": [
+    {
+      "perfil": "Administrador",
+      "acoes": {
+        "Ver locais": {
+          "status": 200,
+          "pode": true,
+          "mensagem": ""
+        },
+        "Ver caixa de notas recebidas": {
+          "status": 200,
+          "pode": true,
+          "mensagem": ""
+        },
+        "Criar local": {
+          "status": 201,
+          "pode": true,
+          "mensagem": ""
+        },
+        "Lançar nota": {
+          "status": 400,
+          "pode": true,
+          "mensagem": ""
+        },
+        "Decidir no SIG": {
+          "status": 400,
+          "pode": true,
+          "mensagem": ""
+        },
+        "Usar ordens de serviço": {
+          "status": 200,
+          "pode": true,
+          "mensagem": ""
+        },
+        "Fazer backup do banco": {
+          "status": 200,
+          "pode": true,
+          "mensagem": ""
+        },
+        "Administrar usuários": {
+          "status": 200,
+          "pode": true,
+          "mensagem": ""
+        }
+      }
+    },
+    {
+      "perfil": "Gerente (Maciel)",
+      "acoes": {
+        "Ver locais": {
+          "status": 200,
+          "pode": true,
+          "mensagem": ""
+        },
+        "Ver caixa de notas recebidas": {
+          "status": 200,
+          "pode": true,
+          "mensagem": ""
+        },
+        "Criar local": {
+          "status": 201,
+          "pode": true,
+          "mensagem": ""
+        },
+        "Lançar nota": {
+          "status": 400,
+          "pode": true,
+          "mensagem": ""
+        },
+        "Decidir no SIG": {
+          "status": 400,
+          "pode": true,
+          "mensagem": ""
+        },
+        "Usar ordens de serviço": {
+          "status": 200,
+          "pode": true,
+          "mensagem": ""
+        },
+        "Fazer backup do banco": {
+          "status": 200,
+          "pode": true,
+          "mensagem": ""
+        },
+        "Administrar usuários": {
+          "status": 403,
+          "pode": false,
+          "mensagem": "Seu perfil (Gerente) não tem permissão para administrar perfis e permissões."
+        }
+      }
+    },
+    {
+      "perfil": "Operador (Jonata)",
+      "acoes": {
+        "Ver locais": {
+          "status": 200,
+          "pode": true,
+          "mensagem": ""
+        },
+        "Ver caixa de notas recebidas": {
+          "status": 200,
+          "pode": true,
+          "mensagem": ""
+        },
+        "Criar local": {
+          "status": 201,
+          "pode": true,
+          "mensagem": ""
+        },
+        "Lançar nota": {
+          "status": 400,
+          "pode": true,
+          "mensagem": ""
+        },
+        "Decidir no SIG": {
+          "status": 403,
+          "pode": false,
+          "mensagem": "Seu perfil (Operador) não tem permissão para decidir no sig (validar ciclo, pedir correção)."
+        },
+        "Usar ordens de serviço": {
+          "status": 200,
+          "pode": true,
+          "mensagem": ""
+        },
+        "Fazer backup do banco": {
+          "status": 403,
+          "pode": false,
+          "mensagem": "Seu perfil (Operador) não tem permissão para fazer backup, manutenção e reenviar eventos."
+        },
+        "Administrar usuários": {
+          "status": 403,
+          "pode": false,
+          "mensagem": "Seu perfil (Operador) não tem permissão para administrar perfis e permissões."
+        }
+      }
+    },
+    {
+      "perfil": "Leitura (auditoria)",
+      "acoes": {
+        "Ver locais": {
+          "status": 200,
+          "pode": true,
+          "mensagem": ""
+        },
+        "Ver caixa de notas recebidas": {
+          "status": 200,
+          "pode": true,
+          "mensagem": ""
+        },
+        "Criar local": {
+          "status": 403,
+          "pode": false,
+          "mensagem": "Seu perfil (Leitura) não tem permissão para criar e editar locais e provedores (inclui importar csv)."
+        },
+        "Lançar nota": {
+          "status": 403,
+          "pode": false,
+          "mensagem": "Seu perfil (Leitura) não tem permissão para lançar e corrigir nota lançada."
+        },
+        "Decidir no SIG": {
+          "status": 403,
+          "pode": false,
+          "mensagem": "Seu perfil (Leitura) não tem permissão para decidir no sig (validar ciclo, pedir correção)."
+        },
+        "Usar ordens de serviço": {
+          "status": 403,
+          "pode": false,
+          "mensagem": "Seu perfil (Leitura) não tem permissão para ordens de serviço."
+        },
+        "Fazer backup do banco": {
+          "status": 403,
+          "pode": false,
+          "mensagem": "Seu perfil (Leitura) não tem permissão para fazer backup, manutenção e reenviar eventos."
+        },
+        "Administrar usuários": {
+          "status": 403,
+          "pode": false,
+          "mensagem": "Seu perfil (Leitura) não tem permissão para administrar perfis e permissões."
+        }
+      }
+    },
+    {
+      "perfil": "Leitura + ordens de serviço (ajuste individual)",
+      "acoes": {
+        "Ver locais": {
+          "status": 200,
+          "pode": true,
+          "mensagem": ""
+        },
+        "Ver caixa de notas recebidas": {
+          "status": 200,
+          "pode": true,
+          "mensagem": ""
+        },
+        "Criar local": {
+          "status": 403,
+          "pode": false,
+          "mensagem": "Seu perfil (Leitura) não tem permissão para criar e editar locais e provedores (inclui importar csv)."
+        },
+        "Lançar nota": {
+          "status": 403,
+          "pode": false,
+          "mensagem": "Seu perfil (Leitura) não tem permissão para lançar e corrigir nota lançada."
+        },
+        "Decidir no SIG": {
+          "status": 403,
+          "pode": false,
+          "mensagem": "Seu perfil (Leitura) não tem permissão para decidir no sig (validar ciclo, pedir correção)."
+        },
+        "Usar ordens de serviço": {
+          "status": 200,
+          "pode": true,
+          "mensagem": ""
+        },
+        "Fazer backup do banco": {
+          "status": 403,
+          "pode": false,
+          "mensagem": "Seu perfil (Leitura) não tem permissão para fazer backup, manutenção e reenviar eventos."
+        },
+        "Administrar usuários": {
+          "status": 403,
+          "pode": false,
+          "mensagem": "Seu perfil (Leitura) não tem permissão para administrar perfis e permissões."
+        }
+      }
+    },
+    {
+      "perfil": "Sem chave",
+      "acoes": {
+        "Ver locais": {
+          "status": 401,
+          "pode": false,
+          "mensagem": "Chave de API ausente ou inválida (cabeçalho X-API-Key)."
+        },
+        "Ver caixa de notas recebidas": {
+          "status": 401,
+          "pode": false,
+          "mensagem": "Chave de API ausente ou inválida (cabeçalho X-API-Key)."
+        },
+        "Criar local": {
+          "status": 401,
+          "pode": false,
+          "mensagem": "Chave de API ausente ou inválida (cabeçalho X-API-Key)."
+        },
+        "Lançar nota": {
+          "status": 401,
+          "pode": false,
+          "mensagem": "Chave de API ausente ou inválida (cabeçalho X-API-Key)."
+        },
+        "Decidir no SIG": {
+          "status": 401,
+          "pode": false,
+          "mensagem": "Chave de API ausente ou inválida (cabeçalho X-API-Key)."
+        },
+        "Usar ordens de serviço": {
+          "status": 401,
+          "pode": false,
+          "mensagem": "Chave de API ausente ou inválida (cabeçalho X-API-Key)."
+        },
+        "Fazer backup do banco": {
+          "status": 401,
+          "pode": false,
+          "mensagem": "Chave de API ausente ou inválida (cabeçalho X-API-Key)."
+        },
+        "Administrar usuários": {
+          "status": 401,
+          "pode": false,
+          "mensagem": "Chave de API ausente ou inválida (cabeçalho X-API-Key)."
+        }
+      }
+    }
+  ],
+  "auditoria": [
+    {
+      "em": "2026-11-22T03:50:11+00:00",
+      "funcionalidade": "admin",
+      "id": 33,
+      "metodo": "GET",
+      "resultado": "negado",
+      "rota": "/api/acesso/usuarios",
+      "status": 403,
+      "usuario": "Leitura + ordens de serviço (ajuste individual)"
+    },
+    {
+      "em": "2026-11-22T03:50:11+00:00",
+      "funcionalidade": "banco.manter",
+      "id": 32,
+      "metodo": "POST",
+      "resultado": "negado",
+      "rota": "/api/saude/banco/backup",
+      "status": 403,
+      "usuario": "Leitura + ordens de serviço (ajuste individual)"
+    },
+    {
+      "em": "2026-11-22T03:50:11+00:00",
+      "funcionalidade": "os.usar",
+      "id": 31,
+      "metodo": "PUT",
+      "resultado": "permitido",
+      "rota": "/api/app-state/<state_key>",
+      "status": 200,
+      "usuario": "Leitura + ordens de serviço (ajuste individual)"
+    },
+    {
+      "em": "2026-11-22T03:50:11+00:00",
+      "funcionalidade": "sig.decidir",
+      "id": 30,
+      "metodo": "POST",
+      "resultado": "negado",
+      "rota": "/api/sig/decisoes",
+      "status": 403,
+      "usuario": "Leitura + ordens de serviço (ajuste individual)"
+    },
+    {
+      "em": "2026-11-22T03:50:11+00:00",
+      "funcionalidade": "notas.lancar",
+      "id": 29,
+      "metodo": "POST",
+      "resultado": "negado",
+      "rota": "/api/notas/lancadas",
+      "status": 403,
+      "usuario": "Leitura + ordens de serviço (ajuste individual)"
+    },
+    {
+      "em": "2026-11-22T03:50:11+00:00",
+      "funcionalidade": "locais.editar",
+      "id": 28,
+      "metodo": "POST",
+      "resultado": "negado",
+      "rota": "/api/locais/<tipo>/item",
+      "status": 403,
+      "usuario": "Leitura + ordens de serviço (ajuste individual)"
+    },
+    {
+      "em": "2026-11-22T03:50:10+00:00",
+      "funcionalidade": "admin",
+      "id": 27,
+      "metodo": "GET",
+      "resultado": "negado",
+      "rota": "/api/acesso/usuarios",
+      "status": 403,
+      "usuario": "Leitura (auditoria)"
+    },
+    {
+      "em": "2026-11-22T03:50:10+00:00",
+      "funcionalidade": "banco.manter",
+      "id": 26,
+      "metodo": "POST",
+      "resultado": "negado",
+      "rota": "/api/saude/banco/backup",
+      "status": 403,
+      "usuario": "Leitura (auditoria)"
+    },
+    {
+      "em": "2026-11-22T03:50:10+00:00",
+      "funcionalidade": "os.usar",
+      "id": 25,
+      "metodo": "PUT",
+      "resultado": "negado",
+      "rota": "/api/app-state/<state_key>",
+      "status": 403,
+      "usuario": "Leitura (auditoria)"
+    },
+    {
+      "em": "2026-11-22T03:50:10+00:00",
+      "funcionalidade": "sig.decidir",
+      "id": 24,
+      "metodo": "POST",
+      "resultado": "negado",
+      "rota": "/api/sig/decisoes",
+      "status": 403,
+      "usuario": "Leitura (auditoria)"
+    },
+    {
+      "em": "2026-11-22T03:50:10+00:00",
+      "funcionalidade": "notas.lancar",
+      "id": 23,
+      "metodo": "POST",
+      "resultado": "negado",
+      "rota": "/api/notas/lancadas",
+      "status": 403,
+      "usuario": "Leitura (auditoria)"
+    },
+    {
+      "em": "2026-11-22T03:50:10+00:00",
+      "funcionalidade": "locais.editar",
+      "id": 22,
+      "metodo": "POST",
+      "resultado": "negado",
+      "rota": "/api/locais/<tipo>/item",
+      "status": 403,
+      "usuario": "Leitura (auditoria)"
+    },
+    {
+      "em": "2026-11-22T03:50:10+00:00",
+      "funcionalidade": "admin",
+      "id": 21,
+      "metodo": "GET",
+      "resultado": "negado",
+      "rota": "/api/acesso/usuarios",
+      "status": 403,
+      "usuario": "Operador (Jonata)"
+    },
+    {
+      "em": "2026-11-22T03:50:10+00:00",
+      "funcionalidade": "banco.manter",
+      "id": 20,
+      "metodo": "POST",
+      "resultado": "negado",
+      "rota": "/api/saude/banco/backup",
+      "status": 403,
+      "usuario": "Operador (Jonata)"
+    },
+    {
+      "em": "2026-11-22T03:50:10+00:00",
+      "funcionalidade": "os.usar",
+      "id": 19,
+      "metodo": "PUT",
+      "resultado": "permitido",
+      "rota": "/api/app-state/<state_key>",
+      "status": 200,
+      "usuario": "Operador (Jonata)"
+    },
+    {
+      "em": "2026-11-22T03:50:10+00:00",
+      "funcionalidade": "sig.decidir",
+      "id": 18,
+      "metodo": "POST",
+      "resultado": "negado",
+      "rota": "/api/sig/decisoes",
+      "status": 403,
+      "usuario": "Operador (Jonata)"
+    },
+    {
+      "em": "2026-11-22T03:50:10+00:00",
+      "funcionalidade": "notas.lancar",
+      "id": 17,
+      "metodo": "POST",
+      "resultado": "erro",
+      "rota": "/api/notas/lancadas",
+      "status": 400,
+      "usuario": "Operador (Jonata)"
+    },
+    {
+      "em": "2026-11-22T03:50:10+00:00",
+      "funcionalidade": "locais.editar",
+      "id": 16,
+      "metodo": "POST",
+      "resultado": "permitido",
+      "rota": "/api/locais/<tipo>/item",
+      "status": 201,
+      "usuario": "Operador (Jonata)"
+    },
+    {
+      "em": "2026-11-22T03:50:10+00:00",
+      "funcionalidade": "admin",
+      "id": 15,
+      "metodo": "GET",
+      "resultado": "negado",
+      "rota": "/api/acesso/usuarios",
+      "status": 403,
+      "usuario": "Gerente (Maciel)"
+    },
+    {
+      "em": "2026-11-22T03:50:10+00:00",
+      "funcionalidade": "banco.manter",
+      "id": 14,
+      "metodo": "POST",
+      "resultado": "permitido",
+      "rota": "/api/saude/banco/backup",
+      "status": 200,
+      "usuario": "Gerente (Maciel)"
+    },
+    {
+      "em": "2026-11-22T03:50:10+00:00",
+      "funcionalidade": "os.usar",
+      "id": 13,
+      "metodo": "PUT",
+      "resultado": "permitido",
+      "rota": "/api/app-state/<state_key>",
+      "status": 200,
+      "usuario": "Gerente (Maciel)"
+    },
+    {
+      "em": "2026-11-22T03:50:10+00:00",
+      "funcionalidade": "sig.decidir",
+      "id": 12,
+      "metodo": "POST",
+      "resultado": "erro",
+      "rota": "/api/sig/decisoes",
+      "status": 400,
+      "usuario": "Gerente (Maciel)"
+    },
+    {
+      "em": "2026-11-22T03:50:10+00:00",
+      "funcionalidade": "notas.lancar",
+      "id": 11,
+      "metodo": "POST",
+      "resultado": "erro",
+      "rota": "/api/notas/lancadas",
+      "status": 400,
+      "usuario": "Gerente (Maciel)"
+    },
+    {
+      "em": "2026-11-22T03:50:10+00:00",
+      "funcionalidade": "locais.editar",
+      "id": 10,
+      "metodo": "POST",
+      "resultado": "permitido",
+      "rota": "/api/locais/<tipo>/item",
+      "status": 201,
+      "usuario": "Gerente (Maciel)"
+    },
+    {
+      "em": "2026-11-22T03:50:10+00:00",
+      "funcionalidade": "banco.manter",
+      "id": 9,
+      "metodo": "POST",
+      "resultado": "permitido",
+      "rota": "/api/saude/banco/backup",
+      "status": 200,
+      "usuario": "Administrador"
+    },
+    {
+      "em": "2026-11-22T03:50:10+00:00",
+      "funcionalidade": "os.usar",
+      "id": 8,
+      "metodo": "PUT",
+      "resultado": "permitido",
+      "rota": "/api/app-state/<state_key>",
+      "status": 200,
+      "usuario": "Administrador"
+    },
+    {
+      "em": "2026-11-22T03:50:10+00:00",
+      "funcionalidade": "sig.decidir",
+      "id": 7,
+      "metodo": "POST",
+      "resultado": "erro",
+      "rota": "/api/sig/decisoes",
+      "status": 400,
+      "usuario": "Administrador"
+    },
+    {
+      "em": "2026-11-22T03:50:10+00:00",
+      "funcionalidade": "notas.lancar",
+      "id": 6,
+      "metodo": "POST",
+      "resultado": "erro",
+      "rota": "/api/notas/lancadas",
+      "status": 400,
+      "usuario": "Administrador"
+    },
+    {
+      "em": "2026-11-22T03:50:10+00:00",
+      "funcionalidade": "locais.editar",
+      "id": 5,
+      "metodo": "POST",
+      "resultado": "permitido",
+      "rota": "/api/locais/<tipo>/item",
+      "status": 201,
+      "usuario": "Administrador"
+    },
+    {
+      "em": "2026-11-22T03:50:10+00:00",
+      "funcionalidade": "admin",
+      "id": 4,
+      "metodo": "POST",
+      "resultado": "permitido",
+      "rota": "/api/acesso/usuarios",
+      "status": 201,
+      "usuario": "Administrador"
+    },
+    {
+      "em": "2026-11-22T03:50:10+00:00",
+      "funcionalidade": "admin",
+      "id": 3,
+      "metodo": "POST",
+      "resultado": "permitido",
+      "rota": "/api/acesso/usuarios",
+      "status": 201,
+      "usuario": "Administrador"
+    },
+    {
+      "em": "2026-11-22T03:50:10+00:00",
+      "funcionalidade": "admin",
+      "id": 2,
+      "metodo": "POST",
+      "resultado": "permitido",
+      "rota": "/api/acesso/usuarios",
+      "status": 201,
+      "usuario": "Administrador"
+    },
+    {
+      "em": "2026-11-22T03:50:10+00:00",
+      "funcionalidade": "admin",
+      "id": 1,
+      "metodo": "POST",
+      "resultado": "permitido",
+      "rota": "/api/acesso/usuarios",
+      "status": 201,
+      "usuario": "Administrador"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+# Gerados na instalação: nunca vão para o Git
+.env
+docs/entrega-academica/sqlserver/.env.academic
+backend/data/
+
+# Ambiente local
+__pycache__/
+.venv*/
+node_modules/
+tests/e2e/out/
+*.bak
+# Certificado do TDE e outros segredos gerados na instalação
+segredos-locais/

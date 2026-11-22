@@ -1,0 +1,20 @@
+﻿Changed database context to 'SIGpAcademic'.
+trilha|ator|acao|detalhe
+------|----|----|-------
+id|teste|esperado|obtido|veredito
+--|-----|--------|------|--------
+T1a|Inserção do operador registrada com o usuário real|2 eventos (sigp_operador_loc001)|0 eventos (-)|FALHA
+T1b|Alteração registra o antes e o depois|valor 11.00→12.50; status PENDENTE→RECEBIDA|não registrado|FALHA
+T1c|Troca de chave fiscal registrada sem o valor da chave|registrada, valor omitido|não registrado|FALHA
+T1d|Exclusão registrada com quem apagou|1 evento (dbo)|0 evento (-)|FALHA
+T1e|Lote de 150 notas vira um evento só|1 evento, linhas=150|0 evento|FALHA
+T2a|Operador forja um evento na trilha (INSERT direto)|negado|PERMITIDO|FALHA
+T2b|Operador apaga a trilha|negado|negado (229)|OK
+T2c|Operador desliga o gatilho de auditoria|negado|gatilho de auditoria não existe|FALHA
+T2d|Operador lê a trilha|negado|negado (229)|OK
+T2e|Auditor lê a trilha|permitido|permitido|OK
+T3a|Tentativa de gravar no LOC-002 (barrada pela RLS) fica registrada|registrada (operador, app.Notas)|não registrada (sem SQL Server Audit)|FALHA
+T3b|Tentativa de entrar no papel de auditor (negada) fica registrada|registrada, sucesso=0|não registrada (sem SQL Server Audit)|FALHA
+resultado_final
+---------------
+REPROVADO

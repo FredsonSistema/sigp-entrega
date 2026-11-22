@@ -1,0 +1,34 @@
+{
+  "tema": "base",
+  "descricao": "Visão geral da rede de unidades: quantas unidades por tipo, quantos links (contas de internet), quantos provedores, unidades com link reserva, e a qualidade do cadastro. Também busca nas observações (quem paga a conexão, agência terceirizada, endereço não confirmado).",
+  "regras": [
+    "Cada link é uma conta de internet separada.",
+    "Unidade com 2 ou mais links tem redundância (link reserva), mesmo que os links sejam do mesmo provedor.",
+    "Agência e sala VIP que ficam dentro da rodoviária contam como a rodoviária (cada ponto é uma conta, mas a unidade é a rodoviária).",
+    "Agência é o ponto de venda fora da rodoviária.",
+    "Rede e IPs só aparecem para quem tem a permissão \"Ver rede e IPs\"."
+  ],
+  "ferramentas": {
+    "resumo_geral": "Resumo da rede: unidades por tipo, total de links (contas de internet), provedores únicos, unidades com redundância e sem provedor. Sem parâmetros.",
+    "qualidade_cadastro": "Lista o que falta ou está inconsistente no cadastro (nomes de provedor para unificar, unidade sem provedor, sem endereço, sem responsável, sem dia de vencimento). Sem parâmetros.",
+    "buscar_texto": "Procura nas descrições e observações das unidades (ex.: terceirizada, quem paga a conexão, endereço não confirmado) e cita a unidade de cada trecho. Parâmetro: texto."
+  },
+  "termos": {
+    "reserva": "redundancia", "link reserva": "redundancia", "redundancia": "redundancia", "redundância": "redundancia",
+    "backup": "redundancia", "dois links": "redundancia", "2 links": "redundancia", "mais de um link": "redundancia", "contingencia": "redundancia",
+    "ip": "rede", "ips": "rede", "rede": "rede", "gateway": "rede", "mikrotik": "rede", "endereco ip": "rede",
+    "qualidade do cadastro": "qualidade", "cadastro incompleto": "qualidade", "dados faltando": "qualidade", "o que falta cadastrar": "qualidade",
+    "faltando no cadastro": "qualidade", "inconsistencias": "qualidade", "inconsistências": "qualidade",
+    "resumo": "resumo", "visao geral": "resumo", "visão geral": "resumo", "panorama": "resumo"
+  },
+  "exemplos": [
+    {"pergunta": "me dá um resumo geral da rede", "ferramenta": "resumo_geral", "parametros": {}},
+    {"pergunta": "quantos links de internet temos?", "ferramenta": "resumo_geral", "parametros": {}},
+    {"pergunta": "quais unidades têm link reserva?", "ferramenta": "listar_locais", "parametros": {"redundancia": "sim"}},
+    {"pergunta": "quais garagens têm redundância?", "ferramenta": "listar_locais", "parametros": {"tipo": "garagem", "redundancia": "sim"}},
+    {"pergunta": "como está a qualidade do cadastro?", "ferramenta": "qualidade_cadastro", "parametros": {}},
+    {"pergunta": "quais agências são terceirizadas?", "ferramenta": "buscar_texto", "parametros": {"texto": "terceirizada"}},
+    {"pergunta": "onde o proprietário paga a conexão?", "ferramenta": "buscar_texto", "parametros": {"texto": "proprietario paga a conexao"}},
+    {"pergunta": "qual o IP da garagem de Ilhéus?", "ferramenta": "buscar_local", "parametros": {"local": "Ilhéus", "assunto": "rede"}}
+  ]
+}

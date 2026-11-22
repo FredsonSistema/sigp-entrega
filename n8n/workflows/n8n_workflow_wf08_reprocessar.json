@@ -1,0 +1,150 @@
+{
+  "id": "sigpWF08Reprocessa",
+  "name": "WF-08 utilitário - Reprocessar mensagens (sem tirar etiquetas)",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "repr_manual",
+      "name": "Executar manualmente",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// ESCOLHA AQUI as mensagens a reprocessar (busca do Gmail) e o máximo por execução.\n// Exemplos:\n//   'label:sigp-importado newer_than:3d'            importadas nos últimos 3 dias (padrão)\n//   'from:minasonline.net.br newer_than:30d'        de um provedor\n//   'rfc822msgid:<id-da-mensagem@provedor>'         uma mensagem específica\n//   'label:sigp-importado subject:fatura after:2026/11/01'\n// Nenhuma etiqueta é removida. Notas já associadas, descartadas ou em análise não têm os dados trocados.\nconst busca = 'label:sigp-importado newer_than:3d';\nconst limite = 20; // o OCR e a IA local processam um PDF por vez (cerca de 1 minuto cada)\nreturn [{ json: { busca, limite } }];\n"
+      },
+      "id": "repr_escolher",
+      "name": "Escolher mensagens",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        300
+      ],
+      "notes": "Edite a busca do Gmail e o limite neste nó antes de executar."
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "getAll",
+        "returnAll": false,
+        "limit": "={{ $json.limite }}",
+        "simple": false,
+        "filters": {
+          "q": "={{ $json.busca }}",
+          "readStatus": "both"
+        },
+        "options": {
+          "downloadAttachments": true,
+          "dataPropertyAttachmentsPrefixName": "attachment_"
+        }
+      },
+      "id": "repr_buscar",
+      "name": "Buscar mensagens no Gmail",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        440,
+        300
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "6w8cHAuUwpPVa6tb",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Mensagens escolhidas, marcadas como reprocessamento (aparece em dadosExtracao.classificacao.origemBusca).\nconst itens = $input.all().filter((i) => i.json && i.json.id);\nif (!itens.length) throw new Error(`Nenhuma mensagem encontrada para a busca: ${$('Escolher mensagens').first().json.busca}`);\nreturn itens.map((i) => ({ json: { ...i.json, origemBusca: 'reprocessamento' }, binary: i.binary }));\n"
+      },
+      "id": "repr_marcar",
+      "name": "Marcar reprocessamento",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        660,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "5sQcHD7eYRgHxqgK"
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "repr_wf08",
+      "name": "Reprocessar no WF-08",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        880,
+        300
+      ],
+      "notes": "Mesmo caminho das mensagens novas: OCR, regras, IA local, XML e gravação no SIGp. Etiquetas não são removidas."
+    }
+  ],
+  "connections": {
+    "Executar manualmente": {
+      "main": [
+        [
+          {
+            "node": "Escolher mensagens",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Escolher mensagens": {
+      "main": [
+        [
+          {
+            "node": "Buscar mensagens no Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar mensagens no Gmail": {
+      "main": [
+        [
+          {
+            "node": "Marcar reprocessamento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Marcar reprocessamento": {
+      "main": [
+        [
+          {
+            "node": "Reprocessar no WF-08",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "active": false,
+  "pinData": {}
+}

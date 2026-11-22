@@ -1,0 +1,19 @@
+# Sobreposição para rodar o ambiente acadêmico junto com o SIGp de produção numa máquina de 8 GB.
+# - SQL Server limitado a 2 GB (sem limite ele tenta usar quase toda a memória; os containers morriam com 137).
+# - A IA acadêmica usa o Ollama principal (sigp_ollama, rede sigp_n8n_default), que já tem o qwen2.5:0.5b:
+#   não é preciso subir o sigp_ollama_academic.
+# Uso (na raiz do projeto):
+#   docker compose --env-file docs/entrega-academica/sqlserver/.env.academic \
+#     -f docs/entrega-academica/sqlserver/compose.academic.yml \
+#     -f docs/entrega-academica/sqlserver/compose.leve.yml \
+#     up -d --no-deps sqlserver-academic academic-ai
+services:
+  sqlserver-academic:
+    environment:
+      MSSQL_MEMORY_LIMIT_MB: "2048"
+    mem_limit: 2560m
+  academic-ai:
+    environment:
+      OLLAMA_URL: http://ollama:11434
+      MODEL_URL: http://ollama:11434
+    mem_limit: 512m

@@ -1,0 +1,134 @@
+{
+  "id": "sigpWF99Erros000",
+  "name": "SIGp - WF-99 Erros",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "d85a5c63-308d-5b6d-bbdc-01f529d89ec8",
+      "name": "Erro em workflow SIGp",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        200,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const e = $input.first().json || {};\nconst wf = (e.workflow || {}).name || 'workflow';\nconst ex = e.execution || {};\nconst msg = ((ex.error || {}).message) || 'erro sem mensagem';\nconst texto = `Falha no n8n: ${wf}\\nNó: ${ex.lastNodeExecuted || '-'}\\nErro: ${msg}\\nExecução: ${ex.url || ex.id || '-'}`;\nreturn [{ json: { assunto: `SIGp · falha em ${wf}`, texto } }];"
+      },
+      "id": "5e10cc9d-5673-5739-b433-11f1e476ea75",
+      "name": "Montar aviso técnico",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        420,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "sendTo": "={{ $env.SIGP_RELATORIO_EMAIL }}",
+        "subject": "={{ $json.assunto }}",
+        "emailType": "text",
+        "message": "={{ $json.texto }}",
+        "options": {}
+      },
+      "id": "8bd26826-988a-5d94-8c4d-538390599209",
+      "name": "Gmail - relatório",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        660,
+        140
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $env.SIGP_TELEGRAM_CHAT_ID }}",
+        "text": "={{ $json.texto }}",
+        "additionalFields": {}
+      },
+      "id": "5fcd0404-11e5-512d-b060-0ddd9b7d6edc",
+      "name": "Telegram - alerta",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        660,
+        300
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.SIGP_WHATSAPP_URL }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $env.SIGP_WHATSAPP_APIKEY }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ number: $env.SIGP_WHATSAPP_NUMERO, text:  $json.texto }) }}",
+        "options": {}
+      },
+      "id": "7b6ca5de-f0d4-5b3b-b9cd-1bda5270d161",
+      "name": "WhatsApp - alerta (Evolution API)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        660,
+        460
+      ],
+      "disabled": true
+    }
+  ],
+  "connections": {
+    "Erro em workflow SIGp": {
+      "main": [
+        [
+          {
+            "node": "Montar aviso técnico",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Montar aviso técnico": {
+      "main": [
+        [
+          {
+            "node": "Gmail - relatório",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Telegram - alerta",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "WhatsApp - alerta (Evolution API)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Sao_Paulo"
+  },
+  "active": false,
+  "pinData": {},
+  "tags": []
+}

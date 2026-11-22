@@ -1,0 +1,497 @@
+{
+  "name": "WF-09 - Aplicar etiquetas Gmail às notas associadas",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 1
+            }
+          ]
+        }
+      },
+      "id": "wf09_schedule",
+      "name": "Verificar fila a cada minuto",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $env.SIGP_API_URL + '/api/notas-recebidas?etiquetaPendente=1' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "={{ $env.SIGP_API_KEY || '' }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "wf09_get_pending",
+      "name": "Buscar etiquetas pendentes",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        240,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "label",
+        "operation": "getAll",
+        "returnAll": true
+      },
+      "id": "wf09_get_labels",
+      "name": "Listar etiquetas Gmail",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        240,
+        420
+      ],
+      "notes": "Selecione a credencial Gmail OAuth2 com permissão gmail.modify."
+    },
+    {
+      "parameters": {
+        "mode": "append",
+        "numberInputs": 2
+      },
+      "id": "wf09_merge",
+      "name": "Combinar fila e etiquetas",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        480,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const rows = $input.all().map(item => item.json || {});\nconst queueResponse = rows.find(row => Array.isArray(row.items));\nif (!queueResponse) throw new Error('A API não retornou a fila de etiquetas no formato esperado.');\nconst labels = rows.filter(row => typeof row.name === 'string' && typeof row.id === 'string');\nreturn (queueResponse.items || []).map(task => {\n  if (!task.id || !task.gmail_message_id || !task.etiqueta_gmail) {\n    throw new Error(`Registro de etiqueta incompleto na fila: ${task.id || 'sem ID'}`);\n  }\n  const existing = labels.find(label => label.name === task.etiqueta_gmail);\n  return { json: { ...task, gmailLabelId: existing ? existing.id : '', createGmailLabel: !existing } };\n});"
+      },
+      "id": "wf09_match_labels",
+      "name": "Encontrar etiqueta",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        720,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "conditions": [
+            {
+              "leftValue": "={{ $json.gmailLabelId }}",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty"
+              }
+            }
+          ]
+        }
+      },
+      "id": "wf09_label_exists",
+      "name": "Etiqueta já existe?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        960,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "label",
+        "operation": "create",
+        "name": "={{ $('Encontrar etiqueta').item.json.etiqueta_gmail }}",
+        "options": {
+          "labelListVisibility": "labelShow",
+          "messageListVisibility": "show"
+        }
+      },
+      "id": "wf09_create_label",
+      "name": "Criar etiqueta Gmail",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1200,
+        440
+      ],
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const task = $('Encontrar etiqueta').item.json;\nconst labelId = String($json.id || '').trim();\nif (!labelId) throw new Error(`Gmail não retornou o ID da etiqueta ${task.etiqueta_gmail}.`);\nreturn { json: { ...task, gmailLabelId: labelId } };"
+      },
+      "id": "wf09_prepare_created_label",
+      "name": "Preparar etiqueta criada",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1440,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "addLabels",
+        "messageId": "={{ $json.gmail_message_id }}",
+        "labelIds": [
+          "={{ $json.gmailLabelId }}"
+        ]
+      },
+      "id": "wf09_apply_label_existing",
+      "name": "Aplicar etiqueta existente",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1200,
+        180
+      ],
+      "onError": "continueErrorOutput",
+      "notes": "A mensagem original recebe a etiqueta; o workflow não a reencaminha nem remove da Caixa de entrada."
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "addLabels",
+        "messageId": "={{ $json.gmail_message_id }}",
+        "labelIds": [
+          "={{ $json.gmailLabelId }}"
+        ]
+      },
+      "id": "wf09_apply_label_created",
+      "name": "Aplicar etiqueta recém-criada",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1680,
+        380
+      ],
+      "onError": "continueErrorOutput",
+      "notes": "A mensagem original recebe a etiqueta; o workflow não a reencaminha nem remove da Caixa de entrada."
+    },
+    {
+      "parameters": {
+        "jsCode": "const task = $('Encontrar etiqueta').item.json;\nreturn { json: { id: task.id, ok: true, erro: '' } };"
+      },
+      "id": "wf09_label_success_existing",
+      "name": "Confirmar etiqueta existente",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1440,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const task = $('Encontrar etiqueta').item.json;\nreturn { json: { id: task.id, ok: true, erro: '' } };"
+      },
+      "id": "wf09_label_success_created",
+      "name": "Confirmar etiqueta criada",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1920,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const task = $('Encontrar etiqueta').item.json;\nconst detail = $json.error?.message || $json.message || 'Falha ao criar etiqueta Gmail.';\nreturn { json: { id: task.id, ok: false, erro: String(detail).slice(0, 500) } };"
+      },
+      "id": "wf09_label_error_create",
+      "name": "Registrar erro ao criar etiqueta",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1440,
+        520
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const task = $('Encontrar etiqueta').item.json;\nconst detail = $json.error?.message || $json.message || 'Falha ao aplicar etiqueta Gmail.';\nreturn { json: { id: task.id, ok: false, erro: String(detail).slice(0, 500) } };"
+      },
+      "id": "wf09_label_error_existing",
+      "name": "Registrar erro ao aplicar etiqueta existente",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1440,
+        680
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const task = $('Encontrar etiqueta').item.json;\nconst detail = $json.error?.message || $json.message || 'Falha ao aplicar etiqueta Gmail.';\nreturn { json: { id: task.id, ok: false, erro: String(detail).slice(0, 500) } };"
+      },
+      "id": "wf09_label_error_created",
+      "name": "Registrar erro ao aplicar etiqueta criada",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1920,
+        520
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.SIGP_API_URL + '/api/notas-recebidas/' + encodeURIComponent($json.id) + '/confirmar-etiqueta' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "={{ $env.SIGP_API_KEY || '' }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ ok: $json.ok, erro: $json.erro }) }}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "wf09_confirm_api",
+      "name": "Confirmar resultado na API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2160,
+        360
+      ],
+      "notes": "Falhas ficam visíveis no SIGp e retornam à fila de repetição no próximo ciclo."
+    }
+  ],
+  "connections": {
+    "Verificar fila a cada minuto": {
+      "main": [
+        [
+          {
+            "node": "Buscar etiquetas pendentes",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Listar etiquetas Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar etiquetas pendentes": {
+      "main": [
+        [
+          {
+            "node": "Combinar fila e etiquetas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Listar etiquetas Gmail": {
+      "main": [
+        [
+          {
+            "node": "Combinar fila e etiquetas",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Combinar fila e etiquetas": {
+      "main": [
+        [
+          {
+            "node": "Encontrar etiqueta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Encontrar etiqueta": {
+      "main": [
+        [
+          {
+            "node": "Etiqueta já existe?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Etiqueta já existe?": {
+      "main": [
+        [
+          {
+            "node": "Aplicar etiqueta existente",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Criar etiqueta Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar etiqueta Gmail": {
+      "main": [
+        [
+          {
+            "node": "Preparar etiqueta criada",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Registrar erro ao criar etiqueta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar etiqueta criada": {
+      "main": [
+        [
+          {
+            "node": "Aplicar etiqueta recém-criada",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aplicar etiqueta existente": {
+      "main": [
+        [
+          {
+            "node": "Confirmar etiqueta existente",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Registrar erro ao aplicar etiqueta existente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aplicar etiqueta recém-criada": {
+      "main": [
+        [
+          {
+            "node": "Confirmar etiqueta criada",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Registrar erro ao aplicar etiqueta criada",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Confirmar etiqueta existente": {
+      "main": [
+        [
+          {
+            "node": "Confirmar resultado na API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Confirmar etiqueta criada": {
+      "main": [
+        [
+          {
+            "node": "Confirmar resultado na API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar erro ao criar etiqueta": {
+      "main": [
+        [
+          {
+            "node": "Confirmar resultado na API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar erro ao aplicar etiqueta existente": {
+      "main": [
+        [
+          {
+            "node": "Confirmar resultado na API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar erro ao aplicar etiqueta criada": {
+      "main": [
+        [
+          {
+            "node": "Confirmar resultado na API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "0730c7ca-4423-409e-9f41-55d4061a317b",
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": []
+}

@@ -1,0 +1,141 @@
+{
+  "executado_em_utc": "2026-11-20T15:53:12.923538+00:00",
+  "caminho": "API -> SQL Server (RLS) -> RAG lexical -> qwen2.5:0.5b (Ollama, CPU) -> regra -> auditoria",
+  "metodo": "1 aquecimento + 16 faturas diferentes (casos-finais.json), uma chamada cada; as mesmas 16 faturas da rodada anterior, todas já no cache de prompts do Ollama (conferido no log: cached n_tokens = prompt inteiro, 1 token avaliado)",
+  "cpu_maquina_percent": {
+    "antes": 40.6,
+    "depois": 33.6
+  },
+  "respostas_200": "16/16",
+  "latencia_servidor_ms": {
+    "n": 16,
+    "media": 773.5,
+    "mediana": 763.2,
+    "p95": 912.4,
+    "min": 491.7,
+    "max": 1021.0
+  },
+  "latencia_cliente_ms": {
+    "n": 16,
+    "media": 840.8,
+    "mediana": 823.4,
+    "p95": 962.8,
+    "min": 553.9,
+    "max": 1084.0
+  },
+  "custo_por_1000_usos": {
+    "tempo_cpu_min": 12.9,
+    "energia_kwh_15w": 0.0032,
+    "energia_kwh_55w": 0.0118,
+    "reais_15w": 0.004,
+    "reais_55w": 0.0147,
+    "cobranca_por_token": 0,
+    "parametros": {
+      "potencia_w": [
+        15,
+        55
+      ],
+      "tarifa_r_kwh": 1.2418
+    },
+    "observacao": "Energia só do processador, estimada a partir do tempo medido."
+  },
+  "medidas": [
+    {
+      "id": "IA-001",
+      "http": 200,
+      "cliente_ms": 823.4,
+      "servidor_ms": 768.56
+    },
+    {
+      "id": "IA-002",
+      "http": 200,
+      "cliente_ms": 840.9,
+      "servidor_ms": 760.72
+    },
+    {
+      "id": "IA-003",
+      "http": 200,
+      "cliente_ms": 813.6,
+      "servidor_ms": 753.19
+    },
+    {
+      "id": "IA-004",
+      "http": 200,
+      "cliente_ms": 962.8,
+      "servidor_ms": 912.35
+    },
+    {
+      "id": "IA-005",
+      "http": 200,
+      "cliente_ms": 553.9,
+      "servidor_ms": 491.74
+    },
+    {
+      "id": "IA-006",
+      "http": 200,
+      "cliente_ms": 908.8,
+      "servidor_ms": 816.41
+    },
+    {
+      "id": "IA-007",
+      "http": 200,
+      "cliente_ms": 795.3,
+      "servidor_ms": 736.4
+    },
+    {
+      "id": "IA-008",
+      "http": 200,
+      "cliente_ms": 1084.0,
+      "servidor_ms": 1020.98
+    },
+    {
+      "id": "IA-009",
+      "http": 200,
+      "cliente_ms": 867.4,
+      "servidor_ms": 792.91
+    },
+    {
+      "id": "IA-010",
+      "http": 200,
+      "cliente_ms": 868.0,
+      "servidor_ms": 783.33
+    },
+    {
+      "id": "IA-011",
+      "http": 200,
+      "cliente_ms": 810.1,
+      "servidor_ms": 745.48
+    },
+    {
+      "id": "IA-012",
+      "http": 200,
+      "cliente_ms": 823.4,
+      "servidor_ms": 749.32
+    },
+    {
+      "id": "IA-013",
+      "http": 200,
+      "cliente_ms": 813.2,
+      "servidor_ms": 762.65
+    },
+    {
+      "id": "IA-014",
+      "http": 200,
+      "cliente_ms": 823.3,
+      "servidor_ms": 763.71
+    },
+    {
+      "id": "IA-015",
+      "http": 200,
+      "cliente_ms": 904.8,
+      "servidor_ms": 842.02
+    },
+    {
+      "id": "IA-016",
+      "http": 200,
+      "cliente_ms": 760.0,
+      "servidor_ms": 676.49
+    }
+  ],
+  "prompt_em_cache": true
+}

@@ -1,0 +1,33 @@
+services:
+  academic-lora:
+    build:
+      context: ../../..
+      dockerfile: docs/entrega-academica/ia/finetuning/Dockerfile
+    container_name: sigp_academic_lora
+    environment:
+      HF_HOME: /cache/huggingface
+      MODEL_CPU_THREADS: "6"
+      SIGP_LORA_ADAPTER_PATH: /models/adapter
+    volumes:
+      - ../ia/finetuning/output/qwen2.5-0.5b-lora:/models/adapter:ro
+      - sigp_academic_hf_cache:/cache/huggingface
+    restart: unless-stopped
+    networks:
+      - academic
+
+  academic-ai:
+    environment:
+      MODEL_BACKEND: transformers
+      MODEL_URL: http://academic-lora:5011
+      MODEL_NAME: Qwen2.5-0.5B-Instruct+SIGp-LoRA
+      MODEL_PROFILE: experimental-lora
+    depends_on:
+      - academic-lora
+
+volumes:
+  sigp_academic_hf_cache:
+
+networks:
+  academic:
+    external: true
+    name: sqlserver_default

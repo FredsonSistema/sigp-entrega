@@ -1,0 +1,17 @@
+Changed database context to 'SIGpAcademic'.
+teste|esperado|obtido|veredito
+-----|--------|------|--------
+Resumo igual ao total recalculado depois de 50 INSERT, 15 UPDATE e 7 DELETE|0 linhas diferentes|0 linhas diferentes|OK
+Operador do LOC-001 lê o resumo (só o próprio local)|LOC-001|LOC-001|OK
+API com escopo nos três locais lê o resumo|LOC-001,LOC-002,LOC-003|LOC-001,LOC-002,LOC-003|OK
+IA lê o resumo direto|negado|negado (229)|OK
+Operador altera o resumo direto (forjar total)|negado|negado (229)|OK
+tipo|modo|rodadas|mediana_ms|por_nota_us
+----|----|-------|----------|-----------
+lote|com|10|128.84|128.8
+lote|sem|10|54.95|55.0
+uma_a_uma|com|10|139.34|696.7
+uma_a_uma|sem|10|18.95|94.8
+resultado_final
+---------------
+APROVADO

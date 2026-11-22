@@ -1,0 +1,38 @@
+﻿Changed database context to 'SIGpAcademic'.
+trilha|ator|acao|detalhe
+------|----|----|-------
+eventos gravados nesta transação (antes do ROLLBACK)|sigp_operador_loc001|NOTA_ALTERADA|nota_id=323338; local_id=LOC-001; mudou: valor 11.00→12.50; status PENDENTE→RECEBIDA;; db_principal=sigp_operador_loc001; login=sa; app=SQLCMD
+eventos gravados nesta transação (antes do ROLLBACK)|sigp_operador_loc001|NOTA_ALTERADA|nota_id=323339; local_id=LOC-001; mudou: chave_fiscal (valor omitido);; db_principal=sigp_operador_loc001; login=sa; app=SQLCMD
+eventos gravados nesta transação (antes do ROLLBACK)|dbo|NOTA_EXCLUIDA|nota_id=323339; local_id=LOC-001; provedor_id=PROV-001; valor=22.00; vencimento=2026-12-02; status=PENDENTE; db_principal=dbo; login=sa; app=SQLCMD
+eventos gravados nesta transação (antes do ROLLBACK)|sigp_operador_loc001|NOTA_INSERIDA|nota_id=323338; local_id=LOC-001; provedor_id=PROV-001; valor=11.00; emissao=2026-11-01; vencimento=2026-12-01; status=PENDENTE; db_principal=sigp_operador_loc001; login=sa; app=SQLCMD
+eventos gravados nesta transação (antes do ROLLBACK)|sigp_operador_loc001|NOTA_INSERIDA|nota_id=323339; local_id=LOC-001; provedor_id=PROV-001; valor=22.00; emissao=2026-11-02; vencimento=2026-12-02; status=PENDENTE; db_principal=sigp_operador_loc001; login=sa; app=SQLCMD
+eventos gravados nesta transação (antes do ROLLBACK)|dbo|NOTA_INSERIDA_LOTE|linhas=150; ids=323340..323489; locais=LOC-002; db_principal=dbo; login=sa; app=SQLCMD
+Warning: Null value is eliminated by an aggregate or other SET operation.
+trilha_nativa|acao|sucesso|quem|objeto|comando
+-------------|----|-------|----|------|-------
+SQL Server Audit: o que o operador tentou (desde o início de T3)|IN  |1|sigp_operador_loc001|Notas|INSERT INTO app.Notas (local_id, provedor_id, chave_fiscal, numero, serie, valor_total, data_emissao, vencimento, origem, status) VALUES (N'
+SQL Server Audit: o que o operador tentou (desde o início de T3)|IN  |1|sigp_operador_loc001|Eventos|INSERT INTO audit.Eventos (ator, acao, objeto, correlation_id, detalhe_redigido)      SELECT @ator, @acao, N'app.Notas', @cid,             L
+SQL Server Audit: o que o operador tentou (desde o início de T3)|UP  |1|sigp_operador_loc001|Notas|UPDATE app.Notas SET valor_total = 12.50, status = N'RECEBIDA' WHERE id = @id1
+SQL Server Audit: o que o operador tentou (desde o início de T3)|IN  |1|sigp_operador_loc001|Eventos|INSERT INTO audit.Eventos (ator, acao, objeto, correlation_id, detalhe_redigido)      SELECT @ator, @acao, N'app.Notas', @cid,             L
+SQL Server Audit: o que o operador tentou (desde o início de T3)|UP  |1|sigp_operador_loc001|Notas|UPDATE app.Notas SET chave_fiscal = CONCAT(N'AUD-', @u, N'-NOVA-CHAVE-SECRETA') WHERE id = @id2
+SQL Server Audit: o que o operador tentou (desde o início de T3)|IN  |1|sigp_operador_loc001|Eventos|INSERT INTO audit.Eventos (ator, acao, objeto, correlation_id, detalhe_redigido)      SELECT @ator, @acao, N'app.Notas', @cid,             L
+SQL Server Audit: o que o operador tentou (desde o início de T3)|IN  |0|sigp_operador_loc001|Eventos|INSERT INTO audit.Eventos (ator, acao, objeto, correlation_id, detalhe_redigido) VALUES (N'sigp_auditor_test', N'NOTA_EXCLUIDA', N'app.Notas
+SQL Server Audit: o que o operador tentou (desde o início de T3)|IN  |1|sigp_operador_loc001|Notas|INSERT INTO app.Notas (local_id, provedor_id, chave_fiscal, numero, serie, valor_total, data_emissao, vencimento, origem, status)     VALUES
+SQL Server Audit: o que o operador tentou (desde o início de T3)|APRL|0|sigp_operador_loc001|sigp_auditor|ALTER ROLE sigp_auditor ADD MEMBER sigp_operador_loc001;
+id|teste|esperado|obtido|veredito
+--|-----|--------|------|--------
+T1a|Inserção do operador registrada com o usuário real|2 eventos (sigp_operador_loc001)|2 eventos (sigp_operador_loc001)|OK
+T1b|Alteração registra o antes e o depois|valor 11.00→12.50; status PENDENTE→RECEBIDA|valor 11.00→12.50; status PENDENTE→RECEBIDA|OK
+T1c|Troca de chave fiscal registrada sem o valor da chave|registrada, valor omitido|registrada, valor omitido|OK
+T1d|Exclusão registrada com quem apagou|1 evento (dbo)|1 evento (dbo)|OK
+T1e|Lote de 150 notas vira um evento só|1 evento, linhas=150|1 evento, linhas=150|OK
+T2a|Operador forja um evento na trilha (INSERT direto)|negado|negado (229)|OK
+T2b|Operador apaga a trilha|negado|negado (229)|OK
+T2c|Operador desliga o gatilho de auditoria|negado|negado (1088)|OK
+T2d|Operador lê a trilha|negado|negado (229)|OK
+T2e|Auditor lê a trilha|permitido|permitido|OK
+T3a|Tentativa de gravar no LOC-002 (barrada pela RLS) fica registrada|registrada (operador, app.Notas)|registrada (operador, app.Notas)|OK
+T3b|Tentativa de entrar no papel de auditor (negada) fica registrada|registrada, sucesso=0|registrada, sucesso=0|OK
+resultado_final
+---------------
+APROVADO

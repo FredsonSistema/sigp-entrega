@@ -1,0 +1,24 @@
+{
+  "tema": "provedores",
+  "descricao": "Nomes de provedor normalizados: variantes do mesmo provedor (\"LKTELECOM\" e \"LK TELECOM\", \"ITS\" e \"ITS TELECOMUNICAÇÕES LTDA\") contam como um só. A velocidade (ex.: 200MB, 500Mb) é o plano, não faz parte do nome.",
+  "aliases": {
+    "ITS": "ITS TELECOM",
+    "ITS TELECOMUNICACOES": "ITS TELECOM",
+    "LKTELECOM": "LK TELECOM",
+    "CNEXAOBA": "CONEXÃOBA",
+    "CONEXAOBA": "CONEXÃOBA",
+    "VCA TELECOMUNICACOES": "VCA TELECOMUNICAÇÕES",
+    "BRISANET TELECOMUNICACOES": "BRISANET",
+    "OPIX INTERNET": "OPIX",
+    "OPIX SERVICOS DE TECNOLOGIA": "OPIX",
+    "SANTA INES NET": "SANTA INÊS NET"
+  },
+  "nomes_invalidos": ["SUPORTE", "SUPORTE WHATSAPP", "WHATSAPP", "CONSULTAR", "PROVEDOR"],
+  "termos": {
+    "operadora": "provedor", "operadoras": "provedor"
+  },
+  "exemplos": [
+    {"pergunta": "quais locais usam a LK Telecom?", "ferramenta": "listar_locais", "parametros": {"provedor": "LK TELECOM"}},
+    {"pergunta": "quantos provedores de internet temos?", "ferramenta": "resumo_geral", "parametros": {}}
+  ]
+}

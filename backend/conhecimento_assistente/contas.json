@@ -1,0 +1,116 @@
+{
+  "tema": "contas",
+  "descricao": "Contas de internet das localidades: vencidas (em atraso), que vencem hoje, que vencem nos próximos dias, que não chegaram e pagas com atraso. Os números vêm dos alertas do SIGp.",
+  "ferramentas": {
+    "contar_contas": "Conta locais e contas numa situação. Parâmetros: situacao (vencida, vence_hoje, vence_em_breve, nao_recebida, paga_com_atraso, todas), tipo (agencia, rodoviaria, garagem ou vazio).",
+    "listar_contas": "Lista as contas numa situação, com local, provedor, vencimento e valor. Mesmos parâmetros de contar_contas, mais cidade, provedor e marcador (marcador ou grupo, ex.: Regional Itabuna)."
+  },
+  "termos": {
+    "em atraso": "vencida",
+    "atrasada": "vencida",
+    "atrasadas": "vencida",
+    "atrasado": "vencida",
+    "atrasados": "vencida",
+    "vencidas": "vencida",
+    "vencido": "vencida",
+    "vencidos": "vencida",
+    "venceu": "vencida",
+    "venceram": "vencida",
+    "nao pagas": "vencida",
+    "não pagas": "vencida",
+    "pendentes": "vencida",
+    "em aberto": "vencida",
+    "vence hoje": "vence_hoje",
+    "vencem hoje": "vence_hoje",
+    "vencendo hoje": "vence_hoje",
+    "a vencer": "vence_em_breve",
+    "vao vencer": "vence_em_breve",
+    "vão vencer": "vence_em_breve",
+    "proximos dias": "vence_em_breve",
+    "próximos dias": "vence_em_breve",
+    "esta semana": "vence_em_breve",
+    "essa semana": "vence_em_breve",
+    "nao chegou": "nao_recebida",
+    "não chegou": "nao_recebida",
+    "nao chegaram": "nao_recebida",
+    "não chegaram": "nao_recebida",
+    "pagas com atraso": "paga_com_atraso",
+    "paga com atraso": "paga_com_atraso",
+    "devendo": "vencida",
+    "devem": "vencida",
+    "em debito": "vencida",
+    "em débito": "vencida",
+    "inadimplente": "vencida",
+    "inadimplentes": "vencida",
+    "nao pagaram": "vencida",
+    "não pagaram": "vencida",
+    "sem pagar": "vencida",
+    "atrasada no pagamento": "vencida"
+  },
+  "exemplos": [
+    {
+      "pergunta": "quantas agências estão em atraso?",
+      "ferramenta": "contar_contas",
+      "parametros": {
+        "situacao": "vencida",
+        "tipo": "agencia"
+      }
+    },
+    {
+      "pergunta": "quantas contas vencem hoje?",
+      "ferramenta": "contar_contas",
+      "parametros": {
+        "situacao": "vence_hoje",
+        "tipo": ""
+      }
+    },
+    {
+      "pergunta": "quantas rodoviárias têm conta vencida?",
+      "ferramenta": "contar_contas",
+      "parametros": {
+        "situacao": "vencida",
+        "tipo": "rodoviaria"
+      }
+    },
+    {
+      "pergunta": "quais contas vencem nos próximos dias?",
+      "ferramenta": "listar_contas",
+      "parametros": {
+        "situacao": "vence_em_breve",
+        "tipo": ""
+      }
+    },
+    {
+      "pergunta": "quais agências estão com a conta atrasada?",
+      "ferramenta": "listar_contas",
+      "parametros": {
+        "situacao": "vencida",
+        "tipo": "agencia"
+      }
+    },
+    {
+      "pergunta": "quais faturas não chegaram?",
+      "ferramenta": "listar_contas",
+      "parametros": {
+        "situacao": "nao_recebida",
+        "tipo": ""
+      }
+    },
+    {
+      "pergunta": "contas vencidas da Claro",
+      "ferramenta": "listar_contas",
+      "parametros": {
+        "situacao": "vencida",
+        "provedor": "Claro"
+      }
+    },
+    {
+      "pergunta": "o que está pendente hoje?",
+      "ferramenta": "contar_contas",
+      "parametros": {
+        "situacao": "todas",
+        "tipo": ""
+      }
+    }
+  ]
+}

@@ -1,0 +1,248 @@
+{
+  "id": "sigpWF08Reetiquetar",
+  "name": "WF-08 utilitário - Reaplicar SIGp/Importado",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "reet_manual",
+      "name": "Executar manualmente",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "days",
+              "triggerAtHour": 6
+            }
+          ]
+        }
+      },
+      "id": "reet_diario",
+      "name": "Todo dia às 06:00",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        400
+      ],
+      "notes": "Rede de segurança: devolve SIGp/Importado às mensagens que já estão no SIGp."
+    },
+    {
+      "parameters": {
+        "url": "={{ $env.SIGP_API_URL + '/api/notas-recebidas' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "={{ $env.SIGP_API_KEY || '' }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "reet_api",
+      "name": "Notas recebidas no SIGp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        240,
+        300
+      ],
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "url": "={{ $env.SIGP_API_URL + '/api/notas-recebidas?status=DESCARTADA' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "={{ $env.SIGP_API_KEY || '' }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "reet_api_desc",
+      "name": "Notas descartadas no SIGp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        460,
+        300
+      ],
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "resource": "label",
+        "returnAll": true
+      },
+      "id": "reet_labels",
+      "name": "Listar etiquetas Gmail",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        680,
+        300
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "6w8cHAuUwpPVa6tb",
+          "name": "Gmail account"
+        }
+      },
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Mensagens do Gmail que o SIGp já tem (todas as notas recebidas, inclusive descartadas).\nconst etiqueta = $input.all().map((i) => i.json).find((e) => e.name === 'SIGp/Importado');\nif (!etiqueta) throw new Error('A etiqueta SIGp/Importado não existe nesta conta do Gmail.');\nconst notas = [\n  ...($('Notas recebidas no SIGp').first().json.items || []),\n  ...($('Notas descartadas no SIGp').first().json.items || []),\n];\n// IDs do Gmail são hexadecimais; registros de teste/manuais (sem mensagem no Gmail) ficam de fora.\nconst ids = [...new Set(notas.map((n) => String(n.gmail_message_id || '').trim()).filter((id) => /^[0-9a-f]{10,24}$/i.test(id)))];\nreturn ids.map((messageId) => ({ json: { messageId, labelId: etiqueta.id } }));\n"
+      },
+      "id": "reet_ids",
+      "name": "Mensagens a etiquetar",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        900,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.messageId }}",
+        "labelIds": [
+          "={{ $json.labelId }}"
+        ]
+      },
+      "id": "reet_add",
+      "name": "Aplicar SIGp/Importado",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1120,
+        300
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "6w8cHAuUwpPVa6tb",
+          "name": "Gmail account"
+        }
+      },
+      "onError": "continueRegularOutput",
+      "notes": "Mensagem apagada do Gmail: registra a falha e segue com as outras."
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const itens = $input.all();\nconst falhas = itens.filter((i) => i.json.error);\nreturn [{ json: { mensagens: itens.length, falhas: falhas.length, erros: falhas.slice(0, 5).map((i) => String(i.json.error?.message || i.json.error).slice(0, 200)) } }];\n"
+      },
+      "id": "reet_resumo",
+      "name": "Resumo",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1340,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Executar manualmente": {
+      "main": [
+        [
+          {
+            "node": "Notas recebidas no SIGp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Todo dia às 06:00": {
+      "main": [
+        [
+          {
+            "node": "Notas recebidas no SIGp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notas recebidas no SIGp": {
+      "main": [
+        [
+          {
+            "node": "Notas descartadas no SIGp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notas descartadas no SIGp": {
+      "main": [
+        [
+          {
+            "node": "Listar etiquetas Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Listar etiquetas Gmail": {
+      "main": [
+        [
+          {
+            "node": "Mensagens a etiquetar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mensagens a etiquetar": {
+      "main": [
+        [
+          {
+            "node": "Aplicar SIGp/Importado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aplicar SIGp/Importado": {
+      "main": [
+        [
+          {
+            "node": "Resumo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "active": false,
+  "pinData": {}
+}

@@ -1,0 +1,140 @@
+{
+  "executado_em_utc": "2026-11-14T19:35:17.900Z",
+  "modelo": "qwen2.5:3b (temperatura 0)",
+  "prompt": "v4.1",
+  "casos": [
+    {
+      "id": "nrec-31bc7b54eba04c07905dd49f53642125",
+      "assunto": "Locacao ref. ao contrato de EXPRESSO BRASILEIRO LTDA - Dominio Empres. ( Loc.) com a Thomson Reuters",
+      "arquivo": "nfse_dominio.pdf",
+      "caracteresOcr": 7500,
+      "ocrErro": "",
+      "antes": {
+        "categoria": "DOCUMENTO_FISCAL_REVISAO",
+        "confianca": 0.52,
+        "ia": {
+          "modelo": "qwen2.5:3b",
+          "tipoDocumento": "outro",
+          "confianca": 0.9,
+          "motivo": "Cobrança de serviço de domínio empresarial",
+          "provedorNome": "",
+          "empresaDestinataria": "EXPRESSO BRASILEIRO LTDA",
+          "valor": 1910.52,
+          "vencimento": "2026-11-10",
+          "erro": ""
+        }
+      },
+      "agora": {
+        "regras": {
+          "categoria": "DOCUMENTO_FISCAL_REVISAO",
+          "confianca": 0.58,
+          "palavrasFiscais": [
+            "nfs-e",
+            "nfse",
+            "fatura"
+          ],
+          "palavrasInternet": []
+        },
+        "exemplosUsados": [
+          "nao_cobranca:nrec-38cb68109bb547b79dfcf26c1e5b52b5"
+        ],
+        "ia": {
+          "tipoDocumento": "outro",
+          "confianca": 1,
+          "motivo": "Documento não é cobrança de internet/telecom",
+          "provedorNome": null
+        },
+        "latencia_ms": 82224,
+        "decisao": "importar"
+      }
+    },
+    {
+      "id": "nrec-79b1a6b6cd724cab8c0cb39932b16135",
+      "assunto": "Locacao ref. ao contrato de ROTA TRANSPORTES RODOVIARIOS LTDA - Dominio Empres. ( Loc.) com a Thomson Reuters",
+      "arquivo": "nfse_dominio.pdf",
+      "caracteresOcr": 7498,
+      "ocrErro": "",
+      "antes": {
+        "categoria": "DOCUMENTO_FISCAL_REVISAO",
+        "confianca": 0.52,
+        "ia": {
+          "modelo": "qwen2.5:3b",
+          "tipoDocumento": "nota_fiscal",
+          "confianca": 0.9,
+          "motivo": "Cobrança de internet/telecom por ROTA TRANSPORTES RODOVIARIOS LTDA",
+          "provedorNome": "",
+          "empresaDestinataria": "ROTA TRANSPORTES RODOVIARIOS LTDA",
+          "valor": 1946.84,
+          "vencimento": "2026-11-10",
+          "erro": ""
+        }
+      },
+      "agora": {
+        "regras": {
+          "categoria": "DOCUMENTO_FISCAL_REVISAO",
+          "confianca": 0.52,
+          "palavrasFiscais": [
+            "nfs-e",
+            "nfse",
+            "fatura"
+          ],
+          "palavrasInternet": []
+        },
+        "exemplosUsados": [
+          "nao_cobranca:nrec-38cb68109bb547b79dfcf26c1e5b52b5"
+        ],
+        "ia": {
+          "tipoDocumento": "outro",
+          "confianca": 0.9,
+          "motivo": "Não é cobrança de internet/telecom",
+          "provedorNome": null
+        },
+        "latencia_ms": 75886,
+        "decisao": "importar"
+      }
+    },
+    {
+      "id": "nrec-2ad3c2e16bdf499aab30b42e82d710f0",
+      "assunto": "Locacao ref. ao contrato de EXPRESSO BRASILEIRO LTDA - Dominio Empres. ( Loc.) com a Thomson Reuters",
+      "arquivo": "cliente_19414_10_11_2026_7ae83f3f44a4356a36ec9bbe6af7fa9b.pdf",
+      "caracteresOcr": 0,
+      "ocrErro": "HTTP Error 422: Unprocessable Entity",
+      "antes": {
+        "categoria": "DOCUMENTO_FISCAL_REVISAO",
+        "confianca": 0.52,
+        "ia": {
+          "modelo": "qwen2.5:3b",
+          "tipoDocumento": "outro",
+          "confianca": 0,
+          "motivo": "Texto de OCR sem frases legíveis",
+          "provedorNome": "",
+          "empresaDestinataria": "",
+          "valor": null,
+          "vencimento": "",
+          "erro": ""
+        }
+      },
+      "agora": {
+        "regras": {
+          "categoria": "DOCUMENTO_FISCAL_REVISAO",
+          "confianca": 0.58,
+          "palavrasFiscais": [
+            "fatura"
+          ],
+          "palavrasInternet": []
+        },
+        "exemplosUsados": [
+          "nao_cobranca:nrec-38cb68109bb547b79dfcf26c1e5b52b5"
+        ],
+        "ia": {
+          "tipoDocumento": "outro",
+          "confianca": 0.9,
+          "motivo": "Texto de OCR sem frases legíveis",
+          "provedorNome": null
+        },
+        "latencia_ms": 13884,
+        "decisao": "importar"
+      }
+    }
+  ]
+}

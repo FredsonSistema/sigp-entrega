@@ -1,0 +1,719 @@
+{
+  "executado_em_utc": "2026-11-21T22:27:19.235Z",
+  "metodo": "pedido do nó do WF-08 (prompt, JSON Schema, temperatura 0); um modelo de cada vez, variantes intercaladas; aquecimento antes; limite de 300 s por pedido como no WF-08",
+  "modelos": {
+    "qwen2.5:3b · corrigido": {
+      "modelo": "qwen2.5:3b",
+      "variante": "corrigido",
+      "tamanho": "1.9 GB",
+      "aquecimento_ms": 34733,
+      "aquecimento_esgotado": false,
+      "casos": [
+        {
+          "id": "T01",
+          "ms": 36394,
+          "tempo_esgotado": false,
+          "tokens_entrada": 1223,
+          "tokens_saida": 222,
+          "json_valido": true,
+          "campos": {
+            "tipo": true,
+            "evento": true,
+            "provedor": true,
+            "empresa": true,
+            "valor": true,
+            "vencimento": true
+          },
+          "acertos": 6,
+          "total": 6,
+          "erro_grave": null,
+          "resposta": {
+            "tipoDocumento": "fatura_e_nota",
+            "evento": "fatura_nova",
+            "provedorNome": "NETFIBRA TELECOM FICTICIA LTDA",
+            "empresaDestinataria": "ROTA TRANSPORTES RODOVIARIOS LTDA",
+            "valor": 189.9,
+            "vencimento": "2026-12-10",
+            "confianca": 1
+          }
+        },
+        {
+          "id": "T02",
+          "ms": 56749,
+          "tempo_esgotado": false,
+          "tokens_entrada": 1228,
+          "tokens_saida": 220,
+          "json_valido": true,
+          "campos": {
+            "tipo": true,
+            "evento": true,
+            "provedor": true,
+            "empresa": true,
+            "valor": true,
+            "vencimento": true
+          },
+          "acertos": 6,
+          "total": 6,
+          "erro_grave": null,
+          "resposta": {
+            "tipoDocumento": "fatura_e_nota",
+            "evento": "fatura_nova",
+            "provedorNome": "CONECTA ALFA FICTICIA LTDA",
+            "empresaDestinataria": "ROTA TRANSPORTES RODOVIARIOS LTDA",
+            "valor": 450,
+            "vencimento": "2026-12-15",
+            "confianca": 1
+          }
+        },
+        {
+          "id": "T03",
+          "ms": 48945,
+          "tempo_esgotado": false,
+          "tokens_entrada": 1169,
+          "tokens_saida": 225,
+          "json_valido": true,
+          "campos": {
+            "tipo": false,
+            "evento": true,
+            "provedor": true,
+            "empresa": true,
+            "valor": true,
+            "vencimento": true
+          },
+          "acertos": 5,
+          "total": 6,
+          "erro_grave": null,
+          "resposta": {
+            "tipoDocumento": "fatura_e_nota",
+            "evento": "segunda_via",
+            "provedorNome": "LINK GAMA FICTICIA S.A.",
+            "empresaDestinataria": "ROTA TRANSPORTES RODOVIARIOS LTDA",
+            "valor": 132.4,
+            "vencimento": "2026-11-25",
+            "confianca": 1
+          }
+        },
+        {
+          "id": "T04",
+          "ms": 38029,
+          "tempo_esgotado": false,
+          "tokens_entrada": 1123,
+          "tokens_saida": 213,
+          "json_valido": true,
+          "campos": {
+            "tipo": true,
+            "evento": true,
+            "provedor": true,
+            "valor": true,
+            "vencimento": true
+          },
+          "acertos": 5,
+          "total": 5,
+          "erro_grave": null,
+          "resposta": {
+            "tipoDocumento": "lembrete",
+            "evento": "lembrete_vencimento",
+            "provedorNome": "NETFIBRA TELECOM FICTICIA LTDA",
+            "empresaDestinataria": null,
+            "valor": 189.9,
+            "vencimento": "2026-12-10",
+            "confianca": 1
+          }
+        },
+        {
+          "id": "T05",
+          "ms": 24347,
+          "tempo_esgotado": false,
+          "tokens_entrada": 1118,
+          "tokens_saida": 121,
+          "json_valido": true,
+          "campos": {
+            "tipo": false,
+            "evento": true,
+            "provedor": false,
+            "valor": true
+          },
+          "acertos": 2,
+          "total": 4,
+          "erro_grave": "cobrança lida como \"outro\"",
+          "resposta": {
+            "tipoDocumento": "outro",
+            "evento": "aviso_atraso",
+            "provedorNome": null,
+            "empresaDestinataria": null,
+            "valor": 99.9,
+            "vencimento": "2026-10-20",
+            "confianca": 0.9
+          }
+        },
+        {
+          "id": "T06",
+          "ms": 31423,
+          "tempo_esgotado": false,
+          "tokens_entrada": 1114,
+          "tokens_saida": 181,
+          "json_valido": true,
+          "campos": {
+            "evento": true,
+            "provedor": true
+          },
+          "acertos": 2,
+          "total": 2,
+          "erro_grave": null,
+          "resposta": {
+            "tipoDocumento": "fatura_e_nota",
+            "evento": "pagamento_confirmado",
+            "provedorNome": "CONECTA ALFA FICTICIA LTDA",
+            "empresaDestinataria": null,
+            "valor": 450,
+            "vencimento": "2026-12-14",
+            "confianca": 1
+          }
+        },
+        {
+          "id": "T07",
+          "ms": 31123,
+          "tempo_esgotado": false,
+          "tokens_entrada": 1134,
+          "tokens_saida": 160,
+          "json_valido": true,
+          "campos": {
+            "tipo": true
+          },
+          "acertos": 1,
+          "total": 1,
+          "erro_grave": null,
+          "resposta": {
+            "tipoDocumento": "outro",
+            "evento": "pagamento_confirmado",
+            "provedorNome": null,
+            "empresaDestinataria": "ROTA TRANSPORTES RODOVIARIOS LTDA",
+            "valor": 450,
+            "vencimento": null,
+            "confianca": 0.9
+          }
+        },
+        {
+          "id": "T08",
+          "ms": 29462,
+          "tempo_esgotado": false,
+          "tokens_entrada": 1166,
+          "tokens_saida": 146,
+          "json_valido": true,
+          "campos": {
+            "tipo": true,
+            "evento": true,
+            "provedor": true,
+            "empresa": true,
+            "valor": true
+          },
+          "acertos": 5,
+          "total": 5,
+          "erro_grave": null,
+          "resposta": {
+            "tipoDocumento": "nota_fiscal",
+            "evento": "fatura_nova",
+            "provedorNome": "LINK GAMA FICTICIA S.A.",
+            "empresaDestinataria": "ROTA TRANSPORTES RODOVIARIOS LTDA",
+            "valor": 132.4,
+            "vencimento": null,
+            "confianca": 1
+          }
+        },
+        {
+          "id": "T09",
+          "ms": 31129,
+          "tempo_esgotado": false,
+          "tokens_entrada": 1114,
+          "tokens_saida": 188,
+          "json_valido": true,
+          "campos": {
+            "tipo": false
+          },
+          "acertos": 0,
+          "total": 1,
+          "erro_grave": "não-cobrança lida como cobrança",
+          "resposta": {
+            "tipoDocumento": "fatura_e_nota",
+            "evento": "fatura_nova",
+            "provedorNome": "COMPANHIA DE ENERGIA FICTICIA",
+            "empresaDestinataria": "ROTA TRANSPORTES RODOVIARIOS LTDA",
+            "valor": 1874.33,
+            "vencimento": "2026-12-18",
+            "confianca": 1
+          }
+        },
+        {
+          "id": "T10",
+          "ms": 36803,
+          "tempo_esgotado": false,
+          "tokens_entrada": 1153,
+          "tokens_saida": 213,
+          "json_valido": true,
+          "campos": {
+            "tipo": true,
+            "evento": true,
+            "provedor": false,
+            "empresa": true,
+            "valor": true,
+            "vencimento": true
+          },
+          "acertos": 5,
+          "total": 6,
+          "erro_grave": null,
+          "resposta": {
+            "tipoDocumento": "boleto_fatura",
+            "evento": "fatura_nova",
+            "provedorNome": "VEL0ZNET F1CTICIA EIREL1",
+            "empresaDestinataria": "ROTA TRANSPORTES RODOVIARIOS LTDA",
+            "valor": 89.9,
+            "vencimento": "2026-12-22",
+            "confianca": 1
+          }
+        }
+      ],
+      "resumo": {
+        "campos_certos": 37,
+        "campos_total": 42,
+        "por_campo": {
+          "tipo": "6/9",
+          "evento": "8/8",
+          "provedor": "6/8",
+          "empresa": "5/5",
+          "valor": "7/7",
+          "vencimento": "5/5"
+        },
+        "medidos": 10,
+        "json_valido": 10,
+        "tempo_esgotado": 0,
+        "erros_graves": [
+          "T05: cobrança lida como \"outro\"",
+          "T09: não-cobrança lida como cobrança"
+        ],
+        "latencia_ms": {
+          "media": 36440,
+          "mediana": 31423,
+          "p95": 56749
+        }
+      }
+    },
+    "qwen2.5:0.5b · corrigido": {
+      "modelo": "qwen2.5:0.5b",
+      "variante": "corrigido",
+      "tamanho": "397 MB",
+      "aquecimento_ms": 26018,
+      "aquecimento_esgotado": false,
+      "casos": [
+        {
+          "id": "T01",
+          "ms": 7572,
+          "tempo_esgotado": false,
+          "tokens_entrada": 1223,
+          "tokens_saida": 155,
+          "json_valido": true,
+          "campos": {
+            "tipo": true,
+            "evento": false,
+            "provedor": true,
+            "empresa": true,
+            "valor": true,
+            "vencimento": false
+          },
+          "acertos": 4,
+          "total": 6,
+          "erro_grave": null,
+          "resposta": {
+            "tipoDocumento": "fatura_e_nota",
+            "evento": "segunda_via",
+            "provedorNome": "NETFIBRA TELECOM FICTICIA LTDA",
+            "empresaDestinataria": "ROTA TRANSPORTES RODOVIARIOS LTDA",
+            "valor": 189.9,
+            "vencimento": "10/12/2026",
+            "confianca": 0.9
+          }
+        },
+        {
+          "id": "T02",
+          "ms": 9556,
+          "tempo_esgotado": false,
+          "tokens_entrada": 1228,
+          "tokens_saida": 158,
+          "json_valido": true,
+          "campos": {
+            "tipo": true,
+            "evento": true,
+            "provedor": true,
+            "empresa": true,
+            "valor": true,
+            "vencimento": false
+          },
+          "acertos": 5,
+          "total": 6,
+          "erro_grave": null,
+          "resposta": {
+            "tipoDocumento": "fatura_e_nota",
+            "evento": "fatura_nova",
+            "provedorNome": "CONECTA ALFA FICTICIA LTDA",
+            "empresaDestinataria": "ROTA TRANSPORTES RODOVIARIOS LTDA",
+            "valor": 450,
+            "vencimento": "15/12/2026",
+            "confianca": 1
+          }
+        },
+        {
+          "id": "T03",
+          "ms": 8345,
+          "tempo_esgotado": false,
+          "tokens_entrada": 1169,
+          "tokens_saida": 137,
+          "json_valido": true,
+          "campos": {
+            "tipo": false,
+            "evento": true,
+            "provedor": true,
+            "empresa": true,
+            "valor": true,
+            "vencimento": false
+          },
+          "acertos": 4,
+          "total": 6,
+          "erro_grave": null,
+          "resposta": {
+            "tipoDocumento": "fatura_e_nota",
+            "evento": "segunda_via",
+            "provedorNome": "Link Gama Fictícia",
+            "empresaDestinataria": "Rota Transportes Rodoviário",
+            "valor": 132.4,
+            "vencimento": "25/11/2026",
+            "confianca": 0.9
+          }
+        },
+        {
+          "id": "T04",
+          "ms": 8136,
+          "tempo_esgotado": false,
+          "tokens_entrada": 1123,
+          "tokens_saida": 157,
+          "json_valido": true,
+          "campos": {
+            "tipo": false,
+            "evento": false,
+            "provedor": true,
+            "valor": true,
+            "vencimento": false
+          },
+          "acertos": 2,
+          "total": 5,
+          "erro_grave": null,
+          "resposta": {
+            "tipoDocumento": "fatura_e_nota",
+            "evento": "segunda_via",
+            "provedorNome": "NETFIBRA TELECOM FICTICIA LTDA",
+            "empresaDestinataria": "NETFIBRA TELECOM FICTICIA LTDA",
+            "valor": 189.9,
+            "vencimento": "10/12/2026",
+            "confianca": 0.9
+          }
+        },
+        {
+          "id": "T05",
+          "ms": 8546,
+          "tempo_esgotado": false,
+          "tokens_entrada": 1118,
+          "tokens_saida": 145,
+          "json_valido": true,
+          "campos": {
+            "tipo": false,
+            "evento": true,
+            "provedor": true,
+            "valor": true
+          },
+          "acertos": 3,
+          "total": 4,
+          "erro_grave": null,
+          "resposta": {
+            "tipoDocumento": "fatura_e_nota",
+            "evento": "aviso_atraso",
+            "provedorNome": "VELOZNET FICTICIA EIRELI",
+            "empresaDestinataria": "VELOZNET FICTICIA EIRELI",
+            "valor": 99.9,
+            "vencimento": "20/10/2026",
+            "confianca": 0.9
+          }
+        },
+        {
+          "id": "T06",
+          "ms": 8078,
+          "tempo_esgotado": false,
+          "tokens_entrada": 1114,
+          "tokens_saida": 154,
+          "json_valido": true,
+          "campos": {
+            "evento": false,
+            "provedor": false
+          },
+          "acertos": 0,
+          "total": 2,
+          "erro_grave": null,
+          "resposta": {
+            "tipoDocumento": "fatura_e_nota",
+            "evento": "segunda_via",
+            "provedorNome": "CONCTA ALFA FICTICIA LTDA",
+            "empresaDestinataria": "CONCTA ALFA FICTICIA LTDA",
+            "valor": 450,
+            "vencimento": "14/12/2026",
+            "confianca": 0.9
+          }
+        },
+        {
+          "id": "T07",
+          "ms": 8802,
+          "tempo_esgotado": false,
+          "tokens_entrada": 1134,
+          "tokens_saida": 164,
+          "json_valido": true,
+          "campos": {
+            "tipo": false
+          },
+          "acertos": 0,
+          "total": 1,
+          "erro_grave": "não-cobrança lida como cobrança",
+          "resposta": {
+            "tipoDocumento": "nota_fiscal",
+            "evento": "segunda_via",
+            "provedorNome": "Pousada Beira Mar Ficticia LTDA",
+            "empresaDestinataria": "Rota Transportes Rodoviário LTDA",
+            "valor": 450,
+            "vencimento": "31/12/2026",
+            "confianca": 0.9
+          }
+        },
+        {
+          "id": "T08",
+          "ms": 7887,
+          "tempo_esgotado": false,
+          "tokens_entrada": 1166,
+          "tokens_saida": 141,
+          "json_valido": true,
+          "campos": {
+            "tipo": false,
+            "evento": true,
+            "provedor": true,
+            "empresa": true,
+            "valor": true
+          },
+          "acertos": 4,
+          "total": 5,
+          "erro_grave": null,
+          "resposta": {
+            "tipoDocumento": "fatura_e_nota",
+            "evento": "fatura_nova",
+            "provedorNome": "LINK GAMA FICTICIA S.A.",
+            "empresaDestinataria": "ROTA TRANSPORTES RODOVIARIOS LTDA",
+            "valor": 132.4,
+            "vencimento": "2026-11-10",
+            "confianca": 0.9
+          }
+        },
+        {
+          "id": "T09",
+          "ms": 8499,
+          "tempo_esgotado": false,
+          "tokens_entrada": 1114,
+          "tokens_saida": 164,
+          "json_valido": true,
+          "campos": {
+            "tipo": false
+          },
+          "acertos": 0,
+          "total": 1,
+          "erro_grave": "não-cobrança lida como cobrança",
+          "resposta": {
+            "tipoDocumento": "fatura_e_nota",
+            "evento": "segunda_via",
+            "provedorNome": "COMPANHIA DE ENERGIA FICTICIA",
+            "empresaDestinataria": "ROTA TRANSPORTES RODOVIARIOS LTDA",
+            "valor": 1.874,
+            "vencimento": "18/12/2026",
+            "confianca": 0.9
+          }
+        },
+        {
+          "id": "T10",
+          "ms": 8993,
+          "tempo_esgotado": false,
+          "tokens_entrada": 1153,
+          "tokens_saida": 142,
+          "json_valido": true,
+          "campos": {
+            "tipo": true,
+            "evento": true,
+            "provedor": false,
+            "empresa": false,
+            "valor": true,
+            "vencimento": false
+          },
+          "acertos": 3,
+          "total": 6,
+          "erro_grave": null,
+          "resposta": {
+            "tipoDocumento": "boleto_fatura",
+            "evento": "fatura_nova",
+            "provedorNome": "VEL0ZNET F1CTICIA EIREL1",
+            "empresaDestinataria": "VELOZNET FICTICIA EIRELI",
+            "valor": 89.9,
+            "vencimento": "22/12/2026",
+            "confianca": 0.7
+          }
+        }
+      ],
+      "resumo": {
+        "campos_certos": 25,
+        "campos_total": 42,
+        "por_campo": {
+          "tipo": "3/9",
+          "evento": "5/8",
+          "provedor": "6/8",
+          "empresa": "4/5",
+          "valor": "7/7",
+          "vencimento": "0/5"
+        },
+        "medidos": 10,
+        "json_valido": 10,
+        "tempo_esgotado": 0,
+        "erros_graves": [
+          "T07: não-cobrança lida como cobrança",
+          "T09: não-cobrança lida como cobrança"
+        ],
+        "latencia_ms": {
+          "media": 8441,
+          "mediana": 8345,
+          "p95": 9556
+        }
+      }
+    }
+  },
+  "documentos": [
+    {
+      "id": "T01",
+      "descricao": "Fatura de internet com boleto",
+      "esperado": {
+        "tipo": [
+          "boleto_fatura",
+          "fatura_e_nota"
+        ],
+        "evento": "fatura_nova",
+        "provedor": "netfibra",
+        "empresa": "rota",
+        "valor": 189.9,
+        "vencimento": "2026-12-10"
+      }
+    },
+    {
+      "id": "T02",
+      "descricao": "Fatura e nota fiscal (NFCom) no mesmo PDF",
+      "esperado": {
+        "tipo": [
+          "fatura_e_nota"
+        ],
+        "evento": "fatura_nova",
+        "provedor": "conecta",
+        "empresa": "rota",
+        "valor": 450,
+        "vencimento": "2026-12-15"
+      }
+    },
+    {
+      "id": "T03",
+      "descricao": "Segunda via com novo vencimento",
+      "esperado": {
+        "tipo": [
+          "boleto_fatura"
+        ],
+        "evento": "segunda_via",
+        "provedor": "gama",
+        "empresa": "rota",
+        "valor": 132.4,
+        "vencimento": "2026-11-25"
+      }
+    },
+    {
+      "id": "T04",
+      "descricao": "Lembrete de vencimento",
+      "esperado": {
+        "tipo": [
+          "lembrete"
+        ],
+        "evento": "lembrete_vencimento",
+        "provedor": "netfibra",
+        "valor": 189.9,
+        "vencimento": "2026-12-10"
+      }
+    },
+    {
+      "id": "T05",
+      "descricao": "Aviso de atraso com bloqueio",
+      "esperado": {
+        "tipo": [
+          "lembrete"
+        ],
+        "evento": "aviso_atraso",
+        "provedor": "veloz",
+        "valor": 99.9
+      }
+    },
+    {
+      "id": "T06",
+      "descricao": "Pagamento confirmado",
+      "esperado": {
+        "evento": "pagamento_confirmado",
+        "provedor": "conecta"
+      }
+    },
+    {
+      "id": "T07",
+      "descricao": "Nota de hotel (não é cobrança de internet)",
+      "esperado": {
+        "tipo": [
+          "outro"
+        ]
+      }
+    },
+    {
+      "id": "T08",
+      "descricao": "NFS-e de internet sem boleto",
+      "esperado": {
+        "tipo": [
+          "nota_fiscal"
+        ],
+        "evento": "fatura_nova",
+        "provedor": "gama",
+        "empresa": "rota",
+        "valor": 132.4
+      }
+    },
+    {
+      "id": "T09",
+      "descricao": "Conta de energia (outra concessionária, não internet)",
+      "esperado": {
+        "tipo": [
+          "outro"
+        ]
+      }
+    },
+    {
+      "id": "T10",
+      "descricao": "Boleto de internet com OCR ruidoso",
+      "esperado": {
+        "tipo": [
+          "boleto_fatura"
+        ],
+        "evento": "fatura_nova",
+        "provedor": "veloz",
+        "empresa": "rota",
+        "valor": 89.9,
+        "vencimento": "2026-12-22"
+      }
+    }
+  ]
+}

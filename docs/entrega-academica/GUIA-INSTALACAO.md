@@ -1,52 +1,49 @@
 # Guia de instalação para quem nunca usou o SIGp (Windows)
 
 Este guia leva uma máquina sem nada instalado até o SIGp funcionando com a base fictícia, a IA local e o banco seguro.
-Tempo: cerca de 30 minutos na primeira vez, quase todo de download. A versão da Entrega 2 deste guia está no histórico do Git.
+A versão anterior deste guia (passo a passo manual) está no histórico do Git.
 
 ## 1. O que você precisa
 
 | Item | Mínimo | Para quê |
 |---|---|---|
-| Windows 10 ou 11 (64 bits), com virtualização ligada na BIOS | — | O Docker roda os serviços em Linux |
+| Windows 10 22H2 ou Windows 11 (64 bits), com virtualização ligada na BIOS | — | O Docker roda os serviços em Linux (WSL 2) |
 | Memória | 8 GB (16 GB recomendado) | SQL Server, IA local, n8n e a tela ao mesmo tempo |
 | Disco livre | 15 GB | Imagens, modelos de IA e banco |
 | Internet | só na instalação | Depois, tudo roda local; nenhum dado sai da máquina |
 
-## 2. Instalar as ferramentas
+## 2. Instalar (um comando)
 
-Abra o **PowerShell** e rode, uma linha de cada vez (o `winget` já vem no Windows 10/11 atualizado):
-
-```powershell
-winget install -e --id Docker.DockerDesktop
-winget install -e --id Microsoft.PowerShell
-winget install -e --id Git.Git
-```
-
-Reinicie o computador. Abra o **Docker Desktop**, aceite os termos e espere aparecer "Engine running" (na primeira vez ele
-pode pedir para instalar o WSL 2: aceite e reinicie de novo).
-
-Só para a demonstração e os testes de avaliação (não precisa para usar o sistema):
+Abra o **PowerShell** (menu Iniciar › "PowerShell"), cole esta linha e aperte Enter:
 
 ```powershell
-winget install -e --id Python.Python.3.12
-winget install -e --id Microsoft.Sqlcmd
+irm https://raw.githubusercontent.com/FredsonSistema/sigp-entrega/main/instalar-sigp.ps1 | iex
 ```
 
-## 3. Baixar e instalar o SIGp
+Ou baixe e clique duas vezes em [`Instalar SIGp.cmd`](https://github.com/FredsonSistema/sigp-entrega/blob/main/Instalar%20SIGp.cmd), que faz o mesmo.
 
-Abra o **PowerShell 7** (procure "pwsh" no menu Iniciar) e rode:
+O instalador pula o que a máquina já tem:
 
-```powershell
-cd $HOME\Documents
-git clone https://github.com/FredsonSistema/sigp-entrega.git
-cd sigp-entrega
-pwsh -File instalar.ps1
-```
+1. confere memória, disco e virtualização;
+2. liga o **WSL 2**, se faltar. É o único momento em que o Windows pede **permissão de administrador**. Depois ele pede
+   para **reiniciar**; ao entrar de novo, a instalação continua sozinha;
+3. instala o **Docker Desktop** no modo do usuário (sem administrador), já com a licença aceita, liga o Docker e espera;
+4. baixa o PowerShell 7 portátil e o pacote do SIGp (não precisa de Git);
+5. instala o SIGp: chaves, containers, banco, modelos de IA, workflows e base fictícia (de 15 a 40 minutos na primeira
+   vez, quase tudo download);
+6. **cria o seu acesso**: pede seu nome, um usuário, seu e-mail e uma senha (8 a 64 caracteres, com maiúscula e número),
+   que vale para a tela do SIGp e para o n8n. A senha é digitada por você, não aparece na tela, não vai para a área de
+   transferência e não é gravada em arquivo. O SIGp guarda só o hash;
+7. cria o atalho **SIGp** na área de trabalho e abre a tela.
 
-O instalador mostra 7 etapas: Docker, chaves, containers, banco, modelos de IA, workflows e base fictícia. No fim aparece
-"Pronto." com os endereços. Pode rodar de novo a qualquer momento: o que já existe é mantido.
+Para você sobram: colar a linha, aceitar a janela de administrador e reiniciar (só se o WSL faltava) e digitar seu acesso.
 
-O que ele cria na sua pasta, e que **nunca** deve ir para o Git nem ser mostrado na tela:
+Opções, antes do comando: `$env:SIGP_PASTA = 'D:\sigp'` (pasta da instalação; padrão `Documentos\sigp-entrega`) e
+`$env:SIGP_MODELO_TRIAGEM = 'qwen2.5:0.5b'` (instalação leve: ~1,5 GB a menos, triagem do Gmail mais fraca).
+
+### O que fica só nesta máquina
+
+O instalador gera estes arquivos na pasta da instalação. Eles **nunca** devem ir para o Git nem ser mostrados na tela:
 
 | Arquivo ou pasta | Conteúdo |
 |---|---|
@@ -54,41 +51,23 @@ O que ele cria na sua pasta, e que **nunca** deve ir para o Git nem ser mostrado
 | `docs/entrega-academica/sqlserver/.env.academic` | Senha do `sa` do SQL Server, senhas dos usuários da IA e do TDE |
 | `segredos-locais/tde/` | Certificado do TDE: sem ele, nenhum backup do banco pode ser restaurado em outro computador |
 
-Guarde esses três juntos num lugar seguro (um gerenciador de senhas, por exemplo), separados dos backups do banco.
+Guarde os três juntos num lugar seguro (um gerenciador de senhas, por exemplo), separados dos backups do banco.
 
-## 4. Primeiro acesso
+## 3. Usar
 
-1. **Tela do SIGp:** abra http://127.0.0.1:8000/agencias.html. Na primeira vez, ela pede para criar o administrador. Informe
-   a `SIGP_API_KEY`, que prova que você é o dono da instalação. Para copiá-la sem mostrar o arquivo inteiro:
-   ```powershell
-   (Select-String -Path .env -Pattern '^SIGP_API_KEY=(.*)$').Matches[0].Groups[1].Value | Set-Clipboard
-   ```
-   Cole no campo, escolha seu usuário e senha e entre.
-2. **n8n:** abra http://127.0.0.1:5678 e crie a conta local do n8n (fica só na sua máquina).
+Clique no atalho **SIGp** (ou abra http://127.0.0.1:8000/agencias.html) e entre com o usuário e a senha que você criou.
+O n8n fica em http://127.0.0.1:5678 (login: seu e-mail e a mesma senha).
 
-## 5. Conferir que está funcionando
-
-| O que conferir | Como | Esperado |
+| O que conferir | Onde | Esperado |
 |---|---|---|
-| Serviços | `docker ps --format "{{.Names}} {{.Status}}"` | 7 containers `sigp_*` com "Up" |
-| API do SIGp | http://127.0.0.1:5001/api/health | `"status": "ok"` |
-| IA acadêmica | http://127.0.0.1:5010/health | `"status": "ok"` e `"prompt_version": "3.1"` |
 | Base fictícia | Tela › Cadastros › Agências | 3 agências "Fictícia" (e rodoviárias e garagem) |
 | Faturas para associar | Tela › Notas recebidas | 3 faturas "Aguardando associação" |
+| Serviços | `docker ps --format "{{.Names}} {{.Status}}"` | 7 containers `sigp_*` com "Up" |
 
-Teste da IA pelo n8n (a primeira resposta leva cerca de 12 s, porque o modelo é carregado; as seguintes, poucos segundos):
+## 4. Demonstração e testes (opcional)
 
-```powershell
-$f = '{"provider":"Conecta Alfa Fictícia","description":"IP adicional mensal","amount":"35.00"}'
-Invoke-RestMethod -Method Post http://127.0.0.1:5678/webhook/sigp-academic-ai -ContentType 'application/json; charset=utf-8' -Body ([Text.Encoding]::UTF8.GetBytes($f))
-```
-
-Esperado: `classification: DIVERGENTE` (o contrato não inclui IP adicional), as fontes do contrato em `source_ids` e
-`automatic_payment: False`.
-
-## 6. Demonstração e testes (opcional)
-
-Com o Python e o sqlcmd instalados (passo 2):
+Precisam do Python 3.12 e do sqlcmd: `winget install -e --id Python.Python.3.12` e `winget install -e --id Microsoft.Sqlcmd`.
+Na pasta da instalação:
 
 ```powershell
 pwsh -File docs/entrega-academica/demo-final.ps1                # demonstração passo a passo (Enter entre os passos)
@@ -98,9 +77,20 @@ python docs/entrega-academica/seguranca/verificar_ledger.py     # trilha à prov
 python -m pip install -r requirements.txt; python -m unittest discover -s tests   # testes unitários
 ```
 
-O roteiro completo da apresentação está em [`roteiro-apresentacao.md`](roteiro-apresentacao.md).
+Teste da IA pelo n8n (a primeira resposta leva cerca de 12 s, porque o modelo é carregado):
 
-## 7. Parar, religar e remover
+```powershell
+$f = '{"provider":"Conecta Alfa Fictícia","description":"IP adicional mensal","amount":"35.00"}'
+Invoke-RestMethod -Method Post http://127.0.0.1:5678/webhook/sigp-academic-ai -ContentType 'application/json; charset=utf-8' -Body ([Text.Encoding]::UTF8.GetBytes($f))
+```
+
+Esperado: `classification: DIVERGENTE` (o contrato não inclui IP adicional), as fontes do contrato em `source_ids` e
+`automatic_payment: False`. O roteiro completo da apresentação está em [`roteiro-apresentacao.md`](roteiro-apresentacao.md).
+
+## 5. Parar, religar e remover
+
+Depois de reiniciar o computador, abra o Docker Desktop se ele não ligar sozinho: os containers do SIGp voltam junto.
+Na pasta da instalação:
 
 ```powershell
 docker compose stop          # para tudo (os dados ficam)
@@ -109,19 +99,22 @@ docker compose down          # remove os containers (os dados ficam nos volumes)
 docker compose down -v       # remove TUDO, inclusive o banco e os modelos baixados (não tem volta)
 ```
 
-## 8. Problemas comuns
+## 6. Problemas comuns
+
+Rodar o mesmo comando de novo é seguro: o que já foi feito é mantido.
 
 | Sintoma | Causa provável | O que fazer |
 |---|---|---|
-| "O Docker não está respondendo" | Docker Desktop fechado | Abra o Docker Desktop, espere "Engine running" e rode o instalador de novo |
+| "A virtualização está desligada na BIOS/UEFI" | Opção desligada no computador | Ligue "Intel VT-x"/"Virtualization Technology" ou "AMD-V/SVM" na BIOS e rode de novo |
+| A instalação não continuou depois de reiniciar | Entrou com outro usuário do Windows | Entre com o mesmo usuário e rode o comando de novo |
+| "O Docker não ligou em 10 minutos" | Primeira partida lenta ou WSL desatualizado | Abra o Docker Desktop, espere "Engine running" e rode de novo; se não ligar, `wsl --update` |
 | "port is already allocated" | Outro programa usa 5001, 5010, 5678, 8000 ou 14333 | `Get-NetTCPConnection -LocalPort 5678` mostra qual; feche o programa ou pare o outro container |
 | Container reinicia sozinho ou sai com código 137 | Pouca memória | Feche programas pesados; no Docker Desktop › Settings › Resources, deixe pelo menos 6 GB |
-| "não pode ser carregado porque a execução de scripts foi desabilitada" | Política do PowerShell | `pwsh -ExecutionPolicy Bypass -File instalar.ps1` |
+| Pulou a criação do acesso (ou fechou a janela) | — | Na pasta da instalação: `pwsh -File primeiro-acesso.ps1` |
 | Webhook da IA responde 404 | Workflow não publicado | Rode o instalador de novo (ele publica o workflow da IA acadêmica) |
 | A primeira análise demora uns 12 s | O modelo é carregado depois de 30 min parado | Normal; as seguintes levam poucos segundos |
-| A tela pede a chave de novo | Sessão expirada | Entre com o usuário e a senha criados no primeiro acesso |
 
-## 9. Ligar o Gmail (opcional)
+## 7. Ligar o Gmail (opcional)
 
 A busca de faturas no Gmail exige uma conta Google conectada ao n8n, com login no Google (não dá para automatizar). Sem ela,
 todo o resto funciona com a base fictícia. Passo a passo: seção "Conectar o Gmail" do [`README`](../../README.md).

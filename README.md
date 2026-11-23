@@ -42,25 +42,27 @@ Todas as portas ficam em `127.0.0.1`. Nenhuma chave vem no pacote: o instalador 
 
 ## Instalar (um comando)
 
-Passo a passo para quem nunca instalou nada: [`docs/entrega-academica/GUIA-INSTALACAO.md`](docs/entrega-academica/GUIA-INSTALACAO.md).
-
-Pré-requisitos: **Docker Desktop** ligado e **PowerShell 7** (`winget install Microsoft.PowerShell`). Memória: 8 GB no mínimo
-(16 GB recomendado). Espaço: cerca de 6 GB (imagens e modelos).
+Num Windows 10 22H2 ou 11 sem nada instalado (8 GB de memória, 15 GB livres), abra o PowerShell e cole:
 
 ```powershell
-git clone <este repositório> sigp-entrega
-cd sigp-entrega
-pwsh -File instalar.ps1
+irm https://raw.githubusercontent.com/FredsonSistema/sigp-entrega/main/instalar-sigp.ps1 | iex
 ```
 
-O instalador:
+Ou clique duas vezes em [`Instalar SIGp.cmd`](Instalar%20SIGp.cmd). O `instalar-sigp.ps1` liga o WSL 2 se faltar (a única
+janela de administrador, seguida de um reinício; depois a instalação continua sozinha), instala o Docker Desktop no modo do
+usuário, baixa o PowerShell 7 portátil e este pacote (sem Git) e roda o `instalar.ps1`. No fim, cria o atalho **SIGp** na
+área de trabalho e abre a tela. Detalhes e problemas comuns: [`docs/entrega-academica/GUIA-INSTALACAO.md`](docs/entrega-academica/GUIA-INSTALACAO.md).
+
+Com o Docker Desktop já instalado, dá para rodar só o instalador do pacote: `pwsh -File instalar.ps1`. Ele:
 1. confere o Docker;
 2. gera as chaves e senhas no `.env` e no `docs/entrega-academica/sqlserver/.env.academic` (ignorados pelo Git; os valores não aparecem na tela);
 3. sobe os containers;
 4. cria o banco acadêmico (schema, RLS, mascaramento, trilha ledger, usuários da IA e auditoria);
 5. baixa os modelos locais;
 6. importa os workflows no n8n e publica o da IA acadêmica;
-7. grava a base fictícia (6 locais, 3 provedores e 3 faturas para associar).
+7. grava a base fictícia (6 locais, 3 provedores e 3 faturas para associar);
+8. cria o seu acesso (`primeiro-acesso.ps1`): pede nome, usuário, e-mail e uma senha que vale para a tela do SIGp e para o
+   n8n. A senha é digitada por você e não aparece na tela, não vai para a área de transferência nem para arquivo.
 
 ### Qual modelo de IA é baixado
 
@@ -81,9 +83,9 @@ Pode rodar de novo: o que já existe é mantido. Opções: `-ModeloTriagem qwen2
 
 ## Usar
 
-1. **Tela:** abra http://127.0.0.1:8000/agencias.html. No primeiro acesso, crie o administrador informando a `SIGP_API_KEY`
-   do `.env` (prova de que você é o dono da instalação). Em **Notas recebidas** estão as 3 faturas fictícias: associe cada
-   uma ao local e ao provedor e veja a comparação com o contrato.
+1. **Tela:** clique no atalho **SIGp** (ou abra http://127.0.0.1:8000/agencias.html) e entre com o usuário e a senha que
+   você criou. Em **Notas recebidas** estão as 3 faturas fictícias: associe cada uma ao local e ao provedor e veja a
+   comparação com o contrato.
 2. **IA acadêmica:** `POST http://127.0.0.1:5678/webhook/sigp-academic-ai` com a fatura no corpo, por exemplo
    `{"provider":"Conecta Alfa Fictícia","description":"IP adicional mensal","amount":"35.00"}`. Resposta: decisão da regra,
    fontes do contrato, sugestão do modelo e `automatic_payment: false`.
@@ -106,7 +108,8 @@ automatizar. Sem o Gmail, todo o resto funciona com a base fictícia.
 
 | Caminho | Conteúdo |
 |---|---|
-| `instalar.ps1`, `docker-compose.yml` | Instalação com um comando e os serviços |
+| `instalar-sigp.ps1`, `Instalar SIGp.cmd` | Instalação numa máquina sem nada (WSL, Docker, PowerShell 7 e o pacote) |
+| `instalar.ps1`, `primeiro-acesso.ps1`, `docker-compose.yml` | Instalação do pacote, criação do seu acesso e os serviços |
 | `backend/` | API do SIGp (Flask): locais, notas recebidas, associação, faturas, perfis, cofre de chaves, métricas da IA |
 | `agencias.html`, `frontend/`, `web/` | Tela do SIGp |
 | `ocr/` | Serviço de OCR do PDF |

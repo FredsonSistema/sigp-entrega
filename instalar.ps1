@@ -1,5 +1,6 @@
 ﻿# Instala o pacote da entrega do SIGp com um comando:  pwsh -File instalar.ps1
-# Precisa só do Docker Desktop ligado. Pode rodar de novo: o que já existe é mantido (chaves, banco, modelos).
+# Numa máquina sem nada instalado, use o instalar-sigp.ps1 (instala o WSL, o Docker e o PowerShell 7 e chama este).
+# Aqui, precisa só do Docker Desktop ligado. Pode rodar de novo: o que já existe é mantido (chaves, banco, modelos).
 #   -ModeloTriagem qwen2.5:3b   escolhe o modelo da triagem do Gmail (padrão: o do .env, ou o escolhido na medição)
 #   -SemBaseFicticia            não grava a base de demonstração (locais, provedores e faturas inventados)
 #   -ComVolume                  carrega as 100.020 notas sintéticas do benchmark (demora alguns minutos)
@@ -106,7 +107,7 @@ GO
   if ($ComVolume) { Write-Host '    carregando 100.020 notas sintéticas...'; Sql (Join-Path $sql '03_load_benchmark.sql') 'SIGpAcademic' }
   # TDE: arquivo e backups criptografados. O certificado vai para segredos-locais/tde (fora do Git): sem ele, nenhum backup
   # pode ser restaurado em outro servidor. Guarde essa pasta junto com o .env.
-  pwsh -NoProfile -File (Join-Path $sql 'ativar-tde.ps1') | Out-Host
+  & ([Diagnostics.Process]::GetCurrentProcess().MainModule.FileName) -NoProfile -ExecutionPolicy Bypass -File (Join-Path $sql 'ativar-tde.ps1') | Out-Host
   if ($LASTEXITCODE -ne 0) { throw 'Não foi possível ligar o TDE.' }
   docker exec -u root sigp_sqlserver_academic rm -f /tmp/sigp_script.sql 2>$null
 } finally { Remove-Item Env:SQLCMDPASSWORD -ErrorAction SilentlyContinue }
@@ -122,7 +123,7 @@ foreach ($m in @('qwen2.5:0.5b', $e['SIGP_OLLAMA_MODEL']) | Select-Object -Uniqu
 Ok 'modelos prontos'
 
 Etapa 6 'Workflows do n8n'
-Esperar 'n8n' { (Invoke-WebRequest 'http://127.0.0.1:5678/healthz' -UseBasicParsing -TimeoutSec 5).StatusCode -eq 200 }
+Esperar 'n8n' { (Invoke-WebRequest 'http://127.0.0.1:5678/healthz/readiness' -UseBasicParsing -TimeoutSec 5).StatusCode -eq 200 }
 $wfs = Get-ChildItem (Join-Path $raiz 'n8n\workflows') -Filter '*.json'
 foreach ($w in $wfs) {
   docker cp $w.FullName "sigp_n8n:/tmp/$($w.Name)" | Out-Null
@@ -133,7 +134,7 @@ foreach ($w in $wfs) {
 # ver "Conectar o Gmail" no README. Publicar sem a credencial faria o n8n registrar erro a cada leitura.
 docker exec sigp_n8n n8n publish:workflow --id=R7lKILedIMV89Jay *> $null
 docker restart sigp_n8n | Out-Null
-Esperar 'n8n' { (Invoke-WebRequest 'http://127.0.0.1:5678/healthz' -UseBasicParsing -TimeoutSec 5).StatusCode -eq 200 }
+Esperar 'n8n' { (Invoke-WebRequest 'http://127.0.0.1:5678/healthz/readiness' -UseBasicParsing -TimeoutSec 5).StatusCode -eq 200 }
 Ok "$($wfs.Count) workflows importados; IA acadêmica publicada"
 
 Etapa 7 'API do SIGp e base fictícia'
@@ -144,9 +145,14 @@ if (-not $SemBaseFicticia) {
   if ($LASTEXITCODE -ne 0) { Write-Host '    a base fictícia não foi gravada (veja a mensagem acima); o resto da instalação está pronto.' -ForegroundColor Yellow }
 }
 
+Etapa 8 'Seu acesso (tela do SIGp e n8n)'
+# A senha é digitada pela pessoa e não aparece, não vai para a área de transferência nem para arquivo (primeiro-acesso.ps1).
+try { & (Join-Path $raiz 'primeiro-acesso.ps1') }
+catch { Write-Host "    $($_.Exception.Message)" -ForegroundColor Yellow; Write-Host '    Para criar o acesso depois: pwsh -File primeiro-acesso.ps1' -ForegroundColor Yellow }
+
 Write-Host "`nPronto." -ForegroundColor Green
-Write-Host '  Tela do SIGp:       http://127.0.0.1:8000/agencias.html  (primeiro acesso: crie o administrador com a SIGP_API_KEY do .env)'
-Write-Host '  n8n:                http://127.0.0.1:5678                 (crie a conta local na primeira vez)'
+Write-Host '  Tela do SIGp:       http://127.0.0.1:8000/agencias.html  (entre com o usuário e a senha que você criou)'
+Write-Host '  n8n:                http://127.0.0.1:5678                 (entre com o seu e-mail e a mesma senha)'
 Write-Host '  IA acadêmica:       http://127.0.0.1:5010/health'
 Write-Host '  Demonstração:       pwsh -File docs/entrega-academica/demo-final.ps1'
 Write-Host '  Roteiro:            docs/entrega-academica/roteiro-apresentacao.md'

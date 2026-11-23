@@ -89,27 +89,25 @@ Pode rodar de novo: o que já existe é mantido. Opções: `-ModeloTriagem qwen2
 2. **IA acadêmica:** `POST http://127.0.0.1:5678/webhook/sigp-academic-ai` com a fatura no corpo, por exemplo
    `{"provider":"Conecta Alfa Fictícia","description":"IP adicional mensal","amount":"35.00"}`. Resposta: decisão da regra,
    fontes do contrato, sugestão do modelo e `automatic_payment: false`.
-3. **Demonstração completa** (IA, ataques, trilha, perfis, consultas): `pwsh -File docs/entrega-academica/demo-final.ps1`.
+3. **Assistente da IA** (Análise › Assistente): perguntas sobre contas e locais; cada 👍/👎 e cada termo ensinado
+   vira material de treino da IA (exportável em JSONL).
+4. **Demonstração completa** (IA, ataques, trilha, perfis, consultas): `pwsh -File docs/entrega-academica/demo-final.ps1`.
    Para ela e para os testes de avaliação: **Python 3.12** e **sqlcmd** (`winget install sqlcmd`).
 
-### Conectar o Gmail (opcional)
+### Configurar o fluxo (Gmail, alertas, chaves e assistente)
 
-A busca de faturas no Gmail precisa de uma conta Google conectada ao n8n, e isso exige login no Google: não dá para
-automatizar. Sem o Gmail, todo o resto funciona com a base fictícia.
-
-1. No Google Cloud, crie um projeto, ative a Gmail API e crie um "ID do cliente OAuth" do tipo aplicativo da Web, com o
-   endereço de retorno `http://127.0.0.1:5678/rest/oauth2-credential/callback`. Publique o app ("Em produção"): em teste,
-   o Google derruba a conexão a cada 7 dias.
-2. No n8n, crie a credencial **Gmail account** (Gmail OAuth2) com o Client ID e o Client Secret e clique em "Conectar".
-3. No SIGp, em **Configurações > E-mail das faturas**, confira os remetentes procurados.
-4. No n8n, ative o WF-08 (e o WF-09, o WF-06 e o WF-99, que também usam o Gmail).
+O instalador já liga os serviços entre si (endereços, chaves e senhas) e cria o seu acesso. Para buscar faturas no
+Gmail, falta conectar a conta Google no n8n (login no Google: não dá para automatizar), conferir os remetentes e rodar
+`pwsh -File ligar-gmail.ps1`. Passo a passo, com o mapa de endereços, chaves, alertas, Telegram/WhatsApp e o assistente
+da IA (que junta o material de treino): [`docs/entrega-academica/GUIA-CONFIGURACAO.md`](docs/entrega-academica/GUIA-CONFIGURACAO.md).
+Sem o Gmail, todo o resto funciona com a base fictícia.
 
 ## Estrutura
 
 | Caminho | Conteúdo |
 |---|---|
 | `instalar-sigp.ps1`, `Instalar SIGp.cmd` | Instalação numa máquina sem nada (WSL, Docker, PowerShell 7 e o pacote) |
-| `instalar.ps1`, `primeiro-acesso.ps1`, `docker-compose.yml` | Instalação do pacote, criação do seu acesso e os serviços |
+| `instalar.ps1`, `primeiro-acesso.ps1`, `ligar-gmail.ps1`, `docker-compose.yml` | Instalação do pacote, criação do seu acesso, fluxos do Gmail e os serviços |
 | `backend/` | API do SIGp (Flask): locais, notas recebidas, associação, faturas, perfis, cofre de chaves, métricas da IA |
 | `agencias.html`, `frontend/`, `web/` | Tela do SIGp |
 | `ocr/` | Serviço de OCR do PDF |

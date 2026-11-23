@@ -5,7 +5,8 @@
 **Repositórios:** sistema completo em <https://github.com/FredsonSistema/sigp>; pacote de instalação com base fictícia em <https://github.com/FredsonSistema/sigp-entrega>.
 
 ## Entrega final (01/12/2026)
-- **Instalação:** [`GUIA-INSTALACAO.md`](GUIA-INSTALACAO.md) (máquina sem nada instalado até o sistema funcionando) e [`ENDPOINTS.md`](ENDPOINTS.md) (o que testar e o resultado esperado).
+- **Instalação e configuração:** [`GUIA-INSTALACAO.md`](GUIA-INSTALACAO.md) (máquina sem nada instalado até o sistema funcionando),
+  [`GUIA-CONFIGURACAO.md`](GUIA-CONFIGURACAO.md) (endereços, chaves, Gmail, alertas e o assistente da IA) e [`ENDPOINTS.md`](ENDPOINTS.md) (o que testar e o resultado esperado).
 - **Apresentação (10 min):** roteiro com quem fala, tempos, falas, lista de conferência, plano B e perguntas prováveis em [`roteiro-apresentacao.md`](roteiro-apresentacao.md); demonstração ao vivo passo a passo em [`demo-final.ps1`](demo-final.ps1) (`pwsh -File docs/entrega-academica/demo-final.ps1`; com `-SemPausa` grava `sqlserver/evidence/parte3/demo-final-saida.txt`); página interativa dos resultados em [`apresentacao.html`](apresentacao.html) (abre sem internet).
 - **Relatórios:** [`relatorio-apresentacao.pdf`](relatorio-apresentacao.pdf) e [`relatorio-limitacoes.pdf`](relatorio-limitacoes.pdf). Histórico de cada falha, correção e reteste: [`historico-evolucao.md`](historico-evolucao.md).
 - **IA:** [`ia/casos-de-teste-final.md`](ia/casos-de-teste-final.md) (16 casos, injeção, validação cega congelada e intervalos de 95%), [`ia/escolha-modelo-triagem.md`](ia/escolha-modelo-triagem.md) (critério, medição e escolha do modelo), [`ia/finetuning/comparacao-final.md`](ia/finetuning/comparacao-final.md) (4 configurações, custo e latência), [`ia/segredos-n8n.md`](ia/segredos-n8n.md) e [`ia/prompts/CHANGELOG.md`](ia/prompts/CHANGELOG.md).

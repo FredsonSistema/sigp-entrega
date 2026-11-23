@@ -114,7 +114,7 @@ Rodar o mesmo comando de novo é seguro: o que já foi feito é mantido.
 | Webhook da IA responde 404 | Workflow não publicado | Rode o instalador de novo (ele publica o workflow da IA acadêmica) |
 | A primeira análise demora uns 12 s | O modelo é carregado depois de 30 min parado | Normal; as seguintes levam poucos segundos |
 
-## 7. Ligar o Gmail (opcional)
+## 7. Configurar o fluxo
 
-A busca de faturas no Gmail exige uma conta Google conectada ao n8n, com login no Google (não dá para automatizar). Sem ela,
-todo o resto funciona com a base fictícia. Passo a passo: seção "Conectar o Gmail" do [`README`](../../README.md).
+Gmail, remetentes, alertas, chaves, outras pessoas, Telegram/WhatsApp e o assistente da IA:
+[`GUIA-CONFIGURACAO.md`](GUIA-CONFIGURACAO.md). Sem o Gmail, todo o resto funciona com a base fictícia.

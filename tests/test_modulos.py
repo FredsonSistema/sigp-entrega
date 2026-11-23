@@ -9,8 +9,9 @@ from backend import acesso, database
 from backend import app as app_module
 
 ADMIN = {"X-API-Key": "chave-admin-teste"}
-DESLIGADAS_ABAS = {"sig", "geral", "sie", "os", "agenda-servicos", "agenda-pessoal", "sys", "assistente"}
-FLUXO_ABAS = {"notas-recebidas", "notas", "faturas", "agencias", "rv", "gr", "ia", "config"}
+DESLIGADAS_ABAS = {"sig", "geral", "sie", "os", "agenda-servicos", "agenda-pessoal", "sys"}
+# O assistente faz parte do pacote: é ele que junta o material de treino da IA (respostas avaliadas e termos ensinados).
+FLUXO_ABAS = {"notas-recebidas", "notas", "faturas", "agencias", "rv", "gr", "ia", "assistente", "config"}
 
 
 class ModulosTests(unittest.TestCase):
@@ -47,18 +48,19 @@ class ModulosTests(unittest.TestCase):
             eu = self.client.get("/api/acesso/eu", headers=ADMIN).json
         self.assertEqual(set(eu["abas"]), FLUXO_ABAS)
         self.assertFalse(set(eu["abas"]) & DESLIGADAS_ABAS)
-        self.assertFalse({"sig.decidir", "sie.ver", "assistente.usar", "os.usar"} & set(eu["permissoes"]))
+        self.assertFalse({"sig.decidir", "sie.ver", "os.usar"} & set(eu["permissoes"]))
+        self.assertTrue({"assistente.usar", "assistente.ensinar"} <= set(eu["permissoes"]))
 
     def test_gestao_fecha_as_rotas_dos_modulos_desligados_para_todos(self):
         with patch.dict(os.environ, {"SIGP_MODULOS": "gestao"}):
-            for metodo, rota in (("GET", "/api/sie/resumo"), ("POST", "/api/assistente/perguntar"), ("POST", "/api/sig/decisoes")):
+            for metodo, rota in (("GET", "/api/sie/resumo"), ("POST", "/api/sig/decisoes")):
                 r = self.client.open(rota, method=metodo, headers=ADMIN, json={})
                 self.assertEqual(r.status_code, 404, rota)
                 self.assertIn("SIGP_MODULOS=gestao", r.json["error"])
             # O fluxo continua: locais, notas recebidas, faturas, alertas e e-mail das faturas.
             # Os alertas de vencimento e as análises continuam: o WF-06 e o selo "situação da conta" usam (só a aba some).
             for rota in ("/api/locais", "/api/notas-recebidas", "/api/faturas", "/api/configuracoes/email-faturas", "/api/llm/metricas",
-                         "/api/alertas?dias=7&tipo=vencimento", "/api/analises"):
+                         "/api/alertas?dias=7&tipo=vencimento", "/api/analises", "/api/assistente/treinamento"):
                 self.assertEqual(self.client.get(rota, headers=ADMIN).status_code, 200, rota)
             # Sem chave continua 401 nas rotas do fluxo (o módulo não abre nada).
             self.assertEqual(self.client.get("/api/locais").status_code, 401)
@@ -69,7 +71,7 @@ class ModulosTests(unittest.TestCase):
         ids = {f["id"] for a in areas for f in a["funcionalidades"]}
         self.assertFalse(ids & acesso.MODULOS_DESLIGADOS["gestao"])
         self.assertIn("notas_recebidas.associar", ids)
-        self.assertNotIn("Assistente da IA", {a["area"] for a in areas})
+        self.assertIn("Assistente da IA", {a["area"] for a in areas})
 
 
 if __name__ == "__main__":

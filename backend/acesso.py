@@ -125,12 +125,12 @@ ESTADO_ESCRITA = {("PUT", "/api/app-state/<state_key>"), ("DELETE", "/api/app-st
 FUNCIONALIDADES = {f["id"]: {**f, "area": a["area"]} for a in CATALOGO for f in a["funcionalidades"]}
 TODAS = list(FUNCIONALIDADES)
 # Módulos da instalação (SIGP_MODULOS no .env): "completo" (padrão, o sistema inteiro) ou "gestao" (pacote da entrega
-# acadêmica: só o fluxo de gestão de contas de provedores: busca de notas, associação, IA e banco). Uma funcionalidade
+# acadêmica: só o fluxo de gestão de contas de provedores: busca de notas, associação, IA, assistente e banco). Uma funcionalidade
 # desligada some das abas, das permissões e do catálogo, e as rotas dela respondem 404 para todos, inclusive o administrador.
 MODULOS_DESLIGADOS = {
     "completo": set(),
-    "gestao": {"sig.decidir", "sie.ver", "os.usar", "agenda_servicos.usar", "agenda_pessoal.usar", "sistemas.usar",
-               "assistente.usar", "assistente.ensinar"},
+    # O assistente fica ligado: as respostas avaliadas (👍/👎) e os termos ensinados são o material de treino da IA.
+    "gestao": {"sig.decidir", "sie.ver", "os.usar", "agenda_servicos.usar", "agenda_pessoal.usar", "sistemas.usar"},
 }
 # Abas escondidas sem desligar as rotas: os alertas de vencimento (GET /api/alertas, de sig.ver) e a gravação das análises
 # (POST /api/analises) fazem parte do fluxo: o WF-06 e o selo "situação da conta" dos locais usam. Só os painéis somem.

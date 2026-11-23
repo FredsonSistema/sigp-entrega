@@ -18,7 +18,7 @@ server {
     location = /sigp-env.js {
         default_type application/javascript;
         add_header Cache-Control "no-cache" always;
-        return 200 'window.SIGP_ENV = { apiUrl: "${SIGP_PUBLIC_API_URL}", n8nUrl: "${SIGP_PUBLIC_N8N_URL}" };\n';
+        return 200 'window.SIGP_ENV = { apiUrl: "${SIGP_PUBLIC_API_URL}", n8nUrl: "${SIGP_PUBLIC_N8N_URL}", modoEntrada: "${SIGP_PUBLIC_MODO_ENTRADA}" };\n';
     }
     location / {
         try_files $uri =404;

@@ -124,18 +124,36 @@ Ok 'modelos prontos'
 
 Etapa 6 'Workflows do n8n'
 Esperar 'n8n' { (Invoke-WebRequest 'http://127.0.0.1:5678/healthz/readiness' -UseBasicParsing -TimeoutSec 5).StatusCode -eq 200 }
+# Credencial "Gmail account" vazia, com o mesmo id que os workflows do Gmail usam: depois é só colar o Client ID e o
+# Client Secret nela e conectar (GUIA-CONFIGURACAO.md), sem escolher a credencial em cada nó. Se já existe, fica como
+# está (reimportar apagaria a conexão com o Google).
+$idGmail = '6w8cHAuUwpPVa6tb'
+docker exec sigp_n8n sh -c "n8n export:credentials --id=$idGmail --output=/tmp/sigp_c.json >/dev/null 2>&1; r=`$?; rm -f /tmp/sigp_c.json; exit `$r" *> $null
+if ($LASTEXITCODE -ne 0) {
+  $vazia = Join-Path $env:TEMP "sigp_gmail_$PID.json"
+  [IO.File]::WriteAllText($vazia, "[{`"id`":`"$idGmail`",`"name`":`"Gmail account`",`"type`":`"gmailOAuth2`",`"data`":{`"clientId`":`"`",`"clientSecret`":`"`"}}]")
+  try {
+    docker cp $vazia sigp_n8n:/tmp/sigp_gmail.json | Out-Null
+    docker exec sigp_n8n n8n import:credentials --input=/tmp/sigp_gmail.json *> $null
+    if ($LASTEXITCODE -ne 0) { throw 'Não foi possível criar a credencial do Gmail no n8n.' }
+  } finally { Remove-Item $vazia -Force -ErrorAction SilentlyContinue; docker exec sigp_n8n rm -f /tmp/sigp_gmail.json *> $null }
+}
 $wfs = Get-ChildItem (Join-Path $raiz 'n8n\workflows') -Filter '*.json'
 foreach ($w in $wfs) {
   docker cp $w.FullName "sigp_n8n:/tmp/$($w.Name)" | Out-Null
   docker exec sigp_n8n n8n import:workflow --input="/tmp/$($w.Name)" *> $null
   if ($LASTEXITCODE -ne 0) { throw "Não foi possível importar $($w.Name)." }
 }
-# Só a IA acadêmica é publicada agora. Os do Gmail (WF-08, WF-09, WF-06, WF-99) precisam da conta Google conectada:
-# ver "Conectar o Gmail" no README. Publicar sem a credencial faria o n8n registrar erro a cada leitura.
-docker exec sigp_n8n n8n publish:workflow --id=R7lKILedIMV89Jay *> $null
+# Agora: a IA acadêmica e a leitura de fatura PDF da aba Faturas (não usam o Gmail). Os do Gmail (WF-08, WF-09, WF-06,
+# WF-99) precisam da conta Google conectada: depois de conectar, ligar-gmail.ps1 (GUIA-CONFIGURACAO.md). Publicar sem a
+# credencial faria o n8n registrar erro a cada leitura.
+foreach ($id in 'R7lKILedIMV89Jay', 'LNCrxFxvHfdDkqL2') {
+  docker exec sigp_n8n n8n publish:workflow --id=$id *> $null
+  if ($LASTEXITCODE -ne 0) { throw "Não foi possível publicar o workflow $id." }
+}
 docker restart sigp_n8n | Out-Null
 Esperar 'n8n' { (Invoke-WebRequest 'http://127.0.0.1:5678/healthz/readiness' -UseBasicParsing -TimeoutSec 5).StatusCode -eq 200 }
-Ok "$($wfs.Count) workflows importados; IA acadêmica publicada"
+Ok "$($wfs.Count) workflows importados; IA acadêmica e leitura de fatura PDF publicadas; credencial do Gmail pronta para conectar"
 
 Etapa 7 'API do SIGp e base fictícia'
 Esperar 'API do SIGp' { (Invoke-RestMethod 'http://127.0.0.1:5001/api/health' -TimeoutSec 5).status -eq 'ok' }
@@ -156,3 +174,4 @@ Write-Host '  n8n:                http://127.0.0.1:5678                 (entre c
 Write-Host '  IA acadêmica:       http://127.0.0.1:5010/health'
 Write-Host '  Demonstração:       pwsh -File docs/entrega-academica/demo-final.ps1'
 Write-Host '  Roteiro:            docs/entrega-academica/roteiro-apresentacao.md'
+Write-Host '  Configurar Gmail, alertas e notificações: docs/entrega-academica/GUIA-CONFIGURACAO.md'

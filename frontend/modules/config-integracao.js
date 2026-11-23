@@ -34,7 +34,7 @@
       },
     },
     modoEntrada: {
-      grupo: 'n8n', rotulo: 'Entrada de notas', tipo: 'opcoes', padrao: () => env().modoEntrada || 'n8n',
+      grupo: 'n8n', rotulo: 'Entrada de notas', tipo: 'opcoes', padrao: () => (['n8n', 'api'].includes(env().modoEntrada) ? env().modoEntrada : 'n8n'),  // SIGP_PUBLIC_MODO_ENTRADA; sem ela, n8n
       opcoes: [['n8n', 'Pelo n8n (igual à produção)'], ['api', 'Direto na API (contingência)']],
       ajuda: {
         oque: 'Por onde a nota lançada e a nota paga digitadas na tela entram.',

@@ -25,6 +25,9 @@ services:
       - SIGP_COFRE_CHAVE=${SIGP_COFRE_CHAVE:-}
       - SIGP_PUBLIC_API_URL=http://127.0.0.1:5001
       - SIGP_PUBLIC_N8N_URL=http://127.0.0.1:5678
+      # Assistente e painel da IA: o mesmo modelo local da triagem (instalação leve: qwen2.5:0.5b).
+      - SIGP_OLLAMA_URL=http://ollama:11434
+      - SIGP_OLLAMA_MODEL=${SIGP_OLLAMA_MODEL:-qwen2.5:3b}
     volumes:
       - ./backend/data:/app/backend/data
       - ./entrega:/app/entrega:ro
@@ -47,6 +50,8 @@ services:
     environment:
       SIGP_PUBLIC_API_URL: http://127.0.0.1:5001
       SIGP_PUBLIC_N8N_URL: http://127.0.0.1:5678
+      # O pacote não tem o WF-01/WF-02: a nota digitada na tela vai direto para a API.
+      SIGP_PUBLIC_MODO_ENTRADA: api
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://127.0.0.1/health"]
       interval: 30s
@@ -110,7 +115,12 @@ services:
       - SIGP_ACADEMIC_AI_KEY=${SIGP_AI_API_KEY:?Rode instalar.ps1 para gerar o .env}
       - SIGP_OLLAMA_URL=http://ollama:11434
       - SIGP_OLLAMA_MODEL=${SIGP_OLLAMA_MODEL:-qwen2.5:3b}
+      # Notificações opcionais (GUIA-CONFIGURACAO.md): ponha no .env e rode  docker compose up -d n8n
       - SIGP_RELATORIO_EMAIL=${SIGP_RELATORIO_EMAIL:-}
+      - SIGP_TELEGRAM_CHAT_ID=${SIGP_TELEGRAM_CHAT_ID:-}
+      - SIGP_WHATSAPP_URL=${SIGP_WHATSAPP_URL:-}
+      - SIGP_WHATSAPP_NUMERO=${SIGP_WHATSAPP_NUMERO:-}
+      - SIGP_WHATSAPP_APIKEY=${SIGP_WHATSAPP_APIKEY:-}
     volumes:
       - n8n_data:/home/node/.n8n
   sqlserver-academic:

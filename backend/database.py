@@ -944,7 +944,11 @@ CONFIRMACOES_PARA_DESCARTE = 3
 
 def _status_inicial(dados: Dict[str, Any]) -> str:
     """Triagem pela IA: ignorado vai para a fila própria; remetente já confirmado 3 vezes como "não é cobrança"
-    é descartado direto (reversível, sem revisão); o resto vai para a caixa."""
+    é descartado direto (reversível, sem revisão); o resto vai para a caixa.
+    Entrada manual (documento enviado pela tela): nunca some. Se a IA disser que não é cobrança, vai para Revisão
+    com o veredito à vista; o veredito continua gravado (o painel da IA conta o erro se a pessoa associar)."""
+    if dados.get("entradaManual"):
+        return "REVISAO" if dados.get("revisaoManual") or str(dados.get("decisaoIA") or "") == "ignorar" else "AGUARDANDO_ASSOCIACAO"
     if str(dados.get("decisaoIA") or "") == "ignorar":
         if (dados.get("triagem") or {}).get("autoDescarte"):
             return "DESCARTADA"
@@ -962,7 +966,10 @@ def save_nota_recebida(
     nome_arquivo: str,
     arquivo_storage: str,
     dados: Dict[str, Any],
+    etiqueta_status: str = "PENDENTE",
 ) -> tuple[Dict[str, Any], bool]:
+    """etiqueta_status: "PENDENTE" (veio do Gmail: o WF-09 etiqueta depois de associar) ou "SEM_EMAIL" (entrada manual:
+    não há mensagem para etiquetar; a etiqueta vai na cópia que chegar por e-mail)."""
     now = _now()
     item_id = f"nrec-{uuid4().hex}"
     if _status_inicial(dados) == "DESCARTADA" and not dados.get("descarte"):
@@ -994,7 +1001,7 @@ def save_nota_recebida(
                 item_id, message_id, attachment_id, thread_id, assunto, remetente, recebida_em,
                 nome_arquivo, arquivo_storage, json.dumps(dados, ensure_ascii=False),
                 _status_inicial(dados),
-                "PENDENTE", now, now,
+                etiqueta_status, now, now,
             ),
         )
         conn.commit()
@@ -1062,7 +1069,7 @@ def list_notas_recebidas(
         # Descartadas e ignoradas pela IA saem da caixa; ficam nos filtros próprios.
         conditions.append("status NOT IN ('DESCARTADA', 'IGNORADA_IA')")
     if etiqueta_pendente:
-        conditions.extend(("status = 'ASSOCIADA'", "etiqueta_status IN ('PENDENTE', 'ERRO')"))
+        conditions.extend(("status = 'ASSOCIADA'", "etiqueta_status IN ('PENDENTE', 'ERRO')", "gmail_message_id NOT LIKE 'manual-%'"))
     where = f"WHERE {' AND '.join(conditions)}" if conditions else ""
     conn = get_connection()
     rows = conn.execute(
@@ -1243,6 +1250,96 @@ _CAMPOS_LEITURA_PDF = (
 )
 
 
+PREFIXO_ENTRADA_MANUAL = "manual-"  # gmail_message_id das notas enviadas pela tela (não existe mensagem no Gmail)
+
+
+def _so_digitos(valor: Any) -> str:
+    return re.sub(r"\D", "", str(valor or ""))
+
+
+def _mesmo_documento(a: Dict[str, Any], b: Dict[str, Any]) -> str:
+    """Motivo se os dois dados descrevem a mesma fatura (chave; CNPJ do emissor + número; emissor + valor + vencimento)."""
+    chave_a, chave_b = _so_digitos(a.get("chave")), _so_digitos(b.get("chave"))
+    if len(chave_a) >= 44 and chave_a == chave_b:
+        return "mesma chave da nota"
+    numero_a, numero_b = str(a.get("numero") or "").strip(), str(b.get("numero") or "").strip()
+    cnpj_a, cnpj_b = _so_digitos(a.get("cnpjEmissor")), _so_digitos(b.get("cnpjEmissor"))
+    if numero_a and numero_a != VALOR_PADRAO and numero_a == numero_b and len(cnpj_a) == 14 and cnpj_a == cnpj_b:
+        return "mesmo emissor e mesmo número"
+    nome_a = re.sub(r"[^a-z0-9]", "", str(a.get("emissorNome") or "").lower())
+    nome_b = re.sub(r"[^a-z0-9]", "", str(b.get("emissorNome") or "").lower())
+    try:
+        valor_igual = abs(float(a.get("valorTotal")) - float(b.get("valorTotal"))) < 0.005
+    except (TypeError, ValueError):
+        valor_igual = False
+    venc_a, venc_b = str(a.get("dataVencimento") or "")[:10], str(b.get("dataVencimento") or "")[:10]
+    if nome_a and nome_a == nome_b and valor_igual and venc_a and venc_a == venc_b:
+        return "mesmo emissor, valor e vencimento"
+    return ""
+
+
+def vincular_entrada_manual(item_id: str) -> Optional[Dict[str, Any]]:
+    """Documento que chegou por e-mail: procura a entrada manual da mesma fatura e anota nas duas (a tela sugere juntar;
+    quem decide é a pessoa). Devolve a entrada manual encontrada, ou None."""
+    conn = get_connection()
+    try:
+        conn.execute("BEGIN IMMEDIATE")
+        row = conn.execute("SELECT * FROM notas_recebidas WHERE id = ?", (item_id,)).fetchone()
+        if not row or str(row["gmail_message_id"]).startswith(PREFIXO_ENTRADA_MANUAL):
+            conn.rollback()
+            return None
+        dados = json.loads(row["dados_json"] or "{}")
+        manuais = conn.execute(
+            "SELECT * FROM notas_recebidas WHERE gmail_message_id LIKE ? AND status != 'DESCARTADA' ORDER BY created_at DESC",
+            (PREFIXO_ENTRADA_MANUAL + "%",),
+        ).fetchall()
+        for manual in manuais:
+            dados_manual = json.loads(manual["dados_json"] or "{}")
+            if (dados_manual.get("chegouPorEmail") or {}).get("id") not in (None, item_id):
+                continue  # já casada com outro e-mail
+            motivo = _mesmo_documento(dados, dados_manual)
+            if not motivo:
+                continue
+            agora = _now()
+            dados["entradaManualCorrespondente"] = {
+                "id": manual["id"], "motivo": motivo, "em": agora,
+                "adicionadaEm": (dados_manual.get("entradaManual") or {}).get("em") or manual["created_at"],
+                "por": (dados_manual.get("entradaManual") or {}).get("usuario") or "",
+            }
+            dados_manual["chegouPorEmail"] = {"id": item_id, "motivo": motivo, "em": agora, "remetente": row["remetente"]}
+            conn.execute("UPDATE notas_recebidas SET dados_json = ?, updated_at = ? WHERE id = ?",
+                         (json.dumps(dados, ensure_ascii=False), agora, item_id))
+            conn.execute("UPDATE notas_recebidas SET dados_json = ?, updated_at = ? WHERE id = ?",
+                         (json.dumps(dados_manual, ensure_ascii=False), agora, manual["id"]))
+            conn.commit()
+            return _serialize_nota_recebida(manual)
+        conn.rollback()
+        return None
+    except sqlite3.Error:
+        conn.rollback()
+        raise
+    finally:
+        conn.close()
+
+
+def anotar_nota_recebida(item_id: str, campos: Dict[str, Any]) -> None:
+    """Junta campos aos dados da nota (ex.: o aviso de que a IA não foi chamada), sem mexer no status."""
+    conn = get_connection()
+    try:
+        conn.execute("BEGIN IMMEDIATE")
+        row = conn.execute("SELECT dados_json FROM notas_recebidas WHERE id = ?", (item_id,)).fetchone()
+        if row:
+            dados = {**json.loads(row["dados_json"] or "{}"), **campos}
+            conn.execute("UPDATE notas_recebidas SET dados_json = ?, updated_at = ? WHERE id = ?",
+                         (json.dumps(dados, ensure_ascii=False), _now(), item_id))
+        conn.commit()
+    except sqlite3.Error:
+        conn.rollback()
+        raise
+    finally:
+        conn.close()
+
+
 def atualizar_extracao_nota_recebida(item_id: str, campos: Dict[str, Any]) -> bool:
     """Grava a releitura do PDF numa nota ainda não associada nem descartada. Devolve True se gravou.
 
@@ -1400,7 +1497,8 @@ def associar_nota_recebida(
             """
             UPDATE notas_recebidas
             SET status = 'ASSOCIADA', entidade_tipo = ?, entidade_id = ?, etiqueta_gmail = ?,
-                etiqueta_status = 'PENDENTE', operador = ?, updated_at = ?
+                -- entrada manual: não há mensagem no Gmail para etiquetar
+                etiqueta_status = CASE WHEN gmail_message_id LIKE 'manual-%' THEN 'SEM_EMAIL' ELSE 'PENDENTE' END, operador = ?, updated_at = ?
             WHERE id = ?
             """,
             (entidade_tipo, entidade_id, etiqueta_gmail, operador, _now(), item_id),
@@ -1614,7 +1712,7 @@ def integrar_nota_recebida(
             """
             UPDATE notas_recebidas
             SET nota_disponivel_id = ?, nota_lancada_id = ?, status = 'ASSOCIADA', entidade_tipo = ?, entidade_id = ?,
-                dados_json = ?, etiqueta_gmail = ?, etiqueta_status = 'PENDENTE', etiqueta_erro = '',
+                dados_json = ?, etiqueta_gmail = ?, etiqueta_status = CASE WHEN gmail_message_id LIKE 'manual-%' THEN 'SEM_EMAIL' ELSE 'PENDENTE' END, etiqueta_erro = '',
                 operador = ?, updated_at = ?
             WHERE id = ?
             """,

@@ -19,4 +19,6 @@ Capturas de tela e PDFs sintéticos ficam em `out/` (ignorado pelo Git). Os dado
 
 No modo de entrada padrão, a interface envia notas pelo n8n (WF-01/02), e o n8n grava sempre na API **real**. Por isso `lib.js` força `sigp_modo_entrada = api` e bloqueia no navegador de teste qualquer chamada à porta 5001 e a webhooks do n8n que não sejam de extração (`sigp-faturas-pdf`). Não remova essa trava.
 
+Entrada manual (`entrada_manual_ui.js`): a API de teste precisa de `SIGP_N8N_ENTRADA_MANUAL_URL` apontando para um n8n descartável com o WF-10 publicado e `SIGP_API_URL=http://sigp_api_test:5001` (nunca o n8n do sistema, que grava na API real).
+
 Outras verificações: `nfse_local_provedor_ui.js`, `associar_provedor_ui.js`, `notas_recebidas_ui.js` e os scripts `verificar_*.ps1` (só API de teste).

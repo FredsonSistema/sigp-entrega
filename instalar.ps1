@@ -144,16 +144,16 @@ foreach ($w in $wfs) {
   docker exec sigp_n8n n8n import:workflow --input="/tmp/$($w.Name)" *> $null
   if ($LASTEXITCODE -ne 0) { throw "Não foi possível importar $($w.Name)." }
 }
-# Agora: a IA acadêmica e a leitura de fatura PDF da aba Faturas (não usam o Gmail). Os do Gmail (WF-08, WF-09, WF-06,
+# Agora: a IA acadêmica, a leitura de fatura PDF da aba Faturas e a entrada manual de notas (WF-10) (não usam o Gmail). Os do Gmail (WF-08, WF-09, WF-06,
 # WF-99) precisam da conta Google conectada: depois de conectar, ligar-gmail.ps1 (GUIA-CONFIGURACAO.md). Publicar sem a
 # credencial faria o n8n registrar erro a cada leitura.
-foreach ($id in 'R7lKILedIMV89Jay', 'LNCrxFxvHfdDkqL2') {
+foreach ($id in 'R7lKILedIMV89Jay', 'LNCrxFxvHfdDkqL2', 'sigpWF10EntradaMan') {
   docker exec sigp_n8n n8n publish:workflow --id=$id *> $null
   if ($LASTEXITCODE -ne 0) { throw "Não foi possível publicar o workflow $id." }
 }
 docker restart sigp_n8n | Out-Null
 Esperar 'n8n' { (Invoke-WebRequest 'http://127.0.0.1:5678/healthz/readiness' -UseBasicParsing -TimeoutSec 5).StatusCode -eq 200 }
-Ok "$($wfs.Count) workflows importados; IA acadêmica e leitura de fatura PDF publicadas; credencial do Gmail pronta para conectar"
+Ok "$($wfs.Count) workflows importados; IA acadêmica, leitura de fatura PDF e entrada manual publicadas; credencial do Gmail pronta para conectar"
 
 Etapa 7 'API do SIGp e base fictícia'
 Esperar 'API do SIGp' { (Invoke-RestMethod 'http://127.0.0.1:5001/api/health' -TimeoutSec 5).status -eq 'ok' }

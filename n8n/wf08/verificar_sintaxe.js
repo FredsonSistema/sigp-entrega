@@ -1,4 +1,4 @@
-// Confere a sintaxe dos nós Code do WF-08 gerado.
+// Confere a sintaxe dos nós Code do WF-08 gerado (serve também para o WF-10: copie-o para /tmp/wf08.json).
 // Uso (PowerShell, na raiz do projeto):
 //   docker cp n8n_workflow_wf08_gmail_inbox.json sigp_n8n:/tmp/wf08.json
 //   Get-Content n8n\wf08\verificar_sintaxe.js -Raw | docker exec -i sigp_n8n node
@@ -22,7 +22,7 @@ for (const [origem, saida] of Object.entries(wf.connections)) {
     if (!nomes.has(alvo.node)) { erros += 1; console.log('ERRO: conexão para nó inexistente', alvo.node); }
   }
 }
-const semEntrada = wf.nodes.filter((n) => !/trigger/i.test(n.type)
+const semEntrada = wf.nodes.filter((n) => !/trigger|\.webhook$/i.test(n.type)  // webhook também é gatilho (WF-10)
   && !Object.values(wf.connections).some((s) => s.main.some((r) => (r || []).some((a) => a.node === n.name))));
 for (const n of semEntrada) { erros += 1; console.log('ERRO: nó sem entrada', n.name); }
 console.log(erros ? `${erros} problema(s)` : `workflow ok: ${wf.nodes.length} nós`);

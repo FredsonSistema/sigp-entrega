@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import base64
 import hmac
 import json
 import urllib.request
@@ -46,7 +47,7 @@ from backend.database import (
     integrar_nota_recebida, list_notas_recebidas, get_nota_recebida_por_gmail, atualizar_extracao_nota_recebida,
     link_fatura_local, list_locais, list_nota_lancadas, list_nota_pagas, log_event, save_analise, save_conciliacao, save_fatura_local,
     save_app_state, save_fatura_provedor, save_nota_lancada, save_nota_paga, save_nota_recebida, sync_locais,
-    delete_app_state,
+    delete_app_state, anotar_nota_recebida, vincular_entrada_manual, PREFIXO_ENTRADA_MANUAL,
 )
 from backend.dashboard import ELIGIBLE_PAYMENT_STATUSES, build_sig_summary, default_period
 from backend.executive import build_sie_summary, validacao_por_nota
@@ -73,6 +74,9 @@ FATURAS_DIR.mkdir(parents=True, exist_ok=True)
 NOTAS_RECEBIDAS_DIR = Path(__file__).resolve().parent / "data" / "notas_recebidas"
 NOTAS_RECEBIDAS_DIR.mkdir(parents=True, exist_ok=True)
 OCR_URL = os.environ.get("SIGP_OCR_URL", "http://ocr:5002/extract").strip()
+# Entrada manual (documento enviado pela tela): o WF-10 do n8n faz a mesma leitura, regras e IA de um e-mail.
+# Vazio = não chama o n8n (o documento fica na caixa; "Extrair dados do PDF" lê pelo SIGp).
+N8N_ENTRADA_MANUAL_URL = os.environ.get("SIGP_N8N_ENTRADA_MANUAL_URL", "http://n8n:5678/webhook/sigp-entrada-manual").strip()
 OCR_TIMEOUT_SECONDS = 180
 init_db()
 
@@ -1273,6 +1277,18 @@ def _serialize_nota_recebida_api(item: Dict[str, Any]) -> Dict[str, Any]:
     )
     if ((item.get("dados") or {}).get("xmlArquivo") or {}).get("storage"):
         result["xmlUrl"] = f"/api/notas-recebidas/{item['id']}/xml"
+    # Entrada manual (enviada pela tela, sem e-mail) e, no documento que chegou por e-mail, a entrada manual da mesma
+    # fatura, com o local dela (a tela já traz esse local selecionado; a pessoa confirma).
+    result["origemManual"] = str(item.get("gmail_message_id") or "").startswith(PREFIXO_ENTRADA_MANUAL)
+    correspondente = dados_item.get("entradaManualCorrespondente") or {}
+    if correspondente.get("id"):
+        manual = get_nota_recebida(str(correspondente["id"]))
+        if manual:
+            result["correspondenteManual"] = {
+                "id": manual["id"], "status": manual.get("status") or "", "entidadeTipo": manual.get("entidade_tipo") or "",
+                "entidadeId": manual.get("entidade_id") or "", "adicionadaEm": correspondente.get("adicionadaEm") or "",
+                "por": correspondente.get("por") or "", "motivo": correspondente.get("motivo") or "",
+            }
     if item.get("entidade_id"):
         local = _locais_da_requisicao()["por_id"].get(str(item["entidade_id"])) or get_local(str(item["entidade_id"]))
         result["local"] = local
@@ -1827,6 +1843,126 @@ def registrar_aviso_sem_anexo():
     return jsonify({"ok": True, "acao": acao, "evento": evento, "item": _serialize_nota_recebida_api(item)}), 201 if created else 200
 
 
+def _avisar_n8n_entrada_manual(item_id: str) -> tuple[bool, str]:
+    """Pede ao WF-10 que trate o documento como um e-mail (leitura, regras e IA). Não espera a IA: o n8n responde
+    ao receber e grava o resultado depois, pela mesma rota da importação."""
+    if not N8N_ENTRADA_MANUAL_URL:
+        return False, "Leitura pela IA desligada nesta instalação (SIGP_N8N_ENTRADA_MANUAL_URL vazia)."
+    pedido = Request(
+        N8N_ENTRADA_MANUAL_URL, data=json.dumps({"notaRecebidaId": item_id}).encode("utf-8"), method="POST",
+        headers={"Content-Type": "application/json", "X-API-Key": API_KEY},
+    )
+    try:
+        with urlopen(pedido, timeout=10) as resposta:
+            return 200 <= resposta.status < 300, ""
+    except HTTPError as exc:
+        return False, f"o n8n respondeu HTTP {exc.code}"
+    except (URLError, TimeoutError, OSError) as exc:
+        return False, f"o n8n não respondeu ({exc})"[:200]
+
+
+@app.post("/api/notas-recebidas/manual")
+def adicionar_nota_manual_route():
+    """Documento que ainda não chega por e-mail: a fatura PDF, o XML da nota ou os dois, enviados pela tela.
+    Entra na mesma caixa e passa pela mesma leitura e IA do e-mail (WF-10), sem etiqueta no Gmail."""
+    pdf = request.files.get("pdf")
+    xml = request.files.get("xml")
+    tem_pdf, tem_xml = bool(pdf and pdf.filename), bool(xml and xml.filename)
+    if not tem_pdf and not tem_xml:
+        return jsonify({"ok": False, "error": "Escolha a fatura em PDF, o XML da nota fiscal ou os dois."}), 400
+    observacao = re.sub(r"\s+", " ", str(request.form.get("observacao") or "")).strip()[:500]
+    conteudo_pdf = b""
+    nome_pdf = ""
+    if tem_pdf:
+        nome_pdf = secure_filename(Path(pdf.filename).name) or "fatura.pdf"
+        if not nome_pdf.lower().endswith(".pdf"):
+            return jsonify({"ok": False, "error": "A fatura precisa ser um arquivo .pdf."}), 400
+        conteudo_pdf = pdf.stream.read(MAX_FATURA_SIZE + 1)
+        if len(conteudo_pdf) > MAX_FATURA_SIZE:
+            return jsonify({"ok": False, "error": "O PDF excede o limite de 15 MiB."}), 413
+        if not conteudo_pdf.startswith(b"%PDF-"):
+            return jsonify({"ok": False, "error": "O arquivo escolhido não é um PDF válido."}), 400
+    xml_texto = ""
+    nome_xml = ""
+    if tem_xml:
+        nome_xml = secure_filename(Path(xml.filename).name) or "nota-fiscal.xml"
+        if not nome_xml.lower().endswith(".xml"):
+            return jsonify({"ok": False, "error": "O XML da nota precisa ser um arquivo .xml."}), 400
+        xml_texto = xml.stream.read(2 * 1024 * 1024 + 1).decode("utf-8", errors="replace")
+        erro_xml = _validar_xml_nota(xml_texto)
+        if erro_xml:
+            return jsonify({"ok": False, "error": erro_xml}), 400
+    usuario = _autor("")
+    agora = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    dados: Dict[str, Any] = {
+        "entradaManual": {"usuario": usuario, "em": agora, "observacao": observacao},
+        "aguardandoIA": True,
+    }
+    gravados: List[Path] = []
+    if tem_pdf:
+        storage = f"{uuid4().hex}.pdf"
+        (NOTAS_RECEBIDAS_DIR / storage).write_bytes(conteudo_pdf)
+        gravados.append(NOTAS_RECEBIDAS_DIR / storage)
+        nome_arquivo = nome_pdf
+        if tem_xml:
+            xml_storage = f"{uuid4().hex}.xml"
+            (NOTAS_RECEBIDAS_DIR / xml_storage).write_bytes(xml_texto.encode("utf-8"))
+            gravados.append(NOTAS_RECEBIDAS_DIR / xml_storage)
+            dados["xmlArquivo"] = {"storage": xml_storage, "nome": nome_xml[:255], "tamanho": len(xml_texto.encode("utf-8"))}
+    else:
+        # Só o XML: igual à mensagem só com XML (fica em Revisão até a fatura PDF chegar).
+        storage = f"{uuid4().hex}.xml"
+        (NOTAS_RECEBIDAS_DIR / storage).write_bytes(xml_texto.encode("utf-8"))
+        gravados.append(NOTAS_RECEBIDAS_DIR / storage)
+        nome_arquivo = nome_xml
+        dados.update({"xmlArquivo": {"storage": storage, "nome": nome_xml[:255], "tamanho": len(xml_texto.encode("utf-8"))},
+                      "semPdf": True, "revisaoManual": True, "camposParaRevisar": ["faturaPdf"]})
+    try:
+        item, _ = save_nota_recebida(
+            message_id=f"{PREFIXO_ENTRADA_MANUAL}{uuid4().hex}", attachment_id="manual", thread_id="",
+            assunto=f"Entrada manual: {nome_arquivo}"[:500], remetente=f"Entrada manual ({usuario or 'tela'})"[:500],
+            recebida_em=agora, nome_arquivo=nome_arquivo, arquivo_storage=storage, dados=dados, etiqueta_status="SEM_EMAIL",
+        )
+    except sqlite3.Error:
+        for caminho in gravados:
+            caminho.unlink(missing_ok=True)
+        raise
+    log_event("nota_recebida_importada", {"notaRecebidaId": item["id"], "origem": "manual", "usuario": usuario})
+    avisada, erro = _avisar_n8n_entrada_manual(item["id"])
+    if not avisada:
+        anotar_nota_recebida(item["id"], {"aguardandoIA": False, "iaNaoChamada": erro})
+        item = get_nota_recebida(item["id"]) or item
+    return jsonify({"ok": True, "item": _serialize_nota_recebida_api(item), "iaAvisada": avisada,
+                    "aviso": "" if avisada else f"A IA não foi chamada: {erro} O documento está na caixa; use “Extrair dados do PDF”."}), 201
+
+
+@app.get("/api/notas-recebidas/<item_id>/entrada-manual")
+def entrada_manual_para_n8n_route(item_id: str):
+    """Para o WF-10: o documento enviado pela tela, no mesmo formato que o WF-08 monta de um anexo de e-mail."""
+    item = get_nota_recebida(item_id)
+    if not item or not str(item.get("gmail_message_id") or "").startswith(PREFIXO_ENTRADA_MANUAL):
+        return jsonify({"ok": False, "error": "Entrada manual não encontrada."}), 404
+    dados = item.get("dados") or {}
+    arquivo = NOTAS_RECEBIDAS_DIR / Path(str(item.get("arquivo_storage") or "")).name
+    if not arquivo.is_file():
+        return jsonify({"ok": False, "error": "O arquivo desta entrada manual não foi encontrado."}), 404
+    so_xml = arquivo.suffix.lower() == ".xml"
+    xml_info = dados.get("xmlArquivo") or {}
+    xml_path = NOTAS_RECEBIDAS_DIR / Path(str(xml_info.get("storage") or "")).name
+    xml_texto = xml_path.read_text(encoding="utf-8", errors="replace") if xml_info.get("storage") and xml_path.is_file() else ""
+    return jsonify({
+        "ok": True, "notaRecebidaId": item["id"],
+        "gmailMessageId": item["gmail_message_id"], "gmailAttachmentId": item["gmail_attachment_id"],
+        "assunto": item.get("assunto") or "", "remetente": item.get("remetente") or "", "recebidaEm": item.get("recebida_em") or "",
+        # A observação de quem enviou faz o papel do corpo do e-mail para a IA.
+        "corpo": str((dados.get("entradaManual") or {}).get("observacao") or ""),
+        "nomeArquivo": item.get("nome_arquivo") or "", "soXml": so_xml,
+        "mimeType": "application/xml" if so_xml else "application/pdf",
+        "arquivoBase64": base64.b64encode(arquivo.read_bytes()).decode("ascii"),
+        "xmlTexto": xml_texto, "xmlNomeArquivo": str(xml_info.get("nome") or ""),
+    })
+
+
 @app.post("/api/notas-recebidas")
 def importar_nota_recebida():
     message_id = str(request.form.get("gmailMessageId") or "").strip()
@@ -1884,6 +2020,16 @@ def importar_nota_recebida():
 
     anterior = get_nota_recebida_por_gmail(message_id, attachment_id)
     xml_anterior = Path(str(((anterior or {}).get("dados") or {}).get("xmlArquivo", {}).get("storage") or "")).name
+    entrada_manual = message_id.startswith(PREFIXO_ENTRADA_MANUAL)
+    if entrada_manual:
+        # Só o WF-10 grava com esse prefixo, e só por cima de uma entrada que a tela criou.
+        if not anterior:
+            return jsonify({"ok": False, "error": "Entrada manual não encontrada."}), 404
+        dados_anteriores = anterior.get("dados") or {}
+        extracted["entradaManual"] = dados_anteriores.get("entradaManual") or {"usuario": "", "em": ""}
+        extracted["iaProcessadaEm"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
+        if dados_anteriores.get("chegouPorEmail"):
+            extracted["chegouPorEmail"] = dados_anteriores["chegouPorEmail"]
     storage_name = f"{uuid4().hex}.{'xml' if so_xml else 'pdf'}"
     storage_path = NOTAS_RECEBIDAS_DIR / storage_name
     arquivo.save(storage_path)
@@ -1931,6 +2077,9 @@ def importar_nota_recebida():
             (NOTAS_RECEBIDAS_DIR / xml_anterior).unlink(missing_ok=True)
     else:
         log_event("nota_recebida_importada", {"notaRecebidaId": item["id"], "origem": "gmail"})
+        # A mesma fatura já tinha entrado à mão pela tela: anota nas duas (a tela sugere o mesmo local; a pessoa decide).
+        if not entrada_manual and vincular_entrada_manual(item["id"]):
+            item = get_nota_recebida(item["id"]) or item
     atualizada = not created and item.get("dados") == extracted
     item = _processar_aviso(item, corpo=str(request.form.get("corpo") or ""))
     return jsonify({

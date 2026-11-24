@@ -1509,6 +1509,25 @@
       <div id="notasRecebidasStatus" class="hint" role="status" aria-live="polite"></div>
       <div id="notasRecebidasTriagem" aria-live="polite"></div>
     </div>
+    <div class="nfse-card" style="margin-top:16px" id="notasRecebidasManual" hidden>
+      <div class="nfse-header"><div><span class="section-label">Sem e-mail</span><h3>Adicionar documento</h3></div></div>
+      <p class="hint">Para o provedor que ainda não manda a fatura por e-mail. O documento passa pela mesma leitura e IA do e-mail e entra nesta caixa: você confere o local sugerido e associa. Não há etiqueta no Gmail; quando a mesma fatura chegar por e-mail, ela já vem com o local desta e recebe a etiqueta ao ser associada.</p>
+      <div class="nfse-grid">
+        <label>Fatura (PDF)
+          <input class="f" type="file" id="nrManualPdf" accept="application/pdf,.pdf">
+        </label>
+        <label>XML da nota fiscal (opcional)
+          <input class="f" type="file" id="nrManualXml" accept=".xml,application/xml,text/xml">
+        </label>
+        <label>Observação (opcional, a IA lê)
+          <input class="f" type="text" id="nrManualObs" maxlength="500" placeholder="Ex.: entregue no balcão; provedor sem e-mail">
+        </label>
+      </div>
+      <div class="task-add-row">
+        <button class="primary small" type="button" id="nrManualEnviar">Enviar para a IA</button>
+        <span class="hint" id="nrManualStatus" role="status" aria-live="polite"></span>
+      </div>
+    </div>
     <div class="nfse-card" style="margin-top:16px">
       <div class="section-label">Documentos</div>
       <div id="notasRecebidasLista"><div class="dash-empty">Carregando notas recebidas…</div></div>
@@ -2114,7 +2133,7 @@
 <script src="frontend/modules/analysis-dispatcher.js?v=20261010-manual-analysis"></script>
 <script src="frontend/modules/notas-locais.js?v=20261120-disp"></script>
 <script src="frontend/modules/faturas-provedores.js?v=20261120-disp"></script>
-<script src="frontend/modules/notas-recebidas.js?v=20261120-modal"></script>
+<script src="frontend/modules/notas-recebidas.js?v=20261124-manual"></script>
 <script src="frontend/modules/painel-ia.js?v=20261114"></script>
 <script src="frontend/modules/assistente.js?v=20261117e"></script>
 <script src="frontend/modules/webhook-client.js"></script>

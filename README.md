@@ -85,7 +85,8 @@ Pode rodar de novo: o que já existe é mantido. Opções: `-ModeloTriagem qwen2
 
 1. **Tela:** clique no atalho **SIGp** (ou abra http://127.0.0.1:8000/agencias.html) e entre com o usuário e a senha que
    você criou. Em **Notas recebidas** estão as 3 faturas fictícias: associe cada uma ao local e ao provedor e veja a
-   comparação com o contrato.
+   comparação com o contrato. Fatura que não chega por e-mail: **Adicionar documento** (PDF e/ou XML), que passa pela
+   mesma leitura e IA do e-mail (WF-10).
 2. **IA acadêmica:** `POST http://127.0.0.1:5678/webhook/sigp-academic-ai` com a fatura no corpo, por exemplo
    `{"provider":"Conecta Alfa Fictícia","description":"IP adicional mensal","amount":"35.00"}`. Resposta: decisão da regra,
    fontes do contrato, sugestão do modelo e `automatic_payment: false`.

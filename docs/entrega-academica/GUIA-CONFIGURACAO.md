@@ -38,6 +38,7 @@ WF-01/WF-02 do sistema completo.
 |---|---|---|
 | `POST http://127.0.0.1:5678/webhook/sigp-academic-ai` | SIGp Acadêmico - RAG e Análise | o n8n envia `X-API-Key` (= `SIGP_AI_API_KEY`) à IA |
 | `POST http://127.0.0.1:5678/webhook/sigp-faturas-pdf` | Extrair fatura PDF (aba Faturas) | o n8n chama a API com `SIGP_API_KEY` |
+| `POST http://n8n:5678/webhook/sigp-entrada-manual` (só dentro do Docker) | WF-10 Entrada manual de notas | a API envia `X-API-Key` (= `SIGP_API_KEY`); sem ela, o WF-10 recusa |
 
 ### Chaves e senhas (geradas na sua máquina, nunca mostradas)
 
@@ -110,6 +111,15 @@ rode `ligar-gmail.ps1` de novo.
 - **Alertas por e-mail:** quem recebe o resumo diário das contas que vencem, vencidas e não recebidas (WF-06, enviado pelo
   mesmo Gmail). Um ou mais e-mails.
 
+### Fatura que ainda não chega por e-mail
+
+Em **Financeiro › Notas recebidas › Adicionar documento**, envie a fatura em PDF, o XML da nota ou os dois (com uma
+observação opcional, que a IA lê). O WF-10 faz a mesma leitura, regras e IA do e-mail (cerca de 1 a 2 minutos) e o
+documento aparece na caixa com o selo **Manual** e o local sugerido; você confere e associa. Não há etiqueta no Gmail. Se
+a IA achar que não é cobrança, o documento fica em **Revisão** (não some). Quando a mesma fatura chegar por e-mail (mesma
+chave; ou mesmo CNPJ e número; ou mesmo emissor, valor e vencimento), o cartão do e-mail avisa e já traz o local da
+entrada manual selecionado: valide para juntar à mesma cobrança e aplicar a etiqueta. Quem pode: quem pode associar notas.
+
 ## 5. Outras pessoas e integrações (na tela, Configurações)
 
 - **Usuários e integrações:** **pessoas** entram com usuário e senha. Quem cria a pessoa recebe uma senha temporária
@@ -161,7 +171,7 @@ Depois de mudar o `.env`, rode `docker compose up -d n8n` (ou `ocr`) para o serv
 | IA acadêmica | http://127.0.0.1:5010/health | `"status": "ok"` |
 | Login | tela do SIGp | entra com seu usuário e senha |
 | Gmail | n8n › Credentials › Gmail account | "Account connected" |
-| Fluxos | `docker exec sigp_n8n n8n list:workflow --active=true` | WF-08, WF-09, WF-06, WF-99, IA acadêmica e Extrair fatura PDF |
+| Fluxos | `docker exec sigp_n8n n8n list:workflow --active=true` | WF-08, WF-09, WF-06, WF-99, WF-10, IA acadêmica e Extrair fatura PDF |
 | Faturas | e-mail de teste de um remetente cadastrado | aparece em Notas recebidas em até 5 min |
 | Assistente | Análise › Assistente: "Quantas agências estão em atraso?" | resposta com os números da base |
 

@@ -303,6 +303,60 @@
     </div>`;
   }
 
+  // Entrada manual: quem enviou, a observação, a IA (aguardando / não chamada / disse que não é cobrança) e a cópia que
+  // chegou por e-mail. No documento do e-mail: a entrada manual da mesma fatura e o local dela já selecionado.
+  function manualBlock(item, data) {
+    const avisos = [];
+    if (item.origemManual) {
+      const m = data.entradaManual || {};
+      avisos.push(`Enviado pela tela${m.usuario ? ` por ${escapeHtml(m.usuario)}` : ''} em ${escapeHtml(formatDate(m.em || item.created_at))}${m.observacao ? ` · “${escapeHtml(m.observacao)}”` : ''}. Sem e-mail, sem etiqueta no Gmail.`);
+      if (data.aguardandoIA) avisos.push('A IA está lendo o documento (cerca de 1 minuto). Use “Atualizar” para ver o resultado.');
+      if (data.iaNaoChamada) avisos.push(`A IA não foi chamada (${escapeHtml(data.iaNaoChamada)}). Use “Extrair dados do PDF”.`);
+      if (data.decisaoIA === 'ignorar') avisos.push(`A IA achou que não é cobrança${data.triagem?.motivo ? ` (${escapeHtml(data.triagem.motivo)})` : ''}. Como foi enviado à mão, ficou em Revisão: se for cobrança, associe e a IA aprende.`);
+      if (data.chegouPorEmail?.id) avisos.push(`A mesma fatura chegou por e-mail (${escapeHtml(data.chegouPorEmail.motivo || '')}). Associe a cópia do e-mail ao mesmo local para ela receber a etiqueta.`);
+    }
+    const c = item.correspondenteManual;
+    if (c) {
+      const quando = `${escapeHtml(formatDate(c.adicionadaEm))}${c.por ? ` por ${escapeHtml(c.por)}` : ''}`;
+      avisos.push(c.status === 'ASSOCIADA' && c.entidadeId
+        ? `Esta fatura já tinha sido adicionada à mão em ${quando} (${escapeHtml(c.motivo)}). O local dela já está selecionado: confira e valide para juntar à mesma cobrança e aplicar a etiqueta no Gmail.`
+        : `Esta fatura já foi adicionada à mão em ${quando} (${escapeHtml(c.motivo)}) e ainda não foi associada. Associe esta cópia do e-mail e descarte a entrada manual como duplicada.`);
+    }
+    return avisos.length ? `<div class="nr-aviso" role="note" data-role="manual">${avisos.map((a) => `<div>${a}</div>`).join('')}</div>` : '';
+  }
+
+  function podeAdicionar() {
+    const eu = window.SIGP_ACESSO;
+    return !eu || eu.perfil === 'administrador' || (eu.permissoes || []).includes('notas_recebidas.associar');
+  }
+
+  async function enviarManual() {
+    const pdf = byId('nrManualPdf').files[0];
+    const xml = byId('nrManualXml').files[0];
+    const status = byId('nrManualStatus');
+    if (!pdf && !xml) { status.textContent = 'Escolha a fatura em PDF, o XML da nota ou os dois.'; return; }
+    const form = new FormData();
+    if (pdf) form.append('pdf', pdf, pdf.name);
+    if (xml) form.append('xml', xml, xml.name);
+    form.append('observacao', byId('nrManualObs').value || '');
+    const botao = byId('nrManualEnviar');
+    botao.disabled = true;
+    status.textContent = 'Enviando…';
+    try {
+      const r = await request('/api/notas-recebidas/manual', { method: 'POST', body: form });
+      ['nrManualPdf', 'nrManualXml', 'nrManualObs'].forEach((id) => { byId(id).value = ''; });
+      status.textContent = r.iaAvisada
+        ? 'Recebido. A IA está lendo o documento; em cerca de 1 minuto ele aparece com os dados e o local sugerido.'
+        : r.aviso;
+      await renderTab(true);
+      if (r.iaAvisada) setTimeout(() => renderTab(true), 60000);
+    } catch (error) {
+      status.textContent = error.message;
+    } finally {
+      botao.disabled = false;
+    }
+  }
+
   function disclosure(noteId, key, title, body, defaultOpen) {
     const saved = discState.get(`${noteId}:${key}`);
     const open = saved === undefined ? defaultOpen : saved;
@@ -324,14 +378,15 @@
       ? `${TYPE_LABELS[item.entidade_tipo] || item.entidade_tipo}: ${item.local.nome}${item.local.cidade ? ` — ${item.local.cidade}` : ''}`
       : '';
     const newLocationForItem = selectedNewLocation?.noteId === item.id ? selectedNewLocation.local : null;
+    const doManual = item.correspondenteManual?.entidadeId ? item.correspondenteManual : null;
     const selectedLocation = newLocationForItem
       && (!item.entidade_tipo || newLocationForItem.tipo === item.entidade_tipo)
       ? newLocationForItem.id
-      : item.entidade_id || suggested?.id || '';
+      : item.entidade_id || doManual?.entidadeId || suggested?.id || '';
     const selectedType = newLocationForItem
       && (!item.entidade_tipo || newLocationForItem.tipo === item.entidade_tipo)
       ? newLocationForItem.tipo
-      : item.entidade_tipo || suggested?.tipo || 'agencia';
+      : item.entidade_tipo || doManual?.entidadeTipo || suggested?.tipo || 'agencia';
     const auth = (() => {
       try { return ({ user: window.SIGP_LOGIN?.usuarioAtual?.() || '' }); } catch { return {}; }
     })();
@@ -443,15 +498,15 @@
 
     const docTipo = data.semPdf ? 'XML' : 'PDF';
     const arquivosCard = `<section class="nr-card">
-        <h5 class="nr-card-t">Arquivos e e-mail</h5>
-        ${item.status === 'ASSOCIADA' ? `<div class="hint">Etiqueta Gmail: ${escapeHtml(item.etiqueta_gmail || 'aguardando')} · ${escapeHtml(item.etiqueta_status || 'pendente')}</div>
+        <h5 class="nr-card-t">${item.origemManual ? 'Arquivos' : 'Arquivos e e-mail'}</h5>
+        ${item.status === 'ASSOCIADA' ? `<div class="hint">${item.origemManual ? 'Sem etiqueta no Gmail: o documento foi enviado pela tela.' : `Etiqueta Gmail: ${escapeHtml(item.etiqueta_gmail || 'aguardando')} · ${escapeHtml(item.etiqueta_status || 'pendente')}`}</div>
           ${item.notaDisponivelId ? `<div class="hint">Nota disponível no local: ${escapeHtml(item.notaDisponivelId)}${item.notaLancadaId ? ` · lançada pelo financeiro: ${escapeHtml(item.notaLancadaId)}` : ' · aguardando o lançamento do financeiro'}</div>` : ''}
           ${item.etiqueta_erro ? `<div class="hint" role="alert">Falha ao organizar no Gmail: ${escapeHtml(item.etiqueta_erro)}</div>` : ''}` : ''}
         ${data.semArquivo ? `<div class="hint">E-mail sem anexo. Trecho: ${escapeHtml(data.descricaoServico || '—')}</div>` : `
         <div class="nr-anexo">
           <span class="nr-anexo-ico${data.semPdf ? ' nr-anexo-ico--xml' : ''}" aria-hidden="true">${docTipo}</span>
           <span class="nr-anexo-info"><span class="nr-anexo-nome" title="${escapeHtml(item.nome_arquivo)}">${escapeHtml(item.nome_arquivo)}</span>
-            <span class="nr-anexo-meta">Documento original · anexo do e-mail${item.xmlUrl && !data.semPdf ? ' · com XML da nota' : ''}</span></span>
+            <span class="nr-anexo-meta">Documento original · ${item.origemManual ? 'enviado pela tela' : 'anexo do e-mail'}${item.xmlUrl && !data.semPdf ? ' · com XML da nota' : ''}</span></span>
         </div>
         <div class="nr-anexo-acoes">
           <a class="note-file" href="${escapeHtml(backendUrl() + item.downloadUrl)}" target="_blank" rel="noopener">${data.semPdf ? 'Abrir XML' : 'Abrir / imprimir PDF'}</a>
@@ -485,6 +540,7 @@
           <span class="nr-acc-main"><span class="nr-acc-title">${escapeHtml(issuer)}</span><span class="nr-acc-sub">${escapeHtml(item.assunto || item.nome_arquivo)}</span></span>
           <span class="nr-acc-meta">${escapeHtml(formatMoney(data.valorTotal))}<br>venc. ${escapeHtml(shortDate(data.dataVencimento))}</span>
           <span class="nr-acc-meta">${escapeHtml(formatDate(item.recebida_em || item.created_at))}</span>
+          ${item.origemManual ? `<span class="nr-badge" data-role="manual-badge" title="Enviado pela tela, sem e-mail">${data.aguardandoIA ? 'Manual · aguardando a IA' : 'Manual'}</span>` : ''}
           ${badge(item, aval)}
           <span class="nr-acc-icon" aria-hidden="true"></span>
         </button>
@@ -507,6 +563,7 @@
           <div class="nr-m-corpo">
             <div class="nr-m-esq">
               ${formularios}
+              ${manualBlock(item, data)}
               ${ignored ? triageBlock(data) : ''}
               ${avisoBlock(data)}
               ${item.status === 'DESCARTADA' ? `<div class="nr-aviso" role="note">Descartada: ${escapeHtml(DISCARD_REASONS[data.descarte?.motivo] || data.descarte?.motivo || '—')}${data.descarte?.detalhe ? ` · ${escapeHtml(data.descarte.detalhe)}` : ''}${data.descarte?.operador ? ` · por ${escapeHtml(data.descarte.operador)}` : ''}</div>` : ''}
@@ -605,6 +662,8 @@
     const list = byId('notasRecebidasLista');
     if (!list) return;
     const seq = ++renderSeq;
+    const manual = byId('notasRecebidasManual');
+    if (manual) manual.hidden = !podeAdicionar();  // a API confere de novo (permissão de associar notas)
     list.innerHTML = '<div class="dash-empty">Carregando notas recebidas…</div>';
     if (!preserveStatus) byId('notasRecebidasStatus').textContent = '';
     try {
@@ -1022,6 +1081,7 @@
     }
   });
   byId('notaRecebidaCriarLocal').addEventListener('click', createLocation);
+  byId('nrManualEnviar')?.addEventListener('click', enviarManual);
   byId('notasRecebidasLista').addEventListener('change', (event) => {
     const card = event.target.closest('[data-note-id]');
     if (!card) return;

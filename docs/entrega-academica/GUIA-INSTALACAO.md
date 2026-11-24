@@ -108,6 +108,7 @@ Rodar o mesmo comando de novo é seguro: o que já foi feito é mantido.
 | "A virtualização está desligada na BIOS/UEFI" | Opção desligada no computador | Ligue "Intel VT-x"/"Virtualization Technology" ou "AMD-V/SVM" na BIOS e rode de novo |
 | A instalação não continuou depois de reiniciar | Entrou com outro usuário do Windows | Entre com o mesmo usuário e rode o comando de novo |
 | "O Docker não ligou em 10 minutos" | Primeira partida lenta ou WSL desatualizado | Abra o Docker Desktop, espere "Engine running" e rode de novo; se não ligar, `wsl --update` |
+| "failed to copy", "connection reset by peer" ou "i/o timeout" durante o download (às vezes com `...:3128`, o proxy interno do Docker) | A rede caiu no meio de um download grande (a imagem do Ollama tem 3,4 GB) | O instalador já tenta 5 vezes, continuando de onde parou. Se mesmo assim parar, rode o mesmo comando de novo. Se cair sempre, a rede (Wi-Fi instável, rede corporativa, proxy ou firewall) corta downloads longos: use outra rede (o roteador do celular serve) ou configure o proxy em Docker Desktop › Settings › Resources › Proxies |
 | "port is already allocated" | Outro programa usa 5001, 5010, 5678, 8000 ou 14333 | `Get-NetTCPConnection -LocalPort 5678` mostra qual; feche o programa ou pare o outro container |
 | Container reinicia sozinho ou sai com código 137 | Pouca memória | Feche programas pesados; no Docker Desktop › Settings › Resources, deixe pelo menos 6 GB |
 | Pulou a criação do acesso (ou fechou a janela) | — | Na pasta da instalação: `pwsh -File primeiro-acesso.ps1` |

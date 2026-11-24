@@ -151,7 +151,7 @@ Ok "pacote em $pasta"
 if ($env:SIGP_SO_BAIXAR -eq '1') { Info 'SIGP_SO_BAIXAR=1: parei antes de instalar.'; return }
 
 # 5. O instalador do pacote (chaves, containers, banco, modelos, workflows, base fictícia e o seu acesso)
-Passo 5 'Instalando o SIGp (a primeira vez baixa uns 6 GB: de 15 a 40 minutos)'
+Passo 5 'Instalando o SIGp (a primeira vez baixa uns 7 GB: de 15 a 40 minutos; se a rede cair, ele tenta de novo)'
 $args5 = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', (Join-Path $pasta 'instalar.ps1'))
 if ($env:SIGP_MODELO_TRIAGEM) { $args5 += @('-ModeloTriagem', $env:SIGP_MODELO_TRIAGEM) }
 & $pwsh @args5

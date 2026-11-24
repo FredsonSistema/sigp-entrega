@@ -39,6 +39,22 @@ function Esperar([string]$o, [scriptblock]$teste, [int]$segundos = 180) {
   while ((Get-Date) -lt $fim) { try { if (& $teste) { return } } catch { }; Start-Sleep 3 }
   throw "$o não ficou pronto em $segundos s. Veja: docker compose logs"
 }
+# Downloads grandes (imagens de ~3 GB, modelos de IA) caem em rede instável ou atrás de proxy/firewall. Tenta de novo:
+# o Docker e o Ollama guardam o que já baixou, então cada tentativa continua de onde parou.
+$mensagemRede = ('A conexão caiu várias vezes durante o download. O que já baixou fica guardado: rode o mesmo comando de novo. ' +
+  'Se cair sempre no mesmo ponto, a rede (Wi-Fi instável, rede corporativa, proxy ou firewall) está cortando downloads longos: ' +
+  'tente outra rede (por exemplo, o roteador do celular) ou, com proxy, configure-o em Docker Desktop > Settings > Resources > Proxies.')
+function Repetir([string]$oque, [scriptblock]$comando, [int]$tentativas = 5, [int]$espera = 20) {
+  for ($i = 1; $i -le $tentativas; $i++) {
+    & $comando
+    if ($LASTEXITCODE -eq 0) { return }
+    if ($i -lt $tentativas) {
+      Write-Host "    $oque falhou (tentativa $i de $tentativas), provavelmente a conexão caiu. Tentando de novo em $espera s; o que já baixou não é baixado outra vez." -ForegroundColor Yellow
+      Start-Sleep $espera
+    }
+  }
+  throw "$oque falhou $tentativas vezes. $mensagemRede"
+}
 function Sql([string]$arquivo, [string]$banco = 'master') {
   # Roda um script .sql com o sqlcmd de dentro do container (não precisa instalar nada no Windows).
   # A senha vai por variável de ambiente (docker exec -e SQLCMDPASSWORD, sem valor na linha de comando).
@@ -70,8 +86,10 @@ Ok ".env e .env.academic prontos (valores não mostrados) · modelo da triagem: 
 
 Etapa 3 'Containers (a primeira vez baixa as imagens e compila: alguns minutos)'
 New-Item -ItemType Directory -Force -Path (Join-Path $raiz 'backend\data') | Out-Null
-docker compose up -d --build
-if ($LASTEXITCODE -ne 0) { throw 'docker compose up falhou.' }
+# Baixa e compila antes de subir, cada parte com novas tentativas (a falha de rede no meio não perde o que já veio).
+Repetir 'Baixar as imagens' { docker compose pull --ignore-buildable }
+Repetir 'Compilar a API, o OCR e a IA acadêmica' { docker compose build }
+Repetir 'Subir os containers' { docker compose up -d } 3 10
 Ok 'containers no ar'
 
 Etapa 4 'SQL Server acadêmico: schema, RLS, mascaramento, ledger, usuários da IA e auditoria'
@@ -117,8 +135,7 @@ Etapa 5 'Modelos de IA locais (Ollama)'
 Esperar 'Ollama' { docker exec sigp_ollama ollama list *> $null; $LASTEXITCODE -eq 0 }
 foreach ($m in @('qwen2.5:0.5b', $e['SIGP_OLLAMA_MODEL']) | Select-Object -Unique) {
   Write-Host "    baixando $m (só na primeira vez)..."
-  docker exec sigp_ollama ollama pull $m | Out-Null
-  if ($LASTEXITCODE -ne 0) { throw "Não foi possível baixar $m." }
+  Repetir "Baixar o modelo $m" { docker exec sigp_ollama ollama pull $m | Out-Null }
 }
 Ok 'modelos prontos'
 

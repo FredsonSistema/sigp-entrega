@@ -1,0 +1,37 @@
+{
+  "executado_em_utc": "2026-11-25T18:04:25Z",
+  "origem": "sigp_sqlserver_academic",
+  "backup": {
+    "tamanho_mb": 98.1,
+    "sha256": "568A71C8BECCA63A…",
+    "tde_na_origem": true
+  },
+  "linhas_origem": {
+    "Locais": 3,
+    "Notas": 100020,
+    "ItensNota": 100020,
+    "Pagamentos": 50010,
+    "Conciliacoes": 100020,
+    "Eventos": 1425
+  },
+  "sem_certificado": {
+    "restaurou": false,
+    "erro": "33111",
+    "mensagem": "Msg 33111, Level 16, State 3, Server c4af2bcf0f4d, Line 1 Cannot find server certificate with thumbprint '0xF484DD08A6DAFD799635B892612F85C32D9EDDA6'. Msg 3013, Level 16, State 1, Server c4af2bcf0f4d, Line 1"
+  },
+  "com_certificado": {
+    "restaurou": true,
+    "checkdb_sem_erros": true,
+    "tde_no_destino": true,
+    "linhas_iguais": true
+  },
+  "linhas_destino": {
+    "Locais": 3,
+    "Notas": 100020,
+    "ItensNota": 100020,
+    "Pagamentos": 50010,
+    "Conciliacoes": 100020,
+    "Eventos": 1425
+  },
+  "resultado": "APROVADO"
+}

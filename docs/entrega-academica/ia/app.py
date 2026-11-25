@@ -324,7 +324,9 @@ def _sqlcmd(query: str) -> str:
     result = subprocess.run(
         [
             "sqlcmd", "-S", SQLCMD_SERVER, "-U", SQLCMD_USER,
-            "-d", SQLCMD_DATABASE, "-C", "-b", "-y", "0", "-w", "65535",
+            # -x: o sqlcmd NÃO troca $(VARIÁVEL) pelo valor da variável de ambiente (sem ele, $(SIGP_AI_API_KEY) num
+            # texto viraria a chave da API dentro da consulta e da trilha). Achado do seguranca/testar_injecao_sql.py.
+            "-d", SQLCMD_DATABASE, "-C", "-b", "-x", "-y", "0", "-w", "65535",
             "-Q", query,
         ],
         capture_output=True,

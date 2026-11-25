@@ -1,0 +1,145 @@
+{
+  "executado_em_utc": "2026-11-25T18:00:10+00:00",
+  "rotulo": "antes",
+  "api": {
+    "ataques": [
+      {
+        "ataque": "aspas e comando empilhado",
+        "http": 200,
+        "classificacao": "REVISAR",
+        "seguro": true,
+        "erro": ""
+      },
+      {
+        "ataque": "escalar privilégio",
+        "http": 200,
+        "classificacao": "REVISAR",
+        "seguro": true,
+        "erro": ""
+      },
+      {
+        "ataque": "OR 1=1 com comentário",
+        "http": 200,
+        "classificacao": "REVISAR",
+        "seguro": true,
+        "erro": ""
+      },
+      {
+        "ataque": "aspa Unicode (U+02BC) para contrabando",
+        "http": 200,
+        "classificacao": "REVISAR",
+        "seguro": true,
+        "erro": ""
+      },
+      {
+        "ataque": "variável do sqlcmd com a senha",
+        "http": 200,
+        "classificacao": "DIVERGENTE",
+        "seguro": true,
+        "erro": ""
+      },
+      {
+        "ataque": "comando do sistema pelo sqlcmd (:!!)",
+        "http": 200,
+        "classificacao": "DIVERGENTE",
+        "seguro": true,
+        "erro": ""
+      },
+      {
+        "ataque": "UNION para ler outro local",
+        "http": 200,
+        "classificacao": "REVISAR",
+        "seguro": true,
+        "erro": ""
+      },
+      {
+        "ataque": "valor com SQL",
+        "http": 400,
+        "classificacao": null,
+        "seguro": true,
+        "erro": "amount deve ser numérico (ex.: 450.00 ou 450,00)."
+      },
+      {
+        "ataque": "texto gigante (100 mil caracteres)",
+        "http": 413,
+        "classificacao": null,
+        "seguro": true,
+        "erro": "<!doctype html>\n<html lang=en>\n<title>413 Request Entity Too Large</title>\n<h1>Request Entity Too Large</h1>\n<p>The data value transmitted exceeds the capacity "
+      },
+      {
+        "ataque": "local de outro escopo no corpo",
+        "http": 400,
+        "classificacao": null,
+        "seguro": true,
+        "erro": "O escopo local vem da credencial do serviço e não pode vir no corpo."
+      }
+    ],
+    "banco_igual": true,
+    "senha_na_trilha": false,
+    "variavel_na_trilha": false
+  },
+  "procedimentos": {
+    "ataques": [
+      {
+        "ataque": "aspas no provedor",
+        "negado_ou_vazio": true,
+        "rc": 0,
+        "mensagem": ""
+      },
+      {
+        "ataque": "local de outro escopo",
+        "negado_ou_vazio": true,
+        "rc": 1,
+        "mensagem": "Msg 51001, Level 16, State 1, Server ce6f854ecbd5, Procedure ai.usp_get_context, Line 45"
+      },
+      {
+        "ataque": "take gigante",
+        "negado_ou_vazio": true,
+        "rc": 1,
+        "mensagem": "Msg 51003, Level 16, State 1, Server ce6f854ecbd5, Procedure ai.usp_get_context, Line 31"
+      },
+      {
+        "ataque": "ler a tabela direto",
+        "negado_ou_vazio": true,
+        "rc": 1,
+        "mensagem": "Msg 229, Level 14, State 5, Server ce6f854ecbd5, Line 1"
+      },
+      {
+        "ataque": "apagar a trilha",
+        "negado_ou_vazio": true,
+        "rc": 1,
+        "mensagem": "Msg 37359, Level 16, State 3, Server ce6f854ecbd5, Line 1"
+      },
+      {
+        "ataque": "SQL dinâmico para ler a tabela",
+        "negado_ou_vazio": true,
+        "rc": 1,
+        "mensagem": "Msg 229, Level 14, State 5, Server ce6f854ecbd5, Line 1"
+      }
+    ],
+    "banco_igual": true,
+    "modulos_com_sql_dinamico": 0
+  },
+  "primitiva": {
+    "tamanho_lido": {
+      "SIGP_AI_API_KEY": 64,
+      "HOME": 13
+    },
+    "tamanho_do_texto_literal": {
+      "SIGP_AI_API_KEY": 18,
+      "HOME": 7
+    },
+    "substituiu_pela_senha": true,
+    "detalhe": "o sqlcmd trocou $(SIGP_AI_API_KEY), $(HOME) pelo valor da variável de ambiente"
+  },
+  "retrato_do_banco": {
+    "Notas": 100020,
+    "Pagamentos": 50010,
+    "Locais": 3,
+    "Provedores": 3,
+    "Objetos": 52,
+    "PermissoesIA": 20,
+    "Sysadmin": 2
+  },
+  "resultado": "REPROVADO"
+}

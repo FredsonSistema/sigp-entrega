@@ -59,8 +59,12 @@ function Sql([string]$arquivo, [string]$banco = 'master') {
   # Roda um script .sql com o sqlcmd de dentro do container (não precisa instalar nada no Windows).
   # A senha vai por variável de ambiente (docker exec -e SQLCMDPASSWORD, sem valor na linha de comando).
   docker cp $arquivo "sigp_sqlserver_academic:/tmp/sigp_script.sql" | Out-Null
-  docker exec -e SQLCMDPASSWORD sigp_sqlserver_academic /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -d $banco -C -I -f 65001 -b -i /tmp/sigp_script.sql | Out-Null
-  if ($LASTEXITCODE -ne 0) { throw "Falhou: $(Split-Path $arquivo -Leaf)" }
+  $saida = docker exec -e SQLCMDPASSWORD sigp_sqlserver_academic /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -d $banco -C -I -f 65001 -b -i /tmp/sigp_script.sql 2>&1
+  if ($LASTEXITCODE -ne 0) {
+    # Só as mensagens do SQL Server (sem senhas: elas não aparecem na saída do sqlcmd).
+    $msg = ($saida | ForEach-Object { "$_" } | Where-Object { $_ -match 'Msg \d+|Level \d+|^[A-Z].{10,}' } | Select-Object -Last 6) -join "`n      "
+    throw "Falhou: $(Split-Path $arquivo -Leaf)`n      $msg"
+  }
 }
 
 Etapa 1 'Docker'
@@ -104,6 +108,7 @@ try {
 USE SIGpAcademic;
 IF EXISTS (SELECT 1 FROM sys.security_policies WHERE object_id = OBJECT_ID(N'security.LocalScopePolicy')) DROP SECURITY POLICY security.LocalScopePolicy;
 IF OBJECT_ID(N'security.fn_local_scope') IS NOT NULL DROP FUNCTION security.fn_local_scope;
+IF OBJECT_ID(N'security.fn_local_scope_escrita') IS NOT NULL DROP FUNCTION security.fn_local_scope_escrita;
 GO
 EXEC sp_configure 'contained database authentication', 1;
 RECONFIGURE;

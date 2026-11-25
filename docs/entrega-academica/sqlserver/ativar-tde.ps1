@@ -3,7 +3,7 @@
 # Uso, na raiz do projeto:  pwsh -File docs/entrega-academica/sqlserver/ativar-tde.ps1 [-PastaCertificado <pasta fora do Git>]
 # Sem -PastaCertificado: <raiz>/segredos-locais/tde (ignorada pelo Git). SEM ESSE CERTIFICADO, NENHUM BACKUP CRIPTOGRAFADO
 # PODE SER RESTAURADO EM OUTRO SERVIDOR: guarde a pasta junto com o .env.academic, longe dos backups do banco.
-param([string]$PastaCertificado = '', [string]$BackupAntes = '')
+param([string]$PastaCertificado = '', [string]$BackupAntes = '', [string]$Container = 'sigp_sqlserver_academic')
 $ErrorActionPreference = 'Stop'
 [Console]::OutputEncoding = [Text.Encoding]::UTF8
 $sql = $PSScriptRoot
@@ -11,7 +11,7 @@ $raiz = (Resolve-Path (Join-Path $sql '..\..\..')).Path
 if (-not $PastaCertificado) { $PastaCertificado = Join-Path $raiz 'segredos-locais\tde' }
 $envArq = Join-Path $sql '.env.academic'
 $ev = Join-Path $sql 'evidence\parte3'
-$c = 'sigp_sqlserver_academic'
+$c = $Container
 
 function Segredo { $b = New-Object byte[] 24; [Security.Cryptography.RandomNumberGenerator]::Fill($b); 'Tde' + [Convert]::ToBase64String($b).TrimEnd('=').Replace('+', 'x').Replace('/', 'y') + '#7a' }
 function Contar([string]$arquivo) {

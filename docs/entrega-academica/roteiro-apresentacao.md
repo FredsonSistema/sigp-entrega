@@ -68,7 +68,7 @@ Na raiz do projeto: `pwsh -File docs/entrega-academica/demo-final.ps1`. O passo 
 
 ### 9:00–10:00 · Limitações e aprendizados (Fredson)
 
-> O que não está resolvido: o detector de injeção generaliza pela metade (homóglifos e engenharia social escapam); o modelo de 0,5B não classifica sozinho; o dono do banco passa por cima de tudo; e os dados são sintéticos. Registramos cada teste que reprovou (23) e cada erro dos nossos próprios testes (11), com causa, correção e reteste. O maior aprendizado foi desconfiar do próprio teste: uma medição com cache chegou a mostrar 0,8 s, quando o real era mais de 30 s.
+> O que não está resolvido: o detector de injeção generaliza pela metade (homóglifos e engenharia social escapam); o modelo de 0,5B não classifica sozinho; o dono do banco passa por cima de tudo; e os dados são sintéticos. Registramos cada teste que reprovou (24) e cada erro dos nossos próprios testes (11), com causa, correção e reteste. O maior aprendizado foi desconfiar do próprio teste: uma medição com cache chegou a mostrar 0,8 s, quando o real era mais de 30 s.
 
 ## Lista de conferência
 

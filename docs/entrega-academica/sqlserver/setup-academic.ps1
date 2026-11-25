@@ -150,6 +150,7 @@ IF EXISTS (
 )
     DROP SECURITY POLICY security.LocalScopePolicy;
 DROP FUNCTION security.fn_local_scope;
+IF OBJECT_ID(N'security.fn_local_scope_escrita') IS NOT NULL DROP FUNCTION security.fn_local_scope_escrita;
 GO
 EXEC sp_configure 'contained database authentication', 1;
 RECONFIGURE;

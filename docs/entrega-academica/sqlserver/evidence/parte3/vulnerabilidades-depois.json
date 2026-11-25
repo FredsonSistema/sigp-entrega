@@ -1,0 +1,258 @@
+{
+  "executado_em_utc": "2026-11-25T11:12:14+00:00",
+  "rotulo": "depois",
+  "servidor": "127.0.0.1,14333",
+  "versao_sql_server": "16.0.4305.5",
+  "resumo": {
+    "PASSOU": 25,
+    "ACEITO": 2,
+    "FALHOU": 0
+  },
+  "regras": [
+    {
+      "id": "V01",
+      "area": "Superfície",
+      "regra": "xp_cmdshell desligado (executar comandos do sistema operacional a partir do SQL)",
+      "referencia": "CIS 2.15 · VA1008",
+      "passou": true,
+      "detalhe": "xp_cmdshell = 0",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V02",
+      "area": "Superfície",
+      "regra": "CLR desligado (código .NET dentro do banco)",
+      "referencia": "CIS 2.2 · VA1102",
+      "passou": true,
+      "detalhe": "clr enabled = 0",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V03",
+      "area": "Superfície",
+      "regra": "Ole Automation Procedures desligado",
+      "referencia": "CIS 2.5",
+      "passou": true,
+      "detalhe": "Ole Automation Procedures = 0",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V04",
+      "area": "Superfície",
+      "regra": "Consultas distribuídas ad hoc desligadas (OPENROWSET/OPENDATASOURCE)",
+      "referencia": "CIS 2.1",
+      "passou": true,
+      "detalhe": "Ad Hoc Distributed Queries = 0",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V05",
+      "area": "Superfície",
+      "regra": "Encadeamento de propriedade entre bancos desligado",
+      "referencia": "CIS 2.3",
+      "passou": true,
+      "detalhe": "cross db ownership chaining = 0",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V06",
+      "area": "Superfície",
+      "regra": "Acesso remoto (RPC entre servidores) desligado",
+      "referencia": "CIS 2.6",
+      "passou": true,
+      "detalhe": "remote access = 0",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V07",
+      "area": "Superfície",
+      "regra": "Procedimentos automáticos na inicialização desligados",
+      "referencia": "CIS 2.12",
+      "passou": true,
+      "detalhe": "scan for startup procs = 0",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V08",
+      "area": "Superfície",
+      "regra": "Database Mail desligado (envio de e-mail pelo banco)",
+      "referencia": "CIS 2.4",
+      "passou": true,
+      "detalhe": "Database Mail XPs = 0",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V09",
+      "area": "Superfície",
+      "regra": "Conexão de administrador dedicada (DAC) só local",
+      "referencia": "CIS 2.7",
+      "passou": true,
+      "detalhe": "remote admin connections = 0",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V10",
+      "area": "Autenticação",
+      "regra": "Login sa desativado",
+      "referencia": "CIS 3.1 · VA1054",
+      "passou": false,
+      "detalhe": "sa ativo",
+      "resultado": "ACEITO",
+      "justificativa": "O sa só é usado pelo instalador e pelos scripts de prova, com senha aleatória de 37 caracteres guardada no .env.academic (fora do Git), e a porta do SQL Server só abre em 127.0.0.1. A aplicação e a IA nunca usam o sa: cada uma tem usuário próprio, sem permissão direta em tabela (V20). Desativar o sa exige um login administrativo próprio em todos os scripts: fica como próximo passo."
+    },
+    {
+      "id": "V11",
+      "area": "Autenticação",
+      "regra": "Política de senha do sistema aplicada a todos os logins SQL ativos",
+      "referencia": "CIS 4.3 · VA1048",
+      "passou": true,
+      "detalhe": "todos com CHECK_POLICY",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V12",
+      "area": "Autenticação",
+      "regra": "Só o sa (ou nenhum login de aplicação) no papel sysadmin",
+      "referencia": "CIS 3.8 · VA1094",
+      "passou": true,
+      "detalhe": "nenhum login além do sa",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V13",
+      "area": "Autenticação",
+      "regra": "Autenticação de banco contido desligada",
+      "referencia": "CIS 2.16",
+      "passou": false,
+      "detalhe": "contained database authentication = 1",
+      "resultado": "ACEITO",
+      "justificativa": "Necessária por desenho: os usuários da IA existem só dentro do SIGpAcademic (banco contido), sem login na instância, então uma credencial vazada não abre nenhum outro banco nem a instância. Compensações: os usuários da IA só executam o procedimento (V20), a RLS limita ao próprio local (V22) e toda tentativa fica na auditoria (V25, V26)."
+    },
+    {
+      "id": "V14",
+      "area": "Autenticação",
+      "regra": "Nenhum login com senha vazia ou igual ao nome",
+      "referencia": "VA1043 · VA1044",
+      "passou": true,
+      "detalhe": "nenhum",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V15",
+      "area": "Permissões",
+      "regra": "guest sem CONNECT no SIGpAcademic",
+      "referencia": "CIS 3.2 · VA1096",
+      "passou": true,
+      "detalhe": "guest sem acesso",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V16",
+      "area": "Permissões",
+      "regra": "Nenhuma permissão dada a public em objetos da aplicação",
+      "referencia": "VA1095",
+      "passou": true,
+      "detalhe": "nenhuma",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V17",
+      "area": "Permissões",
+      "regra": "Nenhum usuário órfão (usuário de banco sem login, fora os contidos)",
+      "referencia": "CIS 3.3 · VA1291",
+      "passou": true,
+      "detalhe": "nenhum",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V18",
+      "area": "Permissões",
+      "regra": "db_owner só com o dono do banco (nenhum usuário de aplicação)",
+      "referencia": "VA1258",
+      "passou": true,
+      "detalhe": "nenhum membro além do dbo",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V19",
+      "area": "Permissões",
+      "regra": "Banco TRUSTWORTHY desligado",
+      "referencia": "CIS 2.9 · VA1102",
+      "passou": true,
+      "detalhe": "is_trustworthy_on = 0",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V20",
+      "area": "Permissões",
+      "regra": "Usuários da IA sem permissão direta em tabela (só EXECUTE no procedimento)",
+      "referencia": "Menor privilégio",
+      "passou": true,
+      "detalhe": "nenhuma permissão de tabela",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V21",
+      "area": "Dados",
+      "regra": "Criptografia em repouso (TDE) ligada no SIGpAcademic",
+      "referencia": "CIS 7.1 · VA1219",
+      "passou": true,
+      "detalhe": "TDE ligado (estado 3)",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V22",
+      "area": "Dados",
+      "regra": "Política de RLS ligada (cada credencial só vê o próprio local)",
+      "referencia": "RLS",
+      "passou": true,
+      "detalhe": "1 política(s) ligada(s)",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V23",
+      "area": "Dados",
+      "regra": "Mascaramento dinâmico em colunas sensíveis",
+      "referencia": "DDM",
+      "passou": true,
+      "detalhe": "2 coluna(s) mascarada(s)",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V24",
+      "area": "Trilha",
+      "regra": "Trilha de auditoria somente inclusão (tabela ledger)",
+      "referencia": "Ledger",
+      "passou": true,
+      "detalhe": "1 tabela(s) ledger somente inclusão",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V25",
+      "area": "Trilha",
+      "regra": "SQL Server Audit ativo (logins e tentativas negadas)",
+      "referencia": "CIS 5.4 · VA1051",
+      "passou": true,
+      "detalhe": "1 auditoria(s) gravando",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V26",
+      "area": "Trilha",
+      "regra": "Falhas de login registradas",
+      "referencia": "CIS 5.3",
+      "passou": true,
+      "detalhe": "FAILED_LOGIN_GROUP na especificação",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V27",
+      "area": "Rede",
+      "regra": "Esta conexão está criptografada (TLS)",
+      "referencia": "VA2060",
+      "passou": true,
+      "detalhe": "encrypt_option = TRUE · TCP",
+      "resultado": "PASSOU"
+    }
+  ]
+}

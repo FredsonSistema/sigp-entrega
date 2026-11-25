@@ -192,6 +192,13 @@ Invoke-Sqlcmd @(
     "-i", "docs/entrega-academica/sqlserver/13_sql_server_audit.sql"
 )
 
+# Mascaramento dinâmico (chave fiscal e referência do pagamento). Antes era rodado à mão; a avaliação de vulnerabilidades
+# (V23) mostrou que uma instalação nova ficava sem ele.
+Invoke-Sqlcmd @(
+    "-S", "127.0.0.1,14333", "-U", "sa", "-d", "master", "-C", "-I", "-f", "65001", "-b",
+    "-i", "docs/entrega-academica/sqlserver/07_mascaramento_parte2.sql"
+)
+
 Invoke-Sqlcmd @(
     "-S", "127.0.0.1,14333", "-U", "sa", "-d", "SIGpAcademic", "-C", "-I", "-f", "65001", "-b",
     "-i", "docs/entrega-academica/sqlserver/02_security_tests.sql"
@@ -201,6 +208,13 @@ Invoke-Sqlcmd @(
 & pwsh -NoProfile -File "docs/entrega-academica/sqlserver/ativar-tde.ps1"
 if ($LASTEXITCODE -ne 0) {
     throw "Não foi possível ligar o TDE."
+}
+
+# Correções da avaliação de vulnerabilidades (18 e 19): acesso remoto, BUILTIN\Administrators, auditoria de logins e TLS
+# obrigatório em toda conexão. Reinicia o SQL Server.
+& pwsh -NoProfile -File "docs/entrega-academica/sqlserver/corrigir-vulnerabilidades.ps1"
+if ($LASTEXITCODE -ne 0) {
+    throw "Não foi possível aplicar as correções de segurança do banco."
 }
 
 Invoke-DockerCompose @("up", "-d", "--build", "ollama-academic", "academic-ai")

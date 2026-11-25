@@ -127,14 +127,20 @@ GO
   try { Sql $prov } finally { Remove-Item $prov -Force -ErrorAction SilentlyContinue; docker exec -u root sigp_sqlserver_academic rm -f /tmp/sigp_script.sql 2>$null }
   Sql (Join-Path $sql '01_schema_seed.sql')
   Sql (Join-Path $sql '13_sql_server_audit.sql')
+  # Mascaramento dinâmico da chave fiscal e da referência do pagamento (faltava na instalação nova: achado da V23).
+  Sql (Join-Path $sql '07_mascaramento_parte2.sql')
   if ($ComVolume) { Write-Host '    carregando 100.020 notas sintéticas...'; Sql (Join-Path $sql '03_load_benchmark.sql') 'SIGpAcademic' }
   # TDE: arquivo e backups criptografados. O certificado vai para segredos-locais/tde (fora do Git): sem ele, nenhum backup
   # pode ser restaurado em outro servidor. Guarde essa pasta junto com o .env.
   & ([Diagnostics.Process]::GetCurrentProcess().MainModule.FileName) -NoProfile -ExecutionPolicy Bypass -File (Join-Path $sql 'ativar-tde.ps1') | Out-Host
   if ($LASTEXITCODE -ne 0) { throw 'Não foi possível ligar o TDE.' }
   docker exec -u root sigp_sqlserver_academic rm -f /tmp/sigp_script.sql 2>$null
+  # Correções da avaliação de vulnerabilidades (sqlserver/18 e 19): acesso remoto, BUILTIN\Administrators, auditoria de
+  # logins e TLS obrigatório em toda conexão. Reinicia o SQL Server.
+  & ([Diagnostics.Process]::GetCurrentProcess().MainModule.FileName) -NoProfile -ExecutionPolicy Bypass -File (Join-Path $sql 'corrigir-vulnerabilidades.ps1') | Out-Host
+  if ($LASTEXITCODE -ne 0) { throw 'Não foi possível aplicar as correções de segurança do banco.' }
 } finally { Remove-Item Env:SQLCMDPASSWORD -ErrorAction SilentlyContinue }
-Ok 'banco acadêmico pronto (TDE ligado; certificado em segredos-locais/tde)'
+Ok 'banco acadêmico pronto (mascaramento, TDE, auditoria de logins e TLS obrigatório; certificado em segredos-locais/tde)'
 
 Etapa 5 'Modelos de IA locais (Ollama)'
 Esperar 'Ollama' { docker exec sigp_ollama ollama list *> $null; $LASTEXITCODE -eq 0 }

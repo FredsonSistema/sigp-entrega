@@ -1,5 +1,5 @@
 {
-  "executado_em_utc": "2026-11-21T21:47:41+00:00",
+  "executado_em_utc": "2026-11-25T11:12:33+00:00",
   "resultado": "APROVADO",
   "tabela": {
     "tipo": "APPEND_ONLY_LEDGER_TABLE",
@@ -14,7 +14,7 @@
       "veredito": "OK"
     },
     {
-      "teste": "Ledger confere com os 4 digest(s) guardados fora do banco",
+      "teste": "Ledger confere com os 5 digest(s) guardados fora do banco",
       "esperado": "verificada",
       "obtido": "verificada",
       "veredito": "OK"
@@ -68,13 +68,13 @@
     "criado_em": "2026-11-21 17:37:07",
     "detalhe": "eventos_copiados=1255; sha256_antes=0x67528BBE3BCF117B69E7039D3895DF7B9A24DD6C7EDC76BA074DED38363697BE; daqui em diante nenhum evento pode ser alterado nem apagado; o que mudou antes desta cópia não é detectável"
   },
-  "digests_guardados": 4,
-  "digests_desta_instalacao": 4,
+  "digests_guardados": 5,
+  "digests_desta_instalacao": 5,
   "ultimo_digest": {
     "database_name": "SIGpAcademic",
     "block_id": 2,
     "hash": "0xA61D797377EED17460AAB074E2A53287BC430303B2BC65A70C7ADBE651F2CC1D",
     "last_transaction_commit_time": "2026-11-21T21:47:39.0633333",
-    "digest_time": "2026-11-21T21:47:39.7301857"
+    "digest_time": "2026-11-25T11:12:32.2826599"
   }
 }

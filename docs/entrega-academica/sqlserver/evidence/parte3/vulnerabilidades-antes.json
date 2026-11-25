@@ -1,0 +1,258 @@
+{
+  "executado_em_utc": "2026-11-25T11:11:56+00:00",
+  "rotulo": "antes",
+  "servidor": "127.0.0.1,14333",
+  "versao_sql_server": "16.0.4305.5",
+  "resumo": {
+    "PASSOU": 21,
+    "ACEITO": 2,
+    "FALHOU": 4
+  },
+  "regras": [
+    {
+      "id": "V01",
+      "area": "Superf�cie",
+      "regra": "xp_cmdshell desligado (executar comandos do sistema operacional a partir do SQL)",
+      "referencia": "CIS 2.15 � VA1008",
+      "passou": true,
+      "detalhe": "xp_cmdshell = 0",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V02",
+      "area": "Superf�cie",
+      "regra": "CLR desligado (c�digo .NET dentro do banco)",
+      "referencia": "CIS 2.2 � VA1102",
+      "passou": true,
+      "detalhe": "clr enabled = 0",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V03",
+      "area": "Superf�cie",
+      "regra": "Ole Automation Procedures desligado",
+      "referencia": "CIS 2.5",
+      "passou": true,
+      "detalhe": "Ole Automation Procedures = 0",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V04",
+      "area": "Superf�cie",
+      "regra": "Consultas distribu�das ad hoc desligadas (OPENROWSET/OPENDATASOURCE)",
+      "referencia": "CIS 2.1",
+      "passou": true,
+      "detalhe": "Ad Hoc Distributed Queries = 0",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V05",
+      "area": "Superf�cie",
+      "regra": "Encadeamento de propriedade entre bancos desligado",
+      "referencia": "CIS 2.3",
+      "passou": true,
+      "detalhe": "cross db ownership chaining = 0",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V06",
+      "area": "Superf�cie",
+      "regra": "Acesso remoto (RPC entre servidores) desligado",
+      "referencia": "CIS 2.6",
+      "passou": false,
+      "detalhe": "remote access = 1",
+      "resultado": "FALHOU"
+    },
+    {
+      "id": "V07",
+      "area": "Superf�cie",
+      "regra": "Procedimentos autom�ticos na inicializa��o desligados",
+      "referencia": "CIS 2.12",
+      "passou": true,
+      "detalhe": "scan for startup procs = 0",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V08",
+      "area": "Superf�cie",
+      "regra": "Database Mail desligado (envio de e-mail pelo banco)",
+      "referencia": "CIS 2.4",
+      "passou": true,
+      "detalhe": "Database Mail XPs = 0",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V09",
+      "area": "Superf�cie",
+      "regra": "Conex�o de administrador dedicada (DAC) s� local",
+      "referencia": "CIS 2.7",
+      "passou": true,
+      "detalhe": "remote admin connections = 0",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V10",
+      "area": "Autentica��o",
+      "regra": "Login sa desativado",
+      "referencia": "CIS 3.1 � VA1054",
+      "passou": false,
+      "detalhe": "sa ativo",
+      "resultado": "ACEITO",
+      "justificativa": "O sa só é usado pelo instalador e pelos scripts de prova, com senha aleatória de 37 caracteres guardada no .env.academic (fora do Git), e a porta do SQL Server só abre em 127.0.0.1. A aplicação e a IA nunca usam o sa: cada uma tem usuário próprio, sem permissão direta em tabela (V20). Desativar o sa exige um login administrativo próprio em todos os scripts: fica como próximo passo."
+    },
+    {
+      "id": "V11",
+      "area": "Autentica��o",
+      "regra": "Pol�tica de senha do sistema aplicada a todos os logins SQL ativos",
+      "referencia": "CIS 4.3 � VA1048",
+      "passou": true,
+      "detalhe": "todos com CHECK_POLICY",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V12",
+      "area": "Autentica��o",
+      "regra": "S� o sa (ou nenhum login de aplica��o) no papel sysadmin",
+      "referencia": "CIS 3.8 � VA1094",
+      "passou": false,
+      "detalhe": "sysadmin: BUILTIN\\Administrators",
+      "resultado": "FALHOU"
+    },
+    {
+      "id": "V13",
+      "area": "Autentica��o",
+      "regra": "Autentica��o de banco contido desligada",
+      "referencia": "CIS 2.16",
+      "passou": false,
+      "detalhe": "contained database authentication = 1",
+      "resultado": "ACEITO",
+      "justificativa": "Necessária por desenho: os usuários da IA existem só dentro do SIGpAcademic (banco contido), sem login na instância, então uma credencial vazada não abre nenhum outro banco nem a instância. Compensações: os usuários da IA só executam o procedimento (V20), a RLS limita ao próprio local (V22) e toda tentativa fica na auditoria (V25, V26)."
+    },
+    {
+      "id": "V14",
+      "area": "Autentica��o",
+      "regra": "Nenhum login com senha vazia ou igual ao nome",
+      "referencia": "VA1043 � VA1044",
+      "passou": true,
+      "detalhe": "nenhum",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V15",
+      "area": "Permiss�es",
+      "regra": "guest sem CONNECT no SIGpAcademic",
+      "referencia": "CIS 3.2 � VA1096",
+      "passou": true,
+      "detalhe": "guest sem acesso",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V16",
+      "area": "Permiss�es",
+      "regra": "Nenhuma permiss�o dada a public em objetos da aplica��o",
+      "referencia": "VA1095",
+      "passou": true,
+      "detalhe": "nenhuma",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V17",
+      "area": "Permiss�es",
+      "regra": "Nenhum usu�rio �rf�o (usu�rio de banco sem login, fora os contidos)",
+      "referencia": "CIS 3.3 � VA1291",
+      "passou": true,
+      "detalhe": "nenhum",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V18",
+      "area": "Permiss�es",
+      "regra": "db_owner s� com o dono do banco (nenhum usu�rio de aplica��o)",
+      "referencia": "VA1258",
+      "passou": true,
+      "detalhe": "nenhum membro al�m do dbo",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V19",
+      "area": "Permiss�es",
+      "regra": "Banco TRUSTWORTHY desligado",
+      "referencia": "CIS 2.9 � VA1102",
+      "passou": true,
+      "detalhe": "is_trustworthy_on = 0",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V20",
+      "area": "Permiss�es",
+      "regra": "Usu�rios da IA sem permiss�o direta em tabela (s� EXECUTE no procedimento)",
+      "referencia": "Menor privil�gio",
+      "passou": true,
+      "detalhe": "nenhuma permiss�o de tabela",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V21",
+      "area": "Dados",
+      "regra": "Criptografia em repouso (TDE) ligada no SIGpAcademic",
+      "referencia": "CIS 7.1 � VA1219",
+      "passou": true,
+      "detalhe": "TDE ligado (estado 3)",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V22",
+      "area": "Dados",
+      "regra": "Pol�tica de RLS ligada (cada credencial s� v� o pr�prio local)",
+      "referencia": "RLS",
+      "passou": true,
+      "detalhe": "1 pol�tica(s) ligada(s)",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V23",
+      "area": "Dados",
+      "regra": "Mascaramento din�mico em colunas sens�veis",
+      "referencia": "DDM",
+      "passou": true,
+      "detalhe": "2 coluna(s) mascarada(s)",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V24",
+      "area": "Trilha",
+      "regra": "Trilha de auditoria somente inclus�o (tabela ledger)",
+      "referencia": "Ledger",
+      "passou": true,
+      "detalhe": "1 tabela(s) ledger somente inclus�o",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V25",
+      "area": "Trilha",
+      "regra": "SQL Server Audit ativo (logins e tentativas negadas)",
+      "referencia": "CIS 5.4 � VA1051",
+      "passou": true,
+      "detalhe": "1 auditoria(s) gravando",
+      "resultado": "PASSOU"
+    },
+    {
+      "id": "V26",
+      "area": "Trilha",
+      "regra": "Falhas de login registradas",
+      "referencia": "CIS 5.3",
+      "passou": false,
+      "detalhe": "sem registro de falha de login",
+      "resultado": "FALHOU"
+    },
+    {
+      "id": "V27",
+      "area": "Rede",
+      "regra": "Esta conex�o est� criptografada (TLS)",
+      "referencia": "VA2060",
+      "passou": false,
+      "detalhe": "encrypt_option = FALSE � TCP",
+      "resultado": "FALHOU"
+    }
+  ]
+}

@@ -10,6 +10,8 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+# No sistema completo o pacote fica em entrega/; no repositório do pacote, na raiz.
+PACOTE = ROOT / "entrega" if (ROOT / "entrega" / "docker-compose.yml").exists() else ROOT
 AVALIACAO = ROOT / "docs" / "entrega-academica" / "sqlserver" / "evidence" / "parte3" / "ia-avaliacao-final.json"
 
 
@@ -39,7 +41,7 @@ class PacoteRodaAIAvaliada(unittest.TestCase):
         self.assertEqual(env.get("MODEL_PROFILE"), self.servico["model_profile"], compose)
 
     def test_pacote_usa_a_configuracao_avaliada(self):
-        self._confere(ROOT / "entrega" / "docker-compose.yml")
+        self._confere(PACOTE / "docker-compose.yml")
 
     def test_ambiente_academico_usa_a_configuracao_avaliada(self):
         self._confere(ROOT / "docs" / "entrega-academica" / "sqlserver" / "compose.academic.yml")
@@ -50,7 +52,7 @@ class PacoteRodaAIAvaliada(unittest.TestCase):
         self.assertEqual(versao, self.servico["prompt_version"])
 
     def test_instalador_baixa_os_modelos_avaliados(self):
-        instalador = (ROOT / "entrega" / "instalar.ps1").read_text(encoding="utf-8-sig")
+        instalador = (PACOTE / "instalar.ps1").read_text(encoding="utf-8-sig")
         linha = next(l for l in instalador.splitlines() if l.startswith("foreach ($m in @("))
         self.assertIn(f"'{self.servico['embed_model']}'", linha)
         self.assertIn(f"'{self.servico['model']}'", linha)

@@ -22,6 +22,23 @@ GROUP BY n.local_id, p.nome, YEAR(n.data_emissao), MONTH(n.data_emissao);
 | C — índices ajustados (cobertura / filtrado) | 121,0 | 152,3 | 1,4× | 376 (Notas 374; Provedores 2) | 1,199 | Sort → Hash Match → Index Scan Provedores.UQ__Provedor__6F71C0DC31513B8B → Clustered Index Seek LocalScope.PK_LocalScope → Index Seek Notas.IX_Notas_Emissao_Cobertura |
 | D — resumo diário (desnormalização) | 25,3 | 35,6 | 6,7× | 13 (ResumoDiario 11; Provedores 2) | 0,068 | Sort → Merge Join → Clustered Index Scan Provedores.PK__Provedor__3213E83FDA038CAC → Stream Aggregate → Nested Loops → Clustered Index Seek ResumoDiario.PK_ResumoDiario |
 
+### O que mudou no plano: scan × seek e custo
+
+Lido dos planos reais (`.sqlplan`). **Scan** percorre o índice ou a tabela inteira; **Seek** vai direto ao intervalo pedido pela chave do índice. "Lidas" são as linhas que o operador examinou e "devolvidas" as que passaram para o operador seguinte: quando lidas > devolvidas, o filtro foi aplicado linha a linha depois da leitura. O custo é a estimativa do otimizador (unidade interna do SQL Server, sem relação direta com segundos); "custo próprio" é o do operador sem os que estão abaixo dele. O filtro de linha da RLS (seek em `LocalScope`) aparece em todos os planos e fica fora da coluna de acesso.
+
+| Configuração | Acesso às tabelas (lidas → devolvidas) | Operador mais caro (custo próprio) | Custo estimado da consulta |
+|---|---|---|---|
+| A — linha de base (só chaves primárias) | Index Scan em `Provedores`: 3 → 3; Clustered Index Scan em `Notas`: 100.020 → 47.010 | Clustered Index Scan em `Notas`: 2,530 (84%) | 2,998 |
+| B — índices candidatos (02/11) | Index Scan em `Provedores`: 3 → 3; Clustered Index Scan em `Notas`: 100.020 → 47.010 | Clustered Index Scan em `Notas`: 2,530 (84%) | 3,017 (sem ganho sobre A) |
+| C — índices ajustados (cobertura / filtrado) | Index Scan em `Provedores`: 3 → 3; Index Seek em `Notas` (`IX_Notas_Emissao_Cobertura`): 47.010 → 47.010 | Hash Match: 0,363 (30%) | 1,199 (2,5× menor) |
+| D — resumo diário (desnormalização) | Clustered Index Scan em `Provedores`: 3 → 3; Clustered Index Seek em `ResumoDiario` (`PK_ResumoDiario`): 1.029 → 1.029 | Sort: 0,027 (41%) | 0,068 (44,3× menor) |
+
+- **A:** Clustered Index Scan em `Notas`. O filtro de data não tem índice, então o SQL Server lê as 100.020 notas e descarta as de fora da janela depois de ler (devolve 47.010). A leitura da tabela é 84% do custo.
+- **C:** Index Seek em `Notas` (`IX_Notas_Emissao_Cobertura`). O índice por `data_emissao` vira **seek**: lê só as 47.010 notas da janela, sem descartar nenhuma. A leitura fica barata, mas as 47.010 linhas ainda precisam ser agrupadas e somadas: os Hash Match (junção e agregação) passam a ser 70% do custo. **Por isso o ganho do índice foi pequeno:** ele resolve a leitura, mas o trabalho que sobra é proporcional ao número de notas da janela.
+- **D:** Clustered Index Seek em `ResumoDiario` (`PK_ResumoDiario`). A soma já está feita por dia: a consulta lê 1.029 linhas do resumo em vez de 47.010 notas, e a agregação que sobra é pequena. Custo estimado 2,998 → 0,068 (44,3× menor).
+
+**Comentário da Entrega 2 ("ganho ainda pequeno"):** só com o índice de cobertura (C) o ganho é 1,4×; com o resumo diário (D) passa a 6,7× e as leituras lógicas caem de 3.281 para 13. A explicação pelo plano está logo acima.
+
 **Técnica: desnormalização.** A consulta precisa somar cerca de 47 mil notas (quase metade da tabela) a cada execução. O índice de cobertura (C) troca a varredura da tabela pela do índice, mais estreito, mas a soma continua. O resumo `app.ResumoDiario` guarda o total já somado por local, provedor e **dia** (2.190 linhas). Um gatilho em `app.Notas` mantém o resumo a cada inserção, alteração ou exclusão. O dia, e não o mês, mantém a resposta idêntica, inclusive o primeiro mês parcial da janela.
 
 - **Mesma resposta:** 0 linhas diferentes entre a consulta nas notas e no resumo (36 linhas no resultado).
@@ -61,6 +78,19 @@ ORDER BY n.vencimento, n.id;
 | A — linha de base (só chaves primárias) | 54,4 | 73,8 | — | 4.956 (Conciliacoes 1.677; Notas 3.279) | 4,934 | Sort → Hash Match → Clustered Index Seek LocalScope.PK_LocalScope → Merge Join → Clustered Index Scan Notas.PK__Notas__3213E83F3E0F0356 → Clustered Index Scan Conciliacoes.PK__Concilia__3213E83F7D0B53F6 |
 | B — índices candidatos (02/11) | 64,1 | 86,5 | 0,8× | 3.818 (Conciliacoes 539; Notas 3.279) | 4,159 | Sort → Hash Match → Clustered Index Seek LocalScope.PK_LocalScope → Merge Join → Clustered Index Scan Notas.PK__Notas__3213E83F3E0F0356 → Index Scan Conciliacoes.IX_Conciliacoes_Nota_Status |
 | C — índices ajustados (cobertura / filtrado) | 10,7 | 16,8 | 5,1× | 1.012 (Worktable 1.005; Notas 7) | 0,206 | Top → Nested Loops → Index Seek Notas.IX_Notas_Pendentes_Vencimento → Table Spool → Index Scan Conciliacoes.IX_Conciliacoes_Concluidas → Clustered Index Seek LocalScope.PK_LocalScope |
+
+### O que mudou no plano: scan × seek e custo
+
+Lido dos planos reais (`.sqlplan`). **Scan** percorre o índice ou a tabela inteira; **Seek** vai direto ao intervalo pedido pela chave do índice. "Lidas" são as linhas que o operador examinou e "devolvidas" as que passaram para o operador seguinte: quando lidas > devolvidas, o filtro foi aplicado linha a linha depois da leitura. O custo é a estimativa do otimizador (unidade interna do SQL Server, sem relação direta com segundos); "custo próprio" é o do operador sem os que estão abaixo dele. O filtro de linha da RLS (seek em `LocalScope`) aparece em todos os planos e fica fora da coluna de acesso.
+
+| Configuração | Acesso às tabelas (lidas → devolvidas) | Operador mais caro (custo próprio) | Custo estimado da consulta |
+|---|---|---|---|
+| A — linha de base (só chaves primárias) | Clustered Index Scan em `Notas`: 100.020 → 15.006; Clustered Index Scan em `Conciliacoes`: 100.020 → 0 | Clustered Index Scan em `Notas`: 2,530 (51%) | 4,934 |
+| B — índices candidatos (02/11) | Clustered Index Scan em `Notas`: 100.020 → 15.006; Index Scan em `Conciliacoes` (`IX_Conciliacoes_Nota_Status`): 100.020 → 0 | Clustered Index Scan em `Notas`: 2,530 (61%) | 4,159 (1,2× menor) |
+| C — índices ajustados (cobertura / filtrado) | Index Seek em `Notas` (`IX_Notas_Pendentes_Vencimento`): 500 → 500; Index Scan em `Conciliacoes` (`IX_Conciliacoes_Concluidas`): 0 → 0 | Table Spool: 0,092 (45%) | 0,206 (24,0× menor) |
+
+- **A:** Clustered Index Scan em `Notas` lê as 100.020 notas para achar 15.006 pendentes vencidas, e Clustered Index Scan em `Conciliacoes` lê as 100.020 conciliações para o NOT EXISTS. Depois um **Sort** ordena as 15.006 linhas por vencimento só para ficar com as 500 primeiras (15% do custo próprio fica no Sort).
+- **C:** Index Seek em `Notas` (`IX_Notas_Pendentes_Vencimento`): **seek** no índice filtrado, que só tem notas pendentes e já está na ordem (vencimento, id). A consulta lê 500 linhas e para no TOP (500); o Sort some do plano. O NOT EXISTS usa Index Scan em `Conciliacoes` (`IX_Conciliacoes_Concluidas`), que só guarda as conciliações concluídas (nesta base sintética, nenhuma: o índice está vazio). Custo estimado 4,934 → 0,206 (24,0× menor). O que sobra de custo (89%) são os Table Spool, que guardam o resultado do NOT EXISTS e do filtro da RLS para não repetir a leitura a cada uma das 500 notas.
 
 **Técnica: índice filtrado.** `IX_Notas_Pendentes_Vencimento (vencimento, id) INCLUDE (...) WHERE status = 'PENDENTE'` guarda só as notas pendentes, já na ordem pedida: a consulta lê as primeiras linhas e para no TOP (500), sem ordenar a tabela. `IX_Conciliacoes_Concluidas (nota_id) WHERE status = 'CONCILIADA'` deixa o NOT EXISTS conferir um índice pequeno. Os índices candidatos de 02/11 (B) não ajudavam: a ordem das colunas (local, vencimento, status) não servia a esta consulta, que não filtra por local.
 

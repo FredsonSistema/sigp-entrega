@@ -419,3 +419,65 @@ def test_brazilian_amount_and_company_suffix_reach_contract(monkeypatch):
     assert response.status_code == 200
     body = response.get_json()
     assert body["provider_id"] == "PROV-001" and body["classification"] == "CONTRATADO"
+
+
+def _fake_embed_favouring(doc_id_prefix):
+    """Vetor 1 para os documentos com o prefixo (e para a consulta), 0 para os outros: o embedding 'prefere' esses."""
+    def fake(texts):
+        vectors = []
+        for text in texts:
+            doc = next((d for d in academic_ai.CORPUS if text.endswith(d["title"] + ". " + d["text"])), None)
+            hit = doc is None or doc["id"].startswith(doc_id_prefix)
+            vectors.append([1.0, 0.0] if hit else [0.0, 1.0])
+        return vectors
+    return fake
+
+
+def test_embedding_retrieval_filters_scope_before_ranking(monkeypatch):
+    # O embedding "prefere" os documentos da Rede Beta (outro local); mesmo assim nenhum pode voltar.
+    monkeypatch.setattr(academic_ai, "EMBED_MODEL", "embeddinggemma")
+    monkeypatch.setattr(academic_ai, "_DOCUMENT_VECTORS", {})
+    monkeypatch.setattr(academic_ai, "_embed", _fake_embed_favouring("DOC-BETA-"))
+    docs, method = academic_ai.retrieve_with_method("Rodoviária Norte Rede Beta link principal", "LOC-001", "PROV-001")
+    allowed = {item["id"] for item in academic_ai.CORPUS
+               if item["local_id"] in {"*", "LOC-001"} and item["provider_id"] in {"*", "PROV-001"}}
+    assert method == "embedding:embeddinggemma"
+    assert len(docs) == 5
+    assert all(item["id"] in allowed for item in docs)
+
+
+def test_embedding_ranks_by_meaning_inside_scope(monkeypatch):
+    monkeypatch.setattr(academic_ai, "EMBED_MODEL", "embeddinggemma")
+    monkeypatch.setattr(academic_ai, "_DOCUMENT_VECTORS", {})
+    monkeypatch.setattr(academic_ai, "_embed", _fake_embed_favouring("DOC-POL-05"))
+    docs, _ = academic_ai.retrieve_with_method("locação do roteador wi-fi", "LOC-001", "PROV-001")
+    assert docs[0]["id"] == "DOC-POL-05"
+
+
+def test_embedding_failure_falls_back_to_lexical(monkeypatch):
+    def broken(_texts):
+        raise RuntimeError("Embedding indisponível: URLError")
+    monkeypatch.setattr(academic_ai, "EMBED_MODEL", "embeddinggemma")
+    monkeypatch.setattr(academic_ai, "_DOCUMENT_VECTORS", {})
+    monkeypatch.setattr(academic_ai, "_embed", broken)
+    docs, method = academic_ai.retrieve_with_method("link principal fibra 300 Mbps", "LOC-001", "PROV-001")
+    assert method == "lexical (fallback)"
+    assert docs == academic_ai.retrieve_documents("link principal fibra 300 Mbps", "LOC-001", "PROV-001")
+
+
+def test_without_embed_model_search_is_lexical(monkeypatch):
+    monkeypatch.setattr(academic_ai, "EMBED_MODEL", "")
+    docs, method = academic_ai.retrieve_with_method("IP adicional mensal", "LOC-001", "PROV-001")
+    assert method == "lexical"
+    assert docs == academic_ai.retrieve_documents("IP adicional mensal", "LOC-001", "PROV-001")
+
+
+def test_invoice_for_another_unit_is_not_approved_with_this_units_contract():
+    # FE-07: serviço e valor iguais aos do contrato da Agência Centro, mas a fatura é da Garagem Sul.
+    retrieved = academic_ai.retrieve_documents("Conecta Alfa link principal fibra 300 Mbps", "LOC-001", "PROV-001")
+    invoice = {"provider": "Conecta Alfa Fictícia", "description": "link principal fibra 300 Mbps - Garagem Sul", "amount": 450.0}
+    result = academic_ai._classify_from_evidence(invoice, retrieved)
+    assert result["classification"] == "REVISAR"
+    assert "Garagem" not in result["reason"]
+    same_unit = {**invoice, "description": "link principal fibra 300 Mbps"}
+    assert academic_ai._classify_from_evidence(same_unit, retrieved)["classification"] == "CONTRATADO"

@@ -68,7 +68,7 @@ Na raiz do projeto: `pwsh -File docs/entrega-academica/demo-final.ps1`. O passo 
 
 ### 9:00–10:00 · Limitações e aprendizados (Fredson)
 
-> O que não está resolvido: o detector de injeção generaliza pela metade (homóglifos e engenharia social escapam); o modelo de 0,5B não classifica sozinho; o dono do banco passa por cima de tudo; e os dados são sintéticos. Registramos cada teste que reprovou (26) e cada erro dos nossos próprios testes (11), com causa, correção e reteste. O maior aprendizado foi desconfiar do próprio teste: uma medição com cache chegou a mostrar 0,8 s, quando o real era mais de 30 s.
+> O que não está resolvido: o detector de injeção generaliza pela metade (homóglifos e engenharia social escapam); o modelo de 0,5B não classifica sozinho; o dono do banco passa por cima de tudo; e os dados são sintéticos. Registramos cada teste que reprovou (30) e cada erro dos nossos próprios testes (11), com causa, correção e reteste. O maior aprendizado foi desconfiar do próprio teste: uma medição com cache chegou a mostrar 0,8 s, quando o real era mais de 30 s.
 
 ## Lista de conferência
 
@@ -100,9 +100,13 @@ Na raiz do projeto: `pwsh -File docs/entrega-academica/demo-final.ps1`. O passo 
 
 **16 casos bastam?** Não para estimar o erro em produção, e dizemos isso. Com 95% de confiança, 16/16 é 81% a 100% e 0 falsas aprovações em 16 pode chegar a 19%. Por isso separamos a validação cega, congelada por hash (`ia/conjuntos-congelados.json`; mudar o arquivo quebra um teste). Ela é o número limpo.
 
-**Por que o modelo não decide?** Porque medimos: sozinho, ele respondeu REVISAR nos 16 casos; o modelo base sem RAG aprovou 12 cobranças indevidas. A regra sobre evidência estruturada acerta e é auditável.
+**Por que o modelo não decide?** Porque medimos: sozinho, ele acertou 8/16, respondendo REVISAR em quase tudo; o modelo base sem RAG aprovou 12 cobranças indevidas. A regra sobre evidência estruturada acerta e é auditável.
 
-**O fine-tuning valeu a pena?** Não, e mostramos por quê: 7/16 com RAG, igual ao base. O treino tinha frases curtas; o RAG entrega o texto do contrato, que diz o que não está incluído, e o modelo leu a negação como divergência. No IA-009 ele ainda obedeceu à injeção. O próximo passo seria treinar com o texto real do RAG e com exemplos de injeção.
+**O fine-tuning valeu a pena?** Não, e mostramos por quê: fora do treino, 7/16 nos casos finais com RAG (base com RAG: 6/16) e 6/12 fora de escopo. O treino tinha frases curtas; o RAG entrega o texto do contrato, que diz o que não está incluído, e o modelo leu a negação como divergência. No IA-009 ele ainda obedeceu à injeção. O próximo passo seria treinar com o texto real do RAG, com documentos fora de escopo e com exemplos de injeção.
+
+**Qual prompt o sistema avaliado usa?** A análise de fatura (`/api/analyze`) usa o v3.1, com busca por embedding (embeddinggemma); o v4.2 é o da triagem do Gmail, outro fluxo. A avaliação final rodou no serviço com a mesma configuração que o pacote sobe, e `tests/test_pacote_mesma_ia.py` falha se o pacote divergir.
+
+**O RAG com embeddings ajudou?** Nas paráfrases (a cobrança com outras palavras), a fonte certa veio em 13/14 contra 7/14 da busca por palavras, sem perder caso final. O critério foi versionado antes de medir, e a busca só ordena o que o escopo do local já permite.
 
 **E se um ataque não for detectado?** O pior caso é uma fatura cujo serviço e valor já batem com o contrato sair CONTRATADO sem a marca de revisão. O ataque não aprova valor diferente, não traz dado de outro local (credencial, RLS e RAG filtrado) e não paga nada.
 

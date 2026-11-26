@@ -13,6 +13,11 @@ Conjuntos:
   A. Os 16 casos finais (casos-finais.json), fora da distribuição do treino. "Com RAG" põe na Evidência os documentos
      que a busca da API (retrieve_documents, filtrada por local e provedor) recupera; "sem RAG", "nenhuma evidência
      recuperada".
+  C. Os 12 casos fora de escopo (casos-fora-escopo.json): outra conta, outro local, outro idioma, não é fatura; todos
+     com o esperado REVISAR. Nenhum repete um cenário do treino (verificar_sobreposicao.py).
+  Nos conjuntos A e C, "com RAG" usa os documentos que o SERVIÇO AVALIADO recuperou em cada caso (source_ids gravados
+  em sqlserver/evidence/parte3/ia-avaliacao-final.json, com a busca por embedding), para medir o modelo com o mesmo
+  RAG do sistema entregue.
   B. Os 20 casos de teste do treino (dataset.jsonl, split test), na distribuição do treino. "Com evidência" é o texto
      original; "sem evidência" troca a Evidência pelo mesmo texto vazio.
 
@@ -41,6 +46,7 @@ from urllib.request import Request, urlopen
 DIR = Path(__file__).resolve().parent
 IA = DIR.parent
 SAIDA = IA.parent / "sqlserver" / "evidence" / "parte3" / "finetuning-comparacao.json"
+AVALIACAO = IA.parent / "sqlserver" / "evidence" / "parte3" / "ia-avaliacao-final.json"
 SERVIDOR = "http://127.0.0.1:5014"
 CLASSES = ("CONTRATADO", "DIVERGENTE", "REVISAR")
 LOCAL, UNIDADE = "LOC-001", "Agência Centro"
@@ -95,15 +101,27 @@ def rotulo(texto: str) -> str:
     return "INVALIDO"
 
 
-def conjunto_a(app) -> list[dict]:
-    casos = json.loads((IA / "casos-finais.json").read_text(encoding="utf-8"))["casos"]
+def fontes_do_servico() -> dict:
+    """Documentos que o serviço avaliado recuperou em cada caso (mesma busca do sistema entregue)."""
+    av = json.loads(AVALIACAO.read_text(encoding="utf-8"))
+    fontes = {c["id"]: c["fontes"] for c in av["casos_de_teste"]["casos"]}
+    fontes.update({c["id"]: c["fontes"] for c in (av.get("fora_de_escopo") or {}).get("casos", [])})
+    return {"fontes": fontes, "embed_model": av["servico"].get("embed_model"), "executado_em_utc": av["executado_em_utc"]}
+
+
+def conjunto_a(app, arquivo: str = "casos-finais.json", fontes: dict | None = None) -> list[dict]:
+    casos = json.loads((IA / arquivo).read_text(encoding="utf-8"))["casos"]
+    por_id = {d["id"]: d for d in app.CORPUS}
     itens = []
     for c in casos:
         inv = app._normalize_invoice(c["invoice"])
         valor = app._parse_amount(inv["amount"])
-        provider_id = app.PROVIDER_IDS.get(app._provider_key(inv["provider"]), "PROV-UNKNOWN")
-        consulta = " ".join((inv["provider"], inv["description"], str(inv["amount"]), str(inv.get("due_date", ""))))
-        docs = app.retrieve_documents(consulta, LOCAL, provider_id)
+        if fontes is not None:
+            docs = [por_id[i] for i in fontes[c["id"]]]
+        else:
+            provider_id = app.PROVIDER_IDS.get(app._provider_key(inv["provider"]), "PROV-UNKNOWN")
+            consulta = " ".join((inv["provider"], inv["description"], str(inv["amount"]), str(inv.get("due_date", ""))))
+            docs = app.retrieve_documents(consulta, LOCAL, provider_id)
         evidencia = " | ".join(f"[{d['id']}] {d['title']}: {d['text']}" for d in docs) or SEM_EVIDENCIA
         base = f"Cobrança: {inv['description']}, R$ {valor:.2f}. Provedor: {inv['provider']}. Unidade: {UNIDADE}. Evidência: "
         itens.append({"id": c["id"], "esperado": c["esperado"]["classification"], "fontes": [d["id"] for d in docs],
@@ -206,12 +224,16 @@ def main() -> int:
     with urlopen(f"{SERVIDOR}/health", timeout=10) as r:
         saude = json.loads(r.read().decode("utf-8"))
     app = carregar_app()
-    a, b = conjunto_a(app), conjunto_b()
+    rag = fontes_do_servico()
+    a, b = conjunto_a(app, fontes=rag["fontes"]), conjunto_b()
+    c = conjunto_a(app, "casos-fora-escopo.json", rag["fontes"])
     print(f"Servidor: {saude.get('model')} · base {saude.get('base_model')}@{saude.get('base_revision', '')[:8]}")
     for adapter in (False, True):  # aquecimento, não conta
         classificar(b[0]["com"], adapter)
     print("Conjunto A (16 casos finais, RAG real):")
     res_a = rodar("A", a)
+    print("Conjunto C (12 casos fora de escopo, RAG do serviço):")
+    res_c = rodar("C", c)
     print("Conjunto B (20 casos de teste do treino):")
     res_b = rodar("B", b)
     resultado = {
@@ -223,12 +245,16 @@ def main() -> int:
         "custo_parametros": CUSTO,
         "conjunto_a_casos_finais": res_a,
         "conjunto_b_teste_do_treino": res_b,
+        "conjunto_c_fora_de_escopo": res_c,
+        "rag": {"fonte": "sqlserver/evidence/parte3/ia-avaliacao-final.json", "embed_model": rag["embed_model"],
+                "avaliacao_executada_em_utc": rag["executado_em_utc"]},
         "fontes_rag_por_caso_a": {x["id"]: x["fontes"] for x in a},
+        "fontes_rag_por_caso_c": {x["id"]: x["fontes"] for x in c},
     }
     SAIDA.parent.mkdir(parents=True, exist_ok=True)
     SAIDA.write_text(json.dumps(resultado, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print()
-    for titulo, res in (("A (16 casos finais)", res_a), ("B (20 de teste do treino)", res_b)):
+    for titulo, res in (("A (16 casos finais)", res_a), ("C (12 fora de escopo)", res_c), ("B (20 de teste do treino)", res_b)):
         print(f"Conjunto {titulo} · CPU da máquina {res['cpu_maquina_percent_media']}%")
         for k, _, _ in CONFIGS:
             m = res["configuracoes"][k]["metricas"]

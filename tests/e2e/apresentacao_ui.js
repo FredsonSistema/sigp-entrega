@@ -20,7 +20,8 @@ const { launch, shot, check } = require('./lib');
     check(results, 'abre sem erro de JavaScript', erros.length === 0, erros.join(' | '));
     check(results, 'não pede nada da internet (funciona offline)', pedidosExternos.length === 0, pedidosExternos.join(' '));
     const secoes = await page.locator('#menu button').evaluateAll((bs) => bs.map((b) => b.dataset.ir));
-    check(results, 'nove seções no menu', secoes.length === 9, secoes.join(','));
+    const esperadas = ['visao', 'respostas', 'llm', 'casos', 'rag', 'injecao', 'ft', 'seg', 'otim', 'lat', 'hist'];
+  check(results, 'seções no menu (inclui comentários da professora e RAG)', secoes.join(',') === esperadas.join(','), secoes.join(','));
     for (const id of secoes) {
       await page.click(`#menu [data-ir="${id}"]`);
       const texto = (await page.locator(`#${id}`).innerText()).trim();

@@ -23,14 +23,16 @@ O `AI_RESPONSE` guarda:
 
 Quando o banco nega o escopo, fica `AI_CONTEXT_DENIED`. Quando o modelo falha depois de ler o contexto, fica `AI_RESPONSE_FAILED`.
 
-Exemplo real da trilha de uma análise (lida pelo auditor):
-
+Exemplo real da trilha de uma análise (lida pelo auditor): o caso IA-001 da avaliação final, `correlation_id`
+`cd6978c0-851d-41f5-849b-7dd1bb4424d6` em [`ia-avaliacao-final.json`](../sqlserver/evidence/parte3/ia-avaliacao-final.json),
+consultado em `audit.Eventos` em 26/11/2026:
 ```text
-AI_CONTEXT_READ | local_id=LOC-001; provider_id=PROV-001; db_principal=sigp_ia_loc001; rows=20
-AI_RAG_SOURCES  | local_id=LOC-001; db_principal=sigp_ia_loc001; source_ids=DOC-ALFA-01,DOC-ALFA-03,DOC-ALFA-02,DOC-POL-12,DOC-POL-08
+AI_CONTEXT_READ | local_id=LOC-001; provider_id=PROV-001; db_principal=sigp_ia_loc001; rows=3
+AI_RAG_SOURCES  | local_id=LOC-001; db_principal=sigp_ia_loc001; source_ids=DOC-ALFA-01,DOC-ALFA-03,DOC-ALFA-02,DOC-POL-08,DOC-POL-07
 AI_RESPONSE     | local_id=LOC-001; db_principal=sigp_ia_loc001; pedido=PROV-001 450.00 desc_sha256=0aa9058649c34ae8; injecao=0;
-                  decisao=CONTRATADO; modelo=REVISAR (qwen2.5:0.5b, prompt 3.0); motivo=Serviço e valor correspondem à evidência
-                  estruturada.; fontes=DOC-ALFA-01,...; linhas=20; resposta_sha256=c9cc1acc...; pagamento_automatico=0
+                  decisao=CONTRATADO; modelo=REVISAR (qwen2.5:0.5b, prompt 3.1); motivo=Serviço e valor correspondem à evidência
+                  estruturada.; fontes=DOC-ALFA-01,DOC-ALFA-03,DOC-ALFA-02,DOC-POL-08,DOC-POL-07; linhas=3;
+                  resposta_sha256=ee6b1a5fd08f8056...; pagamento_automatico=0
 ```
 
 ### Decisões de desenho

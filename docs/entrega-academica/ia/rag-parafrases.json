@@ -1,0 +1,19 @@
+{
+  "sobre": "Conjunto de recuperação com paráfrases: a mesma cobrança descrita com palavras que NÃO estão no documento (vocabulário diferente do contrato e das políticas). Escrito em 26/11/2026, antes de medir qualquer modelo de embedding. Escopo: LOC-001 / PROV-001 (a credencial da IA acadêmica). 'fontes' = documentos que a busca precisa trazer; tirados do texto do corpus (rag_documents.json).",
+  "casos": [
+    {"id": "RP-01", "consulta": "internet dedicada de 300 mega da agência", "fontes": ["DOC-ALFA-01"]},
+    {"id": "RP-02", "consulta": "endereço IP estático cobrado todo mês", "fontes": ["DOC-POL-07"]},
+    {"id": "RP-03", "consulta": "conexão reserva de 100 mega", "fontes": ["DOC-ALFA-02"]},
+    {"id": "RP-04", "consulta": "habilitação do circuito novo", "fontes": ["DOC-POL-04"]},
+    {"id": "RP-05", "consulta": "locação do roteador wi-fi", "fontes": ["DOC-POL-05"]},
+    {"id": "RP-06", "consulta": "linha telefônica fixa", "fontes": ["DOC-POL-08"]},
+    {"id": "RP-07", "consulta": "penalidade por rescisão antecipada", "fontes": ["DOC-POL-09"]},
+    {"id": "RP-08", "consulta": "troca do modem queimado", "fontes": ["DOC-POL-06"]},
+    {"id": "RP-09", "consulta": "transferência do ponto para outro prédio", "fontes": ["DOC-POL-10"]},
+    {"id": "RP-10", "consulta": "encargos por pagar depois da data", "fontes": ["DOC-POL-03"]},
+    {"id": "RP-11", "consulta": "cobrança por excesso de consumo de gigas", "fontes": ["DOC-POL-01"]},
+    {"id": "RP-12", "consulta": "aumento anual da mensalidade", "fontes": ["DOC-POL-02"]},
+    {"id": "RP-13", "consulta": "ampliação da velocidade contratada", "fontes": ["DOC-ALFA-03"]},
+    {"id": "RP-14", "consulta": "ramal de voz sobre IP", "fontes": ["DOC-POL-08"]}
+  ]
+}

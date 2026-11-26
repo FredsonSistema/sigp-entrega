@@ -1,6 +1,8 @@
 """Avaliação final da IA acadêmica contra o serviço real (http://127.0.0.1:5010, credencial do LOC-001).
 
 1) casos-finais.json: 16 casos com o esperado tirado das regras e do corpus.
+   casos-fora-escopo.json: 12 documentos fora do escopo (outra conta, outro local, outro idioma, não é fatura),
+   todos com o esperado REVISAR; mesmas verificações.
    Métricas: acerto da decisão, precisão/revocação/F1 por classe e F1 macro, matriz de confusão, falsas aprovações
    (CONTRATADO onde o esperado não é), acerto do modelo e concordância dele com a regra, fontes obrigatórias citadas,
    fontes proibidas ausentes, latência (média, mediana, p95).
@@ -113,8 +115,8 @@ def metricas_classificacao(pares: list[tuple[str, str | None]]) -> dict:
             "matriz_confusao_esperado_x_obtido": matriz}
 
 
-def avaliar_casos(chave: str) -> dict:
-    casos = json.loads((DIR / "casos-finais.json").read_text(encoding="utf-8"))["casos"]
+def avaliar_casos(chave: str, arquivo: str = "casos-finais.json") -> dict:
+    casos = json.loads((DIR / arquivo).read_text(encoding="utf-8"))["casos"]
     resultados = []
     for c in casos:
         r = chamar(chave, c["invoice"])
@@ -134,7 +136,7 @@ def avaliar_casos(chave: str) -> dict:
         resultados.append({
             "id": c["id"], "categoria": c["categoria"], "descricao": c["descricao"], "esperado": esperado["classification"],
             "obtido": b.get("classification"), "modelo": b.get("model_classification"), "motivo": b.get("reason") or b.get("error"),
-            "http": r["http"], "fontes": fontes, "linhas_contexto": b.get("context_rows"),
+            "http": r["http"], "fontes": fontes, "busca": b.get("rag_method"), "linhas_contexto": b.get("context_rows"),
             "latencia_servidor_ms": b.get("latency_ms"), "latencia_cliente_ms": r["ms_cliente"],
             "correlation_id": b.get("correlation_id"), "verificacoes": verif, "ok": all(verif.values()),
         })
@@ -220,6 +222,10 @@ def main() -> int:
     print(f"Aquecimento: HTTP {aquecimento['http']} em {aquecimento['ms_cliente']} ms (não conta)")
     print("Casos de teste:")
     casos = avaliar_casos(chave)
+    fora = None
+    if (DIR / "casos-fora-escopo.json").exists():
+        print("Fora de escopo:")
+        fora = avaliar_casos(chave, "casos-fora-escopo.json")
     print("Prompt injection:")
     injecao = avaliar_injecao(chave)
     validacao = None
@@ -227,7 +233,7 @@ def main() -> int:
         print("Validação cega do detector:")
         validacao = avaliar_injecao(chave, "injecao-validacao.json")
     relatorio = {"rotulo": rotulo, "executado_em_utc": datetime.now(timezone.utc).isoformat(), "servico": saude,
-                 "casos_de_teste": casos, "prompt_injection": injecao, "validacao_cega": validacao}
+                 "casos_de_teste": casos, "fora_de_escopo": fora, "prompt_injection": injecao, "validacao_cega": validacao}
     texto = json.dumps(relatorio, ensure_ascii=False, indent=2)
     if chave in texto:
         sys.exit("A chave apareceu no resultado; o arquivo não foi gravado.")
@@ -239,6 +245,11 @@ def main() -> int:
     print(f"\nCasos: {m['casos_aprovados']}/{m['total']} aprovados · decisão {d['acertos']}/{d['total']} (acurácia {d['acuracia']}, F1 macro {d['f1_macro']})"
           f" · falsas aprovações {m['falsas_aprovacoes'] or 'nenhuma'} · modelo sozinho {m['modelo_sozinho']['acertos']}/{m['modelo_sozinho']['total']}"
           f" · modelo concorda com a regra {m['modelo_concorda_com_a_regra']} · latência média {m['latencia_servidor_ms']['media']} ms, p95 {m['latencia_servidor_ms']['p95']} ms")
+    if fora:
+        mf = fora["metricas"]
+        print(f"Fora de escopo: {mf['casos_aprovados']}/{mf['total']} aprovados · decisão {mf['decisao_do_sistema']['acertos']}/{mf['total']}"
+              f" · falsas aprovações {mf['falsas_aprovacoes'] or 'nenhuma'} · segurança {mf['seguranca_ok']}"
+              f" · modelo sozinho {mf['modelo_sozinho']['acertos']}/{mf['total']}")
     print(f"Injeção: {mi['ataques_detectados']}/{mi['ataques']} ataques detectados · {mi['ataques_com_decisao_segura_REVISAR']}/{mi['ataques']} com REVISAR"
           f" · decididos CONTRATADO {mi['ataques_decididos_CONTRATADO'] or 'nenhum'} · controles certos {mi['controles_certos']}/{mi['controles']}"
           f" · vazamentos {mi['vazamentos'] or 'nenhum'} · pagamento automático {mi['pagamento_automatico']}")

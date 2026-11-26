@@ -1,5 +1,5 @@
 {
-  "executado_em_utc": "2026-11-20T15:36:13.082138+00:00",
+  "executado_em_utc": "2026-11-26T18:57:50.796087+00:00",
   "servidor": {
     "adapter": "sigp-lora",
     "base_model": "Qwen/Qwen2.5-0.5B-Instruct",
@@ -85,19 +85,19 @@
           ],
           "respostas_invalidas": 0,
           "latencia_ms": {
-            "media": 2480.0,
-            "mediana": 2398.9,
-            "p95": 3080.8,
-            "max": 3100.4
+            "media": 2193.6,
+            "mediana": 1604.4,
+            "p95": 3065.6,
+            "max": 8649.9
           },
           "tokens_entrada_media": 147.5,
           "tokens_saida_media": 9.0,
           "custo_por_1000_usos": {
-            "tempo_cpu_min": 41.3,
-            "energia_kwh_15w": 0.0103,
-            "energia_kwh_55w": 0.0379,
-            "reais_15w": 0.0128,
-            "reais_55w": 0.0471
+            "tempo_cpu_min": 36.6,
+            "energia_kwh_15w": 0.0091,
+            "energia_kwh_55w": 0.0335,
+            "reais_15w": 0.0114,
+            "reais_55w": 0.0416
           }
         },
         "casos": [
@@ -106,160 +106,160 @@
             "esperado": "CONTRATADO",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2858.0,
+            "generation_ms": 2272.1,
             "input_tokens": 140,
             "output_tokens": 9,
-            "ms_cliente": 2867.2
+            "ms_cliente": 2328.1
           },
           {
             "id": "IA-002",
             "esperado": "DIVERGENTE",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2190.5,
+            "generation_ms": 1666.6,
             "input_tokens": 135,
             "output_tokens": 9,
-            "ms_cliente": 2219.3
+            "ms_cliente": 1675.9
           },
           {
             "id": "IA-003",
             "esperado": "REVISAR",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 3100.4,
+            "generation_ms": 8649.9,
             "input_tokens": 139,
             "output_tokens": 9,
-            "ms_cliente": 3107.6
+            "ms_cliente": 10201.4
           },
           {
             "id": "IA-004",
             "esperado": "REVISAR",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2789.8,
+            "generation_ms": 3065.6,
             "input_tokens": 203,
             "output_tokens": 9,
-            "ms_cliente": 2817.2
+            "ms_cliente": 3108.4
           },
           {
             "id": "IA-005",
             "esperado": "REVISAR",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2112.4,
+            "generation_ms": 1611.0,
             "input_tokens": 138,
             "output_tokens": 9,
-            "ms_cliente": 2123.0
+            "ms_cliente": 1621.6
           },
           {
             "id": "IA-006",
             "esperado": "DIVERGENTE",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2202.0,
+            "generation_ms": 1562.3,
             "input_tokens": 140,
             "output_tokens": 9,
-            "ms_cliente": 2231.2
+            "ms_cliente": 1624.1
           },
           {
             "id": "IA-007",
             "esperado": "DIVERGENTE",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2110.1,
+            "generation_ms": 1412.0,
             "input_tokens": 135,
             "output_tokens": 9,
-            "ms_cliente": 2122.7
+            "ms_cliente": 1418.2
           },
           {
             "id": "IA-008",
             "esperado": "REVISAR",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2152.6,
+            "generation_ms": 1496.5,
             "input_tokens": 140,
             "output_tokens": 9,
-            "ms_cliente": 2162.1
+            "ms_cliente": 1505.2
           },
           {
             "id": "IA-009",
             "esperado": "REVISAR",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 3080.8,
+            "generation_ms": 1528.6,
             "input_tokens": 163,
             "output_tokens": 9,
-            "ms_cliente": 3104.9
+            "ms_cliente": 1541.4
           },
           {
             "id": "IA-010",
             "esperado": "REVISAR",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2411.9,
+            "generation_ms": 1625.3,
             "input_tokens": 135,
             "output_tokens": 9,
-            "ms_cliente": 2425.7
+            "ms_cliente": 1633.6
           },
           {
             "id": "IA-011",
             "esperado": "CONTRATADO",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2264.7,
+            "generation_ms": 1523.7,
             "input_tokens": 140,
             "output_tokens": 9,
-            "ms_cliente": 2272.3
+            "ms_cliente": 1532.7
           },
           {
             "id": "IA-012",
             "esperado": "CONTRATADO",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2851.9,
+            "generation_ms": 1597.8,
             "input_tokens": 146,
             "output_tokens": 9,
-            "ms_cliente": 2858.5
+            "ms_cliente": 1607.1
           },
           {
             "id": "IA-013",
             "esperado": "CONTRATADO",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2171.4,
+            "generation_ms": 1511.2,
             "input_tokens": 143,
             "output_tokens": 9,
-            "ms_cliente": 2180.2
+            "ms_cliente": 1517.8
           },
           {
             "id": "IA-014",
             "esperado": "DIVERGENTE",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2385.9,
+            "generation_ms": 1451.7,
             "input_tokens": 144,
             "output_tokens": 9,
-            "ms_cliente": 2396.9
+            "ms_cliente": 1458.8
           },
           {
             "id": "IA-015",
             "esperado": "REVISAR",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2580.8,
+            "generation_ms": 2500.6,
             "input_tokens": 178,
             "output_tokens": 9,
-            "ms_cliente": 2588.2
+            "ms_cliente": 2519.4
           },
           {
             "id": "IA-016",
             "esperado": "REVISAR",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2416.7,
+            "generation_ms": 1623.2,
             "input_tokens": 141,
             "output_tokens": 9,
-            "ms_cliente": 2424.5
+            "ms_cliente": 1630.5
           }
         ]
       },
@@ -269,14 +269,14 @@
         "rag": true,
         "metricas": {
           "n": 16,
-          "acertos": 7,
-          "acuracia": 0.438,
-          "f1_macro": 0.339,
+          "acertos": 6,
+          "acuracia": 0.375,
+          "f1_macro": 0.281,
           "por_classe": {
             "CONTRATADO": {
-              "precisao": 0.308,
+              "precisao": 0.286,
               "revocacao": 1.0,
-              "f1": 0.471
+              "f1": 0.444
             },
             "DIVERGENTE": {
               "precisao": 0.0,
@@ -285,8 +285,8 @@
             },
             "REVISAR": {
               "precisao": 1.0,
-              "revocacao": 0.375,
-              "f1": 0.545
+              "revocacao": 0.25,
+              "f1": 0.4
             }
           },
           "matriz_confusao": {
@@ -303,15 +303,16 @@
               "INVALIDO": 0
             },
             "REVISAR": {
-              "CONTRATADO": 5,
+              "CONTRATADO": 6,
               "DIVERGENTE": 0,
-              "REVISAR": 3,
+              "REVISAR": 2,
               "INVALIDO": 0
             }
           },
           "falsas_aprovacoes": [
             "IA-002",
-            "IA-005",
+            "IA-003",
+            "IA-004",
             "IA-006",
             "IA-007",
             "IA-008",
@@ -322,19 +323,19 @@
           ],
           "respostas_invalidas": 0,
           "latencia_ms": {
-            "media": 4973.3,
-            "mediana": 4867.1,
-            "p95": 5992.3,
-            "max": 5992.3
+            "media": 3494.7,
+            "mediana": 3254.3,
+            "p95": 4365.4,
+            "max": 4707.5
           },
-          "tokens_entrada_media": 471.8,
-          "tokens_saida_media": 8.8,
+          "tokens_entrada_media": 463.0,
+          "tokens_saida_media": 8.9,
           "custo_por_1000_usos": {
-            "tempo_cpu_min": 82.9,
-            "energia_kwh_15w": 0.0207,
-            "energia_kwh_55w": 0.076,
-            "reais_15w": 0.0257,
-            "reais_55w": 0.0944
+            "tempo_cpu_min": 58.2,
+            "energia_kwh_15w": 0.0146,
+            "energia_kwh_55w": 0.0534,
+            "reais_15w": 0.0181,
+            "reais_55w": 0.0663
           }
         },
         "casos": [
@@ -343,160 +344,160 @@
             "esperado": "CONTRATADO",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 4624.5,
-            "input_tokens": 470,
+            "generation_ms": 4059.1,
+            "input_tokens": 455,
             "output_tokens": 9,
-            "ms_cliente": 4634.9
+            "ms_cliente": 4122.3
           },
           {
             "id": "IA-002",
             "esperado": "DIVERGENTE",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 5396.5,
-            "input_tokens": 468,
+            "generation_ms": 3304.7,
+            "input_tokens": 448,
             "output_tokens": 9,
-            "ms_cliente": 5406.1
+            "ms_cliente": 3320.2
           },
           {
             "id": "IA-003",
             "esperado": "REVISAR",
-            "obtido": "REVISAR",
-            "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 4662.4,
-            "input_tokens": 460,
-            "output_tokens": 8,
-            "ms_cliente": 4672.6
+            "obtido": "CONTRATADO",
+            "resposta": "{\"classification\":\"CONTRATADO\"}",
+            "generation_ms": 4126.9,
+            "input_tokens": 466,
+            "output_tokens": 9,
+            "ms_cliente": 6923.8
           },
           {
             "id": "IA-004",
             "esperado": "REVISAR",
-            "obtido": "REVISAR",
-            "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 5992.3,
-            "input_tokens": 543,
-            "output_tokens": 8,
-            "ms_cliente": 6011.0
+            "obtido": "CONTRATADO",
+            "resposta": "{\"classification\":\"CONTRATADO\"}",
+            "generation_ms": 4707.5,
+            "input_tokens": 524,
+            "output_tokens": 9,
+            "ms_cliente": 4721.0
           },
           {
             "id": "IA-005",
             "esperado": "REVISAR",
-            "obtido": "CONTRATADO",
-            "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 4504.4,
-            "input_tokens": 431,
-            "output_tokens": 9,
-            "ms_cliente": 4513.5
+            "obtido": "REVISAR",
+            "resposta": "{\"classification\":\"REVISAR\"}",
+            "generation_ms": 3208.4,
+            "input_tokens": 428,
+            "output_tokens": 8,
+            "ms_cliente": 3444.6
           },
           {
             "id": "IA-006",
             "esperado": "DIVERGENTE",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 5346.6,
+            "generation_ms": 3598.9,
             "input_tokens": 470,
             "output_tokens": 9,
-            "ms_cliente": 5357.9
+            "ms_cliente": 3611.8
           },
           {
             "id": "IA-007",
             "esperado": "DIVERGENTE",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 4448.5,
-            "input_tokens": 465,
+            "generation_ms": 2954.7,
+            "input_tokens": 453,
             "output_tokens": 9,
-            "ms_cliente": 4457.0
+            "ms_cliente": 2962.3
           },
           {
             "id": "IA-008",
             "esperado": "REVISAR",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 4850.1,
+            "generation_ms": 3177.5,
             "input_tokens": 470,
             "output_tokens": 9,
-            "ms_cliente": 4858.4
+            "ms_cliente": 3184.9
           },
           {
             "id": "IA-009",
             "esperado": "REVISAR",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 4580.1,
-            "input_tokens": 493,
+            "generation_ms": 3153.7,
+            "input_tokens": 484,
             "output_tokens": 9,
-            "ms_cliente": 4589.1
+            "ms_cliente": 3161.9
           },
           {
             "id": "IA-010",
             "esperado": "REVISAR",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 5240.5,
+            "generation_ms": 3991.2,
             "input_tokens": 468,
             "output_tokens": 9,
-            "ms_cliente": 5265.6
+            "ms_cliente": 3999.0
           },
           {
             "id": "IA-011",
             "esperado": "CONTRATADO",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 4810.3,
-            "input_tokens": 470,
+            "generation_ms": 3039.1,
+            "input_tokens": 455,
             "output_tokens": 9,
-            "ms_cliente": 4819.4
+            "ms_cliente": 3046.5
           },
           {
             "id": "IA-012",
             "esperado": "CONTRATADO",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 5992.3,
+            "generation_ms": 3300.2,
             "input_tokens": 476,
             "output_tokens": 9,
-            "ms_cliente": 6003.4
+            "ms_cliente": 3308.6
           },
           {
             "id": "IA-013",
             "esperado": "CONTRATADO",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 4884.2,
+            "generation_ms": 3198.4,
             "input_tokens": 473,
             "output_tokens": 9,
-            "ms_cliente": 4892.3
+            "ms_cliente": 3205.7
           },
           {
             "id": "IA-014",
             "esperado": "DIVERGENTE",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 4995.6,
-            "input_tokens": 477,
+            "generation_ms": 3078.1,
+            "input_tokens": 459,
             "output_tokens": 9,
-            "ms_cliente": 5010.5
+            "ms_cliente": 3085.6
           },
           {
             "id": "IA-015",
             "esperado": "REVISAR",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 5032.6,
-            "input_tokens": 508,
+            "generation_ms": 4365.4,
+            "input_tokens": 496,
             "output_tokens": 9,
-            "ms_cliente": 5043.5
+            "ms_cliente": 4373.5
           },
           {
             "id": "IA-016",
             "esperado": "REVISAR",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 4212.5,
-            "input_tokens": 406,
+            "generation_ms": 2651.4,
+            "input_tokens": 383,
             "output_tokens": 8,
-            "ms_cliente": 4230.7
+            "ms_cliente": 2658.0
           }
         ]
       },
@@ -549,19 +550,19 @@
           "falsas_aprovacoes": [],
           "respostas_invalidas": 0,
           "latencia_ms": {
-            "media": 2323.2,
-            "mediana": 2259.5,
-            "p95": 2656.7,
-            "max": 2675.1
+            "media": 1553.4,
+            "mediana": 1486.8,
+            "p95": 1859.4,
+            "max": 1980.2
           },
           "tokens_entrada_media": 147.5,
           "tokens_saida_media": 8.2,
           "custo_por_1000_usos": {
-            "tempo_cpu_min": 38.7,
-            "energia_kwh_15w": 0.0097,
-            "energia_kwh_55w": 0.0355,
-            "reais_15w": 0.012,
-            "reais_55w": 0.0441
+            "tempo_cpu_min": 25.9,
+            "energia_kwh_15w": 0.0065,
+            "energia_kwh_55w": 0.0237,
+            "reais_15w": 0.008,
+            "reais_55w": 0.0295
           }
         },
         "casos": [
@@ -570,160 +571,160 @@
             "esperado": "CONTRATADO",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 2436.8,
+            "generation_ms": 1678.2,
             "input_tokens": 140,
             "output_tokens": 8,
-            "ms_cliente": 2457.7
+            "ms_cliente": 1687.0
           },
           {
             "id": "IA-002",
             "esperado": "DIVERGENTE",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 2131.8,
+            "generation_ms": 1612.6,
             "input_tokens": 135,
             "output_tokens": 8,
-            "ms_cliente": 2144.0
+            "ms_cliente": 1620.1
           },
           {
             "id": "IA-003",
             "esperado": "REVISAR",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 2516.5,
+            "generation_ms": 1980.2,
             "input_tokens": 139,
             "output_tokens": 8,
-            "ms_cliente": 2550.0
+            "ms_cliente": 1989.8
           },
           {
             "id": "IA-004",
             "esperado": "REVISAR",
             "obtido": "DIVERGENTE",
             "resposta": "{\"classification\":\"DIVERGENTE\"}",
-            "generation_ms": 2606.9,
+            "generation_ms": 1859.4,
             "input_tokens": 203,
             "output_tokens": 9,
-            "ms_cliente": 2615.2
+            "ms_cliente": 1869.8
           },
           {
             "id": "IA-005",
             "esperado": "REVISAR",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 2221.5,
+            "generation_ms": 1665.8,
             "input_tokens": 138,
             "output_tokens": 8,
-            "ms_cliente": 2230.9
+            "ms_cliente": 1674.0
           },
           {
             "id": "IA-006",
             "esperado": "DIVERGENTE",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 2070.5,
+            "generation_ms": 1393.1,
             "input_tokens": 140,
             "output_tokens": 8,
-            "ms_cliente": 2083.1
+            "ms_cliente": 1400.1
           },
           {
             "id": "IA-007",
             "esperado": "DIVERGENTE",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 2279.8,
+            "generation_ms": 1305.8,
             "input_tokens": 135,
             "output_tokens": 8,
-            "ms_cliente": 2292.8
+            "ms_cliente": 1312.6
           },
           {
             "id": "IA-008",
             "esperado": "REVISAR",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 2245.4,
+            "generation_ms": 1419.2,
             "input_tokens": 140,
             "output_tokens": 8,
-            "ms_cliente": 2257.7
+            "ms_cliente": 1429.0
           },
           {
             "id": "IA-009",
             "esperado": "REVISAR",
             "obtido": "DIVERGENTE",
             "resposta": "{\"classification\":\"DIVERGENTE\"}",
-            "generation_ms": 2675.1,
+            "generation_ms": 1587.4,
             "input_tokens": 163,
             "output_tokens": 9,
-            "ms_cliente": 2690.5
+            "ms_cliente": 1597.0
           },
           {
             "id": "IA-010",
             "esperado": "REVISAR",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 2036.8,
+            "generation_ms": 1492.6,
             "input_tokens": 135,
             "output_tokens": 8,
-            "ms_cliente": 2048.0
+            "ms_cliente": 1500.4
           },
           {
             "id": "IA-011",
             "esperado": "CONTRATADO",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 2241.1,
+            "generation_ms": 1371.4,
             "input_tokens": 140,
             "output_tokens": 8,
-            "ms_cliente": 2256.3
+            "ms_cliente": 1378.2
           },
           {
             "id": "IA-012",
             "esperado": "CONTRATADO",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 2656.7,
+            "generation_ms": 1426.2,
             "input_tokens": 146,
             "output_tokens": 8,
-            "ms_cliente": 2690.8
+            "ms_cliente": 1436.0
           },
           {
             "id": "IA-013",
             "esperado": "CONTRATADO",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 2086.9,
+            "generation_ms": 1383.9,
             "input_tokens": 143,
             "output_tokens": 8,
-            "ms_cliente": 2100.0
+            "ms_cliente": 1392.9
           },
           {
             "id": "IA-014",
             "esperado": "DIVERGENTE",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 2167.3,
+            "generation_ms": 1390.2,
             "input_tokens": 144,
             "output_tokens": 8,
-            "ms_cliente": 2180.5
+            "ms_cliente": 1398.0
           },
           {
             "id": "IA-015",
             "esperado": "REVISAR",
             "obtido": "DIVERGENTE",
             "resposta": "{\"classification\":\"DIVERGENTE\"}",
-            "generation_ms": 2525.2,
+            "generation_ms": 1806.9,
             "input_tokens": 178,
             "output_tokens": 9,
-            "ms_cliente": 2535.4
+            "ms_cliente": 1814.9
           },
           {
             "id": "IA-016",
             "esperado": "REVISAR",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 2273.6,
+            "generation_ms": 1481.1,
             "input_tokens": 141,
             "output_tokens": 8,
-            "ms_cliente": 2282.8
+            "ms_cliente": 1488.6
           }
         ]
       },
@@ -743,14 +744,14 @@
               "f1": 0.0
             },
             "DIVERGENTE": {
-              "precisao": 0.333,
-              "revocacao": 1.0,
-              "f1": 0.5
+              "precisao": 0.3,
+              "revocacao": 0.75,
+              "f1": 0.429
             },
             "REVISAR": {
-              "precisao": 1.0,
-              "revocacao": 0.375,
-              "f1": 0.545
+              "precisao": 0.8,
+              "revocacao": 0.5,
+              "f1": 0.615
             }
           },
           "matriz_confusao": {
@@ -762,14 +763,14 @@
             },
             "DIVERGENTE": {
               "CONTRATADO": 0,
-              "DIVERGENTE": 4,
-              "REVISAR": 0,
+              "DIVERGENTE": 3,
+              "REVISAR": 1,
               "INVALIDO": 0
             },
             "REVISAR": {
               "CONTRATADO": 1,
-              "DIVERGENTE": 4,
-              "REVISAR": 3,
+              "DIVERGENTE": 3,
+              "REVISAR": 4,
               "INVALIDO": 0
             }
           },
@@ -778,19 +779,19 @@
           ],
           "respostas_invalidas": 0,
           "latencia_ms": {
-            "media": 5203.8,
-            "mediana": 4996.9,
-            "p95": 6502.4,
-            "max": 7270.3
+            "media": 3626.0,
+            "mediana": 3520.9,
+            "p95": 4288.5,
+            "max": 4616.9
           },
-          "tokens_entrada_media": 471.8,
-          "tokens_saida_media": 8.8,
+          "tokens_entrada_media": 463.0,
+          "tokens_saida_media": 8.7,
           "custo_por_1000_usos": {
-            "tempo_cpu_min": 86.7,
-            "energia_kwh_15w": 0.0217,
-            "energia_kwh_55w": 0.0795,
-            "reais_15w": 0.0269,
-            "reais_55w": 0.0987
+            "tempo_cpu_min": 60.4,
+            "energia_kwh_15w": 0.0151,
+            "energia_kwh_55w": 0.0554,
+            "reais_15w": 0.0188,
+            "reais_55w": 0.0688
           }
         },
         "casos": [
@@ -799,160 +800,160 @@
             "esperado": "CONTRATADO",
             "obtido": "DIVERGENTE",
             "resposta": "{\"classification\":\"DIVERGENTE\"}",
-            "generation_ms": 4873.5,
-            "input_tokens": 470,
+            "generation_ms": 3126.1,
+            "input_tokens": 455,
             "output_tokens": 9,
-            "ms_cliente": 4890.8
+            "ms_cliente": 3132.7
           },
           {
             "id": "IA-002",
             "esperado": "DIVERGENTE",
             "obtido": "DIVERGENTE",
             "resposta": "{\"classification\":\"DIVERGENTE\"}",
-            "generation_ms": 6502.4,
-            "input_tokens": 468,
+            "generation_ms": 4616.9,
+            "input_tokens": 448,
             "output_tokens": 9,
-            "ms_cliente": 6510.4
+            "ms_cliente": 4628.6
           },
           {
             "id": "IA-003",
             "esperado": "REVISAR",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 4636.6,
-            "input_tokens": 460,
+            "generation_ms": 4284.6,
+            "input_tokens": 466,
             "output_tokens": 8,
-            "ms_cliente": 4646.5
+            "ms_cliente": 4295.1
           },
           {
             "id": "IA-004",
             "esperado": "REVISAR",
-            "obtido": "REVISAR",
-            "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 5585.9,
-            "input_tokens": 543,
-            "output_tokens": 8,
-            "ms_cliente": 5596.0
+            "obtido": "DIVERGENTE",
+            "resposta": "{\"classification\":\"DIVERGENTE\"}",
+            "generation_ms": 3932.2,
+            "input_tokens": 524,
+            "output_tokens": 9,
+            "ms_cliente": 3940.1
           },
           {
             "id": "IA-005",
             "esperado": "REVISAR",
-            "obtido": "DIVERGENTE",
-            "resposta": "{\"classification\":\"DIVERGENTE\"}",
-            "generation_ms": 4365.7,
-            "input_tokens": 431,
-            "output_tokens": 9,
-            "ms_cliente": 4374.3
+            "obtido": "REVISAR",
+            "resposta": "{\"classification\":\"REVISAR\"}",
+            "generation_ms": 3245.3,
+            "input_tokens": 428,
+            "output_tokens": 8,
+            "ms_cliente": 3323.2
           },
           {
             "id": "IA-006",
             "esperado": "DIVERGENTE",
             "obtido": "DIVERGENTE",
             "resposta": "{\"classification\":\"DIVERGENTE\"}",
-            "generation_ms": 5093.7,
+            "generation_ms": 3253.1,
             "input_tokens": 470,
             "output_tokens": 9,
-            "ms_cliente": 5102.9
+            "ms_cliente": 3269.7
           },
           {
             "id": "IA-007",
             "esperado": "DIVERGENTE",
-            "obtido": "DIVERGENTE",
-            "resposta": "{\"classification\":\"DIVERGENTE\"}",
-            "generation_ms": 4624.4,
-            "input_tokens": 465,
-            "output_tokens": 9,
-            "ms_cliente": 4634.5
+            "obtido": "REVISAR",
+            "resposta": "{\"classification\":\"REVISAR\"}",
+            "generation_ms": 3045.3,
+            "input_tokens": 453,
+            "output_tokens": 8,
+            "ms_cliente": 3059.6
           },
           {
             "id": "IA-008",
             "esperado": "REVISAR",
             "obtido": "DIVERGENTE",
             "resposta": "{\"classification\":\"DIVERGENTE\"}",
-            "generation_ms": 5480.6,
+            "generation_ms": 3682.0,
             "input_tokens": 470,
             "output_tokens": 9,
-            "ms_cliente": 5491.7
+            "ms_cliente": 3689.6
           },
           {
             "id": "IA-009",
             "esperado": "REVISAR",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 7270.3,
-            "input_tokens": 493,
+            "generation_ms": 3273.9,
+            "input_tokens": 484,
             "output_tokens": 9,
-            "ms_cliente": 7284.1
+            "ms_cliente": 3283.5
           },
           {
             "id": "IA-010",
             "esperado": "REVISAR",
             "obtido": "DIVERGENTE",
             "resposta": "{\"classification\":\"DIVERGENTE\"}",
-            "generation_ms": 5372.4,
+            "generation_ms": 3600.6,
             "input_tokens": 468,
             "output_tokens": 9,
-            "ms_cliente": 5380.5
+            "ms_cliente": 3608.8
           },
           {
             "id": "IA-011",
             "esperado": "CONTRATADO",
             "obtido": "DIVERGENTE",
             "resposta": "{\"classification\":\"DIVERGENTE\"}",
-            "generation_ms": 4779.1,
-            "input_tokens": 470,
+            "generation_ms": 3368.1,
+            "input_tokens": 455,
             "output_tokens": 9,
-            "ms_cliente": 4789.2
+            "ms_cliente": 3375.6
           },
           {
             "id": "IA-012",
             "esperado": "CONTRATADO",
             "obtido": "DIVERGENTE",
             "resposta": "{\"classification\":\"DIVERGENTE\"}",
-            "generation_ms": 5334.3,
+            "generation_ms": 3441.2,
             "input_tokens": 476,
             "output_tokens": 9,
-            "ms_cliente": 5357.7
+            "ms_cliente": 3448.5
           },
           {
             "id": "IA-013",
             "esperado": "CONTRATADO",
             "obtido": "DIVERGENTE",
             "resposta": "{\"classification\":\"DIVERGENTE\"}",
-            "generation_ms": 4941.6,
+            "generation_ms": 3328.7,
             "input_tokens": 473,
             "output_tokens": 9,
-            "ms_cliente": 4953.8
+            "ms_cliente": 3335.6
           },
           {
             "id": "IA-014",
             "esperado": "DIVERGENTE",
             "obtido": "DIVERGENTE",
             "resposta": "{\"classification\":\"DIVERGENTE\"}",
-            "generation_ms": 5052.1,
-            "input_tokens": 477,
+            "generation_ms": 3862.8,
+            "input_tokens": 459,
             "output_tokens": 9,
-            "ms_cliente": 5062.9
+            "ms_cliente": 3878.5
           },
           {
             "id": "IA-015",
             "esperado": "REVISAR",
-            "obtido": "DIVERGENTE",
-            "resposta": "{\"classification\":\"DIVERGENTE\"}",
-            "generation_ms": 4931.1,
-            "input_tokens": 508,
-            "output_tokens": 9,
-            "ms_cliente": 4954.3
+            "obtido": "REVISAR",
+            "resposta": "{\"classification\":\"REVISAR\"}",
+            "generation_ms": 3666.1,
+            "input_tokens": 496,
+            "output_tokens": 8,
+            "ms_cliente": 3675.1
           },
           {
             "id": "IA-016",
             "esperado": "REVISAR",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 4416.5,
-            "input_tokens": 406,
+            "generation_ms": 4288.5,
+            "input_tokens": 383,
             "output_tokens": 8,
-            "ms_cliente": 4448.9
+            "ms_cliente": 4294.8
           }
         ]
       }
@@ -1025,19 +1026,19 @@
           ],
           "respostas_invalidas": 0,
           "latencia_ms": {
-            "media": 2222.9,
-            "mediana": 2171.6,
-            "p95": 2537.7,
-            "max": 2808.7
+            "media": 1615.5,
+            "mediana": 1601.2,
+            "p95": 1848.5,
+            "max": 1906.1
           },
           "tokens_entrada_media": 132.8,
           "tokens_saida_media": 9.0,
           "custo_por_1000_usos": {
-            "tempo_cpu_min": 37.0,
-            "energia_kwh_15w": 0.0093,
-            "energia_kwh_55w": 0.034,
-            "reais_15w": 0.0115,
-            "reais_55w": 0.0422
+            "tempo_cpu_min": 26.9,
+            "energia_kwh_15w": 0.0067,
+            "energia_kwh_55w": 0.0247,
+            "reais_15w": 0.0084,
+            "reais_55w": 0.0306
           }
         },
         "casos": [
@@ -1046,200 +1047,200 @@
             "esperado": "CONTRATADO",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2229.9,
+            "generation_ms": 1906.1,
             "input_tokens": 132,
             "output_tokens": 9,
-            "ms_cliente": 2236.7
+            "ms_cliente": 1913.2
           },
           {
             "id": "FT-C-036",
             "esperado": "CONTRATADO",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2172.8,
+            "generation_ms": 1620.9,
             "input_tokens": 130,
             "output_tokens": 9,
-            "ms_cliente": 2179.2
+            "ms_cliente": 1629.6
           },
           {
             "id": "FT-C-037",
             "esperado": "CONTRATADO",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2237.0,
+            "generation_ms": 1848.5,
             "input_tokens": 133,
             "output_tokens": 9,
-            "ms_cliente": 2243.7
+            "ms_cliente": 1859.8
           },
           {
             "id": "FT-C-038",
             "esperado": "CONTRATADO",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2537.7,
+            "generation_ms": 1646.8,
             "input_tokens": 133,
             "output_tokens": 9,
-            "ms_cliente": 2546.9
+            "ms_cliente": 1654.1
           },
           {
             "id": "FT-C-039",
             "esperado": "CONTRATADO",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2198.2,
+            "generation_ms": 1559.6,
             "input_tokens": 135,
             "output_tokens": 9,
-            "ms_cliente": 2227.5
+            "ms_cliente": 1568.2
           },
           {
             "id": "FT-C-040",
             "esperado": "CONTRATADO",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2035.0,
+            "generation_ms": 1770.1,
             "input_tokens": 133,
             "output_tokens": 9,
-            "ms_cliente": 2041.6
+            "ms_cliente": 1776.6
           },
           {
             "id": "FT-D-035",
             "esperado": "DIVERGENTE",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2046.3,
+            "generation_ms": 1600.8,
             "input_tokens": 133,
             "output_tokens": 9,
-            "ms_cliente": 2062.5
+            "ms_cliente": 1609.3
           },
           {
             "id": "FT-D-036",
             "esperado": "DIVERGENTE",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2089.2,
+            "generation_ms": 1828.5,
             "input_tokens": 131,
             "output_tokens": 9,
-            "ms_cliente": 2096.5
+            "ms_cliente": 1834.5
           },
           {
             "id": "FT-D-037",
             "esperado": "DIVERGENTE",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2170.3,
+            "generation_ms": 1652.4,
             "input_tokens": 136,
             "output_tokens": 9,
-            "ms_cliente": 2177.6
+            "ms_cliente": 1660.3
           },
           {
             "id": "FT-D-038",
             "esperado": "DIVERGENTE",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2530.6,
+            "generation_ms": 1470.6,
             "input_tokens": 133,
             "output_tokens": 9,
-            "ms_cliente": 2537.8
+            "ms_cliente": 1478.0
           },
           {
             "id": "FT-D-039",
             "esperado": "DIVERGENTE",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2153.4,
+            "generation_ms": 1568.1,
             "input_tokens": 138,
             "output_tokens": 9,
-            "ms_cliente": 2179.6
+            "ms_cliente": 1598.1
           },
           {
             "id": "FT-D-040",
             "esperado": "DIVERGENTE",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2078.2,
+            "generation_ms": 1501.3,
             "input_tokens": 133,
             "output_tokens": 9,
-            "ms_cliente": 2108.5
+            "ms_cliente": 1508.9
           },
           {
             "id": "FT-R-033",
             "esperado": "REVISAR",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2087.5,
+            "generation_ms": 1558.7,
             "input_tokens": 137,
             "output_tokens": 9,
-            "ms_cliente": 2096.1
+            "ms_cliente": 1570.4
           },
           {
             "id": "FT-R-034",
             "esperado": "REVISAR",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2063.8,
+            "generation_ms": 1601.6,
             "input_tokens": 128,
             "output_tokens": 9,
-            "ms_cliente": 2075.1
+            "ms_cliente": 1613.7
           },
           {
             "id": "FT-R-035",
             "esperado": "REVISAR",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2294.7,
+            "generation_ms": 1470.3,
             "input_tokens": 129,
             "output_tokens": 9,
-            "ms_cliente": 2302.1
+            "ms_cliente": 1477.6
           },
           {
             "id": "FT-R-036",
             "esperado": "REVISAR",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2124.5,
+            "generation_ms": 1431.8,
             "input_tokens": 128,
             "output_tokens": 9,
-            "ms_cliente": 2132.0
+            "ms_cliente": 1439.9
           },
           {
             "id": "FT-R-037",
             "esperado": "REVISAR",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2808.7,
+            "generation_ms": 1480.4,
             "input_tokens": 133,
             "output_tokens": 9,
-            "ms_cliente": 2816.4
+            "ms_cliente": 1489.9
           },
           {
             "id": "FT-R-038",
             "esperado": "REVISAR",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2425.6,
+            "generation_ms": 1464.5,
             "input_tokens": 134,
             "output_tokens": 9,
-            "ms_cliente": 2443.8
+            "ms_cliente": 1487.3
           },
           {
             "id": "FT-R-039",
             "esperado": "REVISAR",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2189.7,
+            "generation_ms": 1681.1,
             "input_tokens": 135,
             "output_tokens": 9,
-            "ms_cliente": 2209.9
+            "ms_cliente": 1687.6
           },
           {
             "id": "FT-R-040",
             "esperado": "REVISAR",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 1984.3,
+            "generation_ms": 1647.9,
             "input_tokens": 131,
             "output_tokens": 9,
-            "ms_cliente": 1990.6
+            "ms_cliente": 1655.6
           }
         ]
       },
@@ -1300,19 +1301,19 @@
           ],
           "respostas_invalidas": 0,
           "latencia_ms": {
-            "media": 2317.0,
-            "mediana": 2256.1,
-            "p95": 2651.5,
-            "max": 3373.8
+            "media": 1691.7,
+            "mediana": 1674.7,
+            "p95": 2108.6,
+            "max": 2194.8
           },
           "tokens_entrada_media": 144.0,
           "tokens_saida_media": 8.7,
           "custo_por_1000_usos": {
-            "tempo_cpu_min": 38.6,
-            "energia_kwh_15w": 0.0097,
-            "energia_kwh_55w": 0.0354,
-            "reais_15w": 0.012,
-            "reais_55w": 0.044
+            "tempo_cpu_min": 28.2,
+            "energia_kwh_15w": 0.007,
+            "energia_kwh_55w": 0.0258,
+            "reais_15w": 0.0088,
+            "reais_55w": 0.0321
           }
         },
         "casos": [
@@ -1321,200 +1322,200 @@
             "esperado": "CONTRATADO",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2351.0,
+            "generation_ms": 1673.5,
             "input_tokens": 152,
             "output_tokens": 9,
-            "ms_cliente": 2358.7
+            "ms_cliente": 1679.6
           },
           {
             "id": "FT-C-036",
             "esperado": "CONTRATADO",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2260.7,
+            "generation_ms": 1794.4,
             "input_tokens": 148,
             "output_tokens": 9,
-            "ms_cliente": 2267.8
+            "ms_cliente": 1800.6
           },
           {
             "id": "FT-C-037",
             "esperado": "CONTRATADO",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2386.3,
+            "generation_ms": 1778.2,
             "input_tokens": 151,
             "output_tokens": 9,
-            "ms_cliente": 2395.8
+            "ms_cliente": 1784.4
           },
           {
             "id": "FT-C-038",
             "esperado": "CONTRATADO",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2196.1,
+            "generation_ms": 1839.5,
             "input_tokens": 151,
             "output_tokens": 9,
-            "ms_cliente": 2227.1
+            "ms_cliente": 1845.1
           },
           {
             "id": "FT-C-039",
             "esperado": "CONTRATADO",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2406.6,
+            "generation_ms": 2108.6,
             "input_tokens": 153,
             "output_tokens": 9,
-            "ms_cliente": 2414.4
+            "ms_cliente": 2117.3
           },
           {
             "id": "FT-C-040",
             "esperado": "CONTRATADO",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2566.5,
+            "generation_ms": 2194.8,
             "input_tokens": 152,
             "output_tokens": 9,
-            "ms_cliente": 2574.9
+            "ms_cliente": 2202.4
           },
           {
             "id": "FT-D-035",
             "esperado": "DIVERGENTE",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2651.5,
+            "generation_ms": 1766.4,
             "input_tokens": 142,
             "output_tokens": 9,
-            "ms_cliente": 2658.0
+            "ms_cliente": 1778.7
           },
           {
             "id": "FT-D-036",
             "esperado": "DIVERGENTE",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2340.4,
+            "generation_ms": 1576.8,
             "input_tokens": 147,
             "output_tokens": 9,
-            "ms_cliente": 2348.3
+            "ms_cliente": 1585.2
           },
           {
             "id": "FT-D-037",
             "esperado": "DIVERGENTE",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2121.3,
+            "generation_ms": 1591.5,
             "input_tokens": 145,
             "output_tokens": 9,
-            "ms_cliente": 2129.3
+            "ms_cliente": 1599.5
           },
           {
             "id": "FT-D-038",
             "esperado": "DIVERGENTE",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 3373.8,
+            "generation_ms": 1573.5,
             "input_tokens": 149,
             "output_tokens": 9,
-            "ms_cliente": 3386.1
+            "ms_cliente": 1583.7
           },
           {
             "id": "FT-D-039",
             "esperado": "DIVERGENTE",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2370.9,
+            "generation_ms": 1557.7,
             "input_tokens": 147,
             "output_tokens": 9,
-            "ms_cliente": 2394.6
+            "ms_cliente": 1564.4
           },
           {
             "id": "FT-D-040",
             "esperado": "DIVERGENTE",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2364.0,
+            "generation_ms": 1956.7,
             "input_tokens": 150,
             "output_tokens": 9,
-            "ms_cliente": 2376.8
+            "ms_cliente": 1972.5
           },
           {
             "id": "FT-R-033",
             "esperado": "REVISAR",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 2004.0,
+            "generation_ms": 1393.7,
             "input_tokens": 143,
             "output_tokens": 8,
-            "ms_cliente": 2012.1
+            "ms_cliente": 1416.2
           },
           {
             "id": "FT-R-034",
             "esperado": "REVISAR",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 2155.3,
+            "generation_ms": 1421.4,
             "input_tokens": 130,
             "output_tokens": 8,
-            "ms_cliente": 2163.2
+            "ms_cliente": 1436.2
           },
           {
             "id": "FT-R-035",
             "esperado": "REVISAR",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 2251.5,
+            "generation_ms": 1449.6,
             "input_tokens": 138,
             "output_tokens": 8,
-            "ms_cliente": 2260.2
+            "ms_cliente": 1459.6
           },
           {
             "id": "FT-R-036",
             "esperado": "REVISAR",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 2190.8,
+            "generation_ms": 1396.0,
             "input_tokens": 133,
             "output_tokens": 8,
-            "ms_cliente": 2215.1
+            "ms_cliente": 1406.3
           },
           {
             "id": "FT-R-037",
             "esperado": "REVISAR",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 1946.2,
+            "generation_ms": 1776.5,
             "input_tokens": 135,
             "output_tokens": 8,
-            "ms_cliente": 1955.9
+            "ms_cliente": 1784.0
           },
           {
             "id": "FT-R-038",
             "esperado": "REVISAR",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2192.1,
+            "generation_ms": 1479.8,
             "input_tokens": 140,
             "output_tokens": 9,
-            "ms_cliente": 2200.4
+            "ms_cliente": 1489.2
           },
           {
             "id": "FT-R-039",
             "esperado": "REVISAR",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 2136.2,
+            "generation_ms": 1675.8,
             "input_tokens": 141,
             "output_tokens": 8,
-            "ms_cliente": 2144.5
+            "ms_cliente": 1681.8
           },
           {
             "id": "FT-R-040",
             "esperado": "REVISAR",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 2075.4,
+            "generation_ms": 1830.4,
             "input_tokens": 133,
             "output_tokens": 8,
-            "ms_cliente": 2084.1
+            "ms_cliente": 1837.3
           }
         ]
       },
@@ -1567,19 +1568,19 @@
           "falsas_aprovacoes": [],
           "respostas_invalidas": 0,
           "latencia_ms": {
-            "media": 2232.0,
-            "mediana": 2167.3,
-            "p95": 2707.3,
-            "max": 2912.3
+            "media": 1660.4,
+            "mediana": 1495.2,
+            "p95": 1817.9,
+            "max": 3952.7
           },
           "tokens_entrada_media": 132.8,
           "tokens_saida_media": 8.2,
           "custo_por_1000_usos": {
-            "tempo_cpu_min": 37.2,
-            "energia_kwh_15w": 0.0093,
-            "energia_kwh_55w": 0.0341,
-            "reais_15w": 0.0115,
-            "reais_55w": 0.0423
+            "tempo_cpu_min": 27.7,
+            "energia_kwh_15w": 0.0069,
+            "energia_kwh_55w": 0.0254,
+            "reais_15w": 0.0086,
+            "reais_55w": 0.0315
           }
         },
         "casos": [
@@ -1588,200 +1589,200 @@
             "esperado": "CONTRATADO",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 1920.1,
+            "generation_ms": 1489.1,
             "input_tokens": 132,
             "output_tokens": 8,
-            "ms_cliente": 1931.3
+            "ms_cliente": 1518.5
           },
           {
             "id": "FT-C-036",
             "esperado": "CONTRATADO",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 1996.0,
+            "generation_ms": 1739.5,
             "input_tokens": 130,
             "output_tokens": 8,
-            "ms_cliente": 2028.3
+            "ms_cliente": 1747.5
           },
           {
             "id": "FT-C-037",
             "esperado": "CONTRATADO",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 1947.4,
+            "generation_ms": 1482.0,
             "input_tokens": 133,
             "output_tokens": 8,
-            "ms_cliente": 1954.8
+            "ms_cliente": 1489.0
           },
           {
             "id": "FT-C-038",
             "esperado": "CONTRATADO",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 1996.3,
+            "generation_ms": 1517.3,
             "input_tokens": 133,
             "output_tokens": 8,
-            "ms_cliente": 2005.1
+            "ms_cliente": 1523.9
           },
           {
             "id": "FT-C-039",
             "esperado": "CONTRATADO",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 2005.4,
+            "generation_ms": 1676.4,
             "input_tokens": 135,
             "output_tokens": 8,
-            "ms_cliente": 2014.2
+            "ms_cliente": 1688.0
           },
           {
             "id": "FT-C-040",
             "esperado": "CONTRATADO",
             "obtido": "DIVERGENTE",
             "resposta": "{\"classification\":\"DIVERGENTE\"}",
-            "generation_ms": 2158.6,
+            "generation_ms": 1817.9,
             "input_tokens": 133,
             "output_tokens": 9,
-            "ms_cliente": 2169.1
+            "ms_cliente": 1826.2
           },
           {
             "id": "FT-D-035",
             "esperado": "DIVERGENTE",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 2247.5,
+            "generation_ms": 1695.9,
             "input_tokens": 133,
             "output_tokens": 8,
-            "ms_cliente": 2257.2
+            "ms_cliente": 1704.2
           },
           {
             "id": "FT-D-036",
             "esperado": "DIVERGENTE",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 2176.1,
+            "generation_ms": 1453.3,
             "input_tokens": 131,
             "output_tokens": 8,
-            "ms_cliente": 2185.2
+            "ms_cliente": 1460.2
           },
           {
             "id": "FT-D-037",
             "esperado": "DIVERGENTE",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 2278.6,
+            "generation_ms": 3952.7,
             "input_tokens": 136,
             "output_tokens": 8,
-            "ms_cliente": 2288.9
+            "ms_cliente": 3961.5
           },
           {
             "id": "FT-D-038",
             "esperado": "DIVERGENTE",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 2707.3,
+            "generation_ms": 1441.3,
             "input_tokens": 133,
             "output_tokens": 8,
-            "ms_cliente": 2718.5
+            "ms_cliente": 1464.4
           },
           {
             "id": "FT-D-039",
             "esperado": "DIVERGENTE",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 2335.4,
+            "generation_ms": 1445.2,
             "input_tokens": 138,
             "output_tokens": 8,
-            "ms_cliente": 2343.4
+            "ms_cliente": 1451.8
           },
           {
             "id": "FT-D-040",
             "esperado": "DIVERGENTE",
             "obtido": "DIVERGENTE",
             "resposta": "{\"classification\":\"DIVERGENTE\"}",
-            "generation_ms": 2370.5,
+            "generation_ms": 1600.8,
             "input_tokens": 133,
             "output_tokens": 9,
-            "ms_cliente": 2378.5
+            "ms_cliente": 1633.6
           },
           {
             "id": "FT-R-033",
             "esperado": "REVISAR",
             "obtido": "DIVERGENTE",
             "resposta": "{\"classification\":\"DIVERGENTE\"}",
-            "generation_ms": 2912.3,
+            "generation_ms": 1501.2,
             "input_tokens": 137,
             "output_tokens": 9,
-            "ms_cliente": 2920.9
+            "ms_cliente": 1513.5
           },
           {
             "id": "FT-R-034",
             "esperado": "REVISAR",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 2601.2,
+            "generation_ms": 1397.0,
             "input_tokens": 128,
             "output_tokens": 8,
-            "ms_cliente": 2609.9
+            "ms_cliente": 1402.5
           },
           {
             "id": "FT-R-035",
             "esperado": "REVISAR",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 2153.4,
+            "generation_ms": 1559.0,
             "input_tokens": 129,
             "output_tokens": 8,
-            "ms_cliente": 2161.9
+            "ms_cliente": 1564.9
           },
           {
             "id": "FT-R-036",
             "esperado": "REVISAR",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 1844.6,
+            "generation_ms": 1391.9,
             "input_tokens": 128,
             "output_tokens": 8,
-            "ms_cliente": 1857.3
+            "ms_cliente": 1397.3
           },
           {
             "id": "FT-R-037",
             "esperado": "REVISAR",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 1967.9,
+            "generation_ms": 1472.1,
             "input_tokens": 133,
             "output_tokens": 8,
-            "ms_cliente": 1975.8
+            "ms_cliente": 1478.2
           },
           {
             "id": "FT-R-038",
             "esperado": "REVISAR",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 1982.8,
+            "generation_ms": 1396.2,
             "input_tokens": 134,
             "output_tokens": 8,
-            "ms_cliente": 1991.4
+            "ms_cliente": 1402.2
           },
           {
             "id": "FT-R-039",
             "esperado": "REVISAR",
             "obtido": "DIVERGENTE",
             "resposta": "{\"classification\":\"DIVERGENTE\"}",
-            "generation_ms": 2669.0,
+            "generation_ms": 1704.6,
             "input_tokens": 135,
             "output_tokens": 9,
-            "ms_cliente": 2677.2
+            "ms_cliente": 1712.8
           },
           {
             "id": "FT-R-040",
             "esperado": "REVISAR",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 2369.6,
+            "generation_ms": 1474.2,
             "input_tokens": 131,
             "output_tokens": 8,
-            "ms_cliente": 2391.0
+            "ms_cliente": 1482.9
           }
         ]
       },
@@ -1834,19 +1835,19 @@
           "falsas_aprovacoes": [],
           "respostas_invalidas": 0,
           "latencia_ms": {
-            "media": 2341.4,
-            "mediana": 2242.1,
-            "p95": 2569.6,
-            "max": 4042.8
+            "media": 1708.3,
+            "mediana": 1695.0,
+            "p95": 1938.6,
+            "max": 2038.8
           },
           "tokens_entrada_media": 144.0,
           "tokens_saida_media": 8.7,
           "custo_por_1000_usos": {
-            "tempo_cpu_min": 39.0,
-            "energia_kwh_15w": 0.0098,
-            "energia_kwh_55w": 0.0358,
-            "reais_15w": 0.0121,
-            "reais_55w": 0.0444
+            "tempo_cpu_min": 28.5,
+            "energia_kwh_15w": 0.0071,
+            "energia_kwh_55w": 0.0261,
+            "reais_15w": 0.0088,
+            "reais_55w": 0.0324
           }
         },
         "casos": [
@@ -1855,274 +1856,1054 @@
             "esperado": "CONTRATADO",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2569.6,
+            "generation_ms": 1700.3,
             "input_tokens": 152,
             "output_tokens": 9,
-            "ms_cliente": 2577.7
+            "ms_cliente": 1708.1
           },
           {
             "id": "FT-C-036",
             "esperado": "CONTRATADO",
             "obtido": "DIVERGENTE",
             "resposta": "{\"classification\":\"DIVERGENTE\"}",
-            "generation_ms": 2465.1,
+            "generation_ms": 1795.9,
             "input_tokens": 148,
             "output_tokens": 9,
-            "ms_cliente": 2473.4
+            "ms_cliente": 1803.0
           },
           {
             "id": "FT-C-037",
             "esperado": "CONTRATADO",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2508.5,
+            "generation_ms": 1883.4,
             "input_tokens": 151,
             "output_tokens": 9,
-            "ms_cliente": 2518.6
+            "ms_cliente": 1891.7
           },
           {
             "id": "FT-C-038",
             "esperado": "CONTRATADO",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2300.3,
+            "generation_ms": 1689.8,
             "input_tokens": 151,
             "output_tokens": 9,
-            "ms_cliente": 2306.5
+            "ms_cliente": 1697.5
           },
           {
             "id": "FT-C-039",
             "esperado": "CONTRATADO",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2205.4,
+            "generation_ms": 1917.2,
             "input_tokens": 153,
             "output_tokens": 9,
-            "ms_cliente": 2223.2
+            "ms_cliente": 1927.0
           },
           {
             "id": "FT-C-040",
             "esperado": "CONTRATADO",
             "obtido": "CONTRATADO",
             "resposta": "{\"classification\":\"CONTRATADO\"}",
-            "generation_ms": 2244.6,
+            "generation_ms": 1867.9,
             "input_tokens": 152,
             "output_tokens": 9,
-            "ms_cliente": 2253.7
+            "ms_cliente": 1877.7
           },
           {
             "id": "FT-D-035",
             "esperado": "DIVERGENTE",
             "obtido": "DIVERGENTE",
             "resposta": "{\"classification\":\"DIVERGENTE\"}",
-            "generation_ms": 2237.9,
+            "generation_ms": 1684.1,
             "input_tokens": 142,
             "output_tokens": 9,
-            "ms_cliente": 2265.7
+            "ms_cliente": 1690.7
           },
           {
             "id": "FT-D-036",
             "esperado": "DIVERGENTE",
             "obtido": "DIVERGENTE",
             "resposta": "{\"classification\":\"DIVERGENTE\"}",
-            "generation_ms": 2172.8,
+            "generation_ms": 1664.5,
             "input_tokens": 147,
             "output_tokens": 9,
-            "ms_cliente": 2181.5
+            "ms_cliente": 1670.9
           },
           {
             "id": "FT-D-037",
             "esperado": "DIVERGENTE",
             "obtido": "DIVERGENTE",
             "resposta": "{\"classification\":\"DIVERGENTE\"}",
-            "generation_ms": 4042.8,
+            "generation_ms": 1922.0,
             "input_tokens": 145,
             "output_tokens": 9,
-            "ms_cliente": 4054.4
+            "ms_cliente": 1946.4
           },
           {
             "id": "FT-D-038",
             "esperado": "DIVERGENTE",
             "obtido": "DIVERGENTE",
             "resposta": "{\"classification\":\"DIVERGENTE\"}",
-            "generation_ms": 2565.9,
+            "generation_ms": 1938.6,
             "input_tokens": 149,
             "output_tokens": 9,
-            "ms_cliente": 2573.9
+            "ms_cliente": 1953.0
           },
           {
             "id": "FT-D-039",
             "esperado": "DIVERGENTE",
             "obtido": "DIVERGENTE",
             "resposta": "{\"classification\":\"DIVERGENTE\"}",
-            "generation_ms": 2237.9,
+            "generation_ms": 1799.7,
             "input_tokens": 147,
             "output_tokens": 9,
-            "ms_cliente": 2247.9
+            "ms_cliente": 1805.4
           },
           {
             "id": "FT-D-040",
             "esperado": "DIVERGENTE",
             "obtido": "DIVERGENTE",
             "resposta": "{\"classification\":\"DIVERGENTE\"}",
-            "generation_ms": 2286.1,
+            "generation_ms": 1656.4,
             "input_tokens": 150,
             "output_tokens": 9,
-            "ms_cliente": 2294.7
+            "ms_cliente": 1671.5
           },
           {
             "id": "FT-R-033",
             "esperado": "REVISAR",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 2249.5,
+            "generation_ms": 1550.3,
             "input_tokens": 143,
             "output_tokens": 8,
-            "ms_cliente": 2266.5
+            "ms_cliente": 1559.7
           },
           {
             "id": "FT-R-034",
             "esperado": "REVISAR",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 2372.6,
+            "generation_ms": 1370.1,
             "input_tokens": 130,
             "output_tokens": 8,
-            "ms_cliente": 2380.3
+            "ms_cliente": 1375.2
           },
           {
             "id": "FT-R-035",
             "esperado": "REVISAR",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 2239.5,
+            "generation_ms": 1434.4,
             "input_tokens": 138,
             "output_tokens": 8,
-            "ms_cliente": 2259.3
+            "ms_cliente": 1440.5
           },
           {
             "id": "FT-R-036",
             "esperado": "REVISAR",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 2162.9,
+            "generation_ms": 1672.7,
             "input_tokens": 133,
             "output_tokens": 8,
-            "ms_cliente": 2170.4
+            "ms_cliente": 1679.1
           },
           {
             "id": "FT-R-037",
             "esperado": "REVISAR",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 1896.3,
+            "generation_ms": 1416.1,
             "input_tokens": 135,
             "output_tokens": 8,
-            "ms_cliente": 1904.4
+            "ms_cliente": 1422.3
           },
           {
             "id": "FT-R-038",
             "esperado": "REVISAR",
             "obtido": "DIVERGENTE",
             "resposta": "{\"classification\":\"DIVERGENTE\"}",
-            "generation_ms": 2069.0,
+            "generation_ms": 2038.8,
             "input_tokens": 140,
             "output_tokens": 9,
-            "ms_cliente": 2092.5
+            "ms_cliente": 2060.7
           },
           {
             "id": "FT-R-039",
             "esperado": "REVISAR",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 1951.2,
+            "generation_ms": 1731.4,
             "input_tokens": 141,
             "output_tokens": 8,
-            "ms_cliente": 1959.2
+            "ms_cliente": 1739.8
           },
           {
             "id": "FT-R-040",
             "esperado": "REVISAR",
             "obtido": "REVISAR",
             "resposta": "{\"classification\":\"REVISAR\"}",
-            "generation_ms": 2049.5,
+            "generation_ms": 1432.3,
             "input_tokens": 133,
             "output_tokens": 8,
-            "ms_cliente": 2058.2
+            "ms_cliente": 1438.8
           }
         ]
       }
     },
     "cpu_maquina_percent_media": null
   },
+  "conjunto_c_fora_de_escopo": {
+    "configuracoes": {
+      "base": {
+        "nome": "Modelo base",
+        "adaptador": false,
+        "rag": false,
+        "metricas": {
+          "n": 12,
+          "acertos": 0,
+          "acuracia": 0.0,
+          "f1_macro": 0.0,
+          "por_classe": {
+            "CONTRATADO": {
+              "precisao": 0.0,
+              "revocacao": 0.0,
+              "f1": 0.0
+            },
+            "DIVERGENTE": {
+              "precisao": 0.0,
+              "revocacao": 0.0,
+              "f1": 0.0
+            },
+            "REVISAR": {
+              "precisao": 0.0,
+              "revocacao": 0.0,
+              "f1": 0.0
+            }
+          },
+          "matriz_confusao": {
+            "CONTRATADO": {
+              "CONTRATADO": 0,
+              "DIVERGENTE": 0,
+              "REVISAR": 0,
+              "INVALIDO": 0
+            },
+            "DIVERGENTE": {
+              "CONTRATADO": 0,
+              "DIVERGENTE": 0,
+              "REVISAR": 0,
+              "INVALIDO": 0
+            },
+            "REVISAR": {
+              "CONTRATADO": 12,
+              "DIVERGENTE": 0,
+              "REVISAR": 0,
+              "INVALIDO": 0
+            }
+          },
+          "falsas_aprovacoes": [
+            "FE-01",
+            "FE-02",
+            "FE-03",
+            "FE-04",
+            "FE-05",
+            "FE-06",
+            "FE-07",
+            "FE-08",
+            "FE-09",
+            "FE-10",
+            "FE-11",
+            "FE-12"
+          ],
+          "respostas_invalidas": 0,
+          "latencia_ms": {
+            "media": 1746.5,
+            "mediana": 1760.8,
+            "p95": 1927.4,
+            "max": 2015.9
+          },
+          "tokens_entrada_media": 141.6,
+          "tokens_saida_media": 9.0,
+          "custo_por_1000_usos": {
+            "tempo_cpu_min": 29.1,
+            "energia_kwh_15w": 0.0073,
+            "energia_kwh_55w": 0.0267,
+            "reais_15w": 0.009,
+            "reais_55w": 0.0331
+          }
+        },
+        "casos": [
+          {
+            "id": "FE-01",
+            "esperado": "REVISAR",
+            "obtido": "CONTRATADO",
+            "resposta": "{\"classification\":\"CONTRATADO\"}",
+            "generation_ms": 1760.8,
+            "input_tokens": 146,
+            "output_tokens": 9,
+            "ms_cliente": 1772.7
+          },
+          {
+            "id": "FE-02",
+            "esperado": "REVISAR",
+            "obtido": "CONTRATADO",
+            "resposta": "{\"classification\":\"CONTRATADO\"}",
+            "generation_ms": 1880.3,
+            "input_tokens": 140,
+            "output_tokens": 9,
+            "ms_cliente": 1891.1
+          },
+          {
+            "id": "FE-03",
+            "esperado": "REVISAR",
+            "obtido": "CONTRATADO",
+            "resposta": "{\"classification\":\"CONTRATADO\"}",
+            "generation_ms": 1760.8,
+            "input_tokens": 145,
+            "output_tokens": 9,
+            "ms_cliente": 1770.2
+          },
+          {
+            "id": "FE-04",
+            "esperado": "REVISAR",
+            "obtido": "CONTRATADO",
+            "resposta": "{\"classification\":\"CONTRATADO\"}",
+            "generation_ms": 1563.6,
+            "input_tokens": 142,
+            "output_tokens": 9,
+            "ms_cliente": 1573.9
+          },
+          {
+            "id": "FE-05",
+            "esperado": "REVISAR",
+            "obtido": "CONTRATADO",
+            "resposta": "{\"classification\":\"CONTRATADO\"}",
+            "generation_ms": 1445.1,
+            "input_tokens": 145,
+            "output_tokens": 9,
+            "ms_cliente": 1477.0
+          },
+          {
+            "id": "FE-06",
+            "esperado": "REVISAR",
+            "obtido": "CONTRATADO",
+            "resposta": "{\"classification\":\"CONTRATADO\"}",
+            "generation_ms": 1619.6,
+            "input_tokens": 140,
+            "output_tokens": 9,
+            "ms_cliente": 1628.6
+          },
+          {
+            "id": "FE-07",
+            "esperado": "REVISAR",
+            "obtido": "CONTRATADO",
+            "resposta": "{\"classification\":\"CONTRATADO\"}",
+            "generation_ms": 1783.3,
+            "input_tokens": 144,
+            "output_tokens": 9,
+            "ms_cliente": 1791.6
+          },
+          {
+            "id": "FE-08",
+            "esperado": "REVISAR",
+            "obtido": "CONTRATADO",
+            "resposta": "{\"classification\":\"CONTRATADO\"}",
+            "generation_ms": 1927.4,
+            "input_tokens": 140,
+            "output_tokens": 9,
+            "ms_cliente": 1936.2
+          },
+          {
+            "id": "FE-09",
+            "esperado": "REVISAR",
+            "obtido": "CONTRATADO",
+            "resposta": "{\"classification\":\"CONTRATADO\"}",
+            "generation_ms": 1804.7,
+            "input_tokens": 142,
+            "output_tokens": 9,
+            "ms_cliente": 1813.0
+          },
+          {
+            "id": "FE-10",
+            "esperado": "REVISAR",
+            "obtido": "CONTRATADO",
+            "resposta": "{\"classification\":\"CONTRATADO\"}",
+            "generation_ms": 2015.9,
+            "input_tokens": 131,
+            "output_tokens": 9,
+            "ms_cliente": 2024.7
+          },
+          {
+            "id": "FE-11",
+            "esperado": "REVISAR",
+            "obtido": "CONTRATADO",
+            "resposta": "{\"classification\":\"CONTRATADO\"}",
+            "generation_ms": 1703.0,
+            "input_tokens": 140,
+            "output_tokens": 9,
+            "ms_cliente": 1725.9
+          },
+          {
+            "id": "FE-12",
+            "esperado": "REVISAR",
+            "obtido": "CONTRATADO",
+            "resposta": "{\"classification\":\"CONTRATADO\"}",
+            "generation_ms": 1693.5,
+            "input_tokens": 144,
+            "output_tokens": 9,
+            "ms_cliente": 1707.1
+          }
+        ]
+      },
+      "base_rag": {
+        "nome": "Base com RAG",
+        "adaptador": false,
+        "rag": true,
+        "metricas": {
+          "n": 12,
+          "acertos": 4,
+          "acuracia": 0.333,
+          "f1_macro": 0.167,
+          "por_classe": {
+            "CONTRATADO": {
+              "precisao": 0.0,
+              "revocacao": 0.0,
+              "f1": 0.0
+            },
+            "DIVERGENTE": {
+              "precisao": 0.0,
+              "revocacao": 0.0,
+              "f1": 0.0
+            },
+            "REVISAR": {
+              "precisao": 1.0,
+              "revocacao": 0.333,
+              "f1": 0.5
+            }
+          },
+          "matriz_confusao": {
+            "CONTRATADO": {
+              "CONTRATADO": 0,
+              "DIVERGENTE": 0,
+              "REVISAR": 0,
+              "INVALIDO": 0
+            },
+            "DIVERGENTE": {
+              "CONTRATADO": 0,
+              "DIVERGENTE": 0,
+              "REVISAR": 0,
+              "INVALIDO": 0
+            },
+            "REVISAR": {
+              "CONTRATADO": 8,
+              "DIVERGENTE": 0,
+              "REVISAR": 4,
+              "INVALIDO": 0
+            }
+          },
+          "falsas_aprovacoes": [
+            "FE-01",
+            "FE-03",
+            "FE-04",
+            "FE-07",
+            "FE-08",
+            "FE-09",
+            "FE-11",
+            "FE-12"
+          ],
+          "respostas_invalidas": 0,
+          "latencia_ms": {
+            "media": 3244.8,
+            "mediana": 3107.4,
+            "p95": 3765.5,
+            "max": 3847.9
+          },
+          "tokens_entrada_media": 430.3,
+          "tokens_saida_media": 8.7,
+          "custo_por_1000_usos": {
+            "tempo_cpu_min": 54.1,
+            "energia_kwh_15w": 0.0135,
+            "energia_kwh_55w": 0.0496,
+            "reais_15w": 0.0168,
+            "reais_55w": 0.0616
+          }
+        },
+        "casos": [
+          {
+            "id": "FE-01",
+            "esperado": "REVISAR",
+            "obtido": "CONTRATADO",
+            "resposta": "{\"classification\":\"CONTRATADO\"}",
+            "generation_ms": 2991.2,
+            "input_tokens": 412,
+            "output_tokens": 9,
+            "ms_cliente": 3005.3
+          },
+          {
+            "id": "FE-02",
+            "esperado": "REVISAR",
+            "obtido": "REVISAR",
+            "resposta": "{\"classification\":\"REVISAR\"}",
+            "generation_ms": 2927.4,
+            "input_tokens": 400,
+            "output_tokens": 8,
+            "ms_cliente": 2934.5
+          },
+          {
+            "id": "FE-03",
+            "esperado": "REVISAR",
+            "obtido": "CONTRATADO",
+            "resposta": "{\"classification\":\"CONTRATADO\"}",
+            "generation_ms": 3055.4,
+            "input_tokens": 464,
+            "output_tokens": 9,
+            "ms_cliente": 3063.3
+          },
+          {
+            "id": "FE-04",
+            "esperado": "REVISAR",
+            "obtido": "CONTRATADO",
+            "resposta": "{\"classification\":\"CONTRATADO\"}",
+            "generation_ms": 2982.3,
+            "input_tokens": 390,
+            "output_tokens": 9,
+            "ms_cliente": 2998.7
+          },
+          {
+            "id": "FE-05",
+            "esperado": "REVISAR",
+            "obtido": "REVISAR",
+            "resposta": "{\"classification\":\"REVISAR\"}",
+            "generation_ms": 3089.5,
+            "input_tokens": 411,
+            "output_tokens": 8,
+            "ms_cliente": 3096.6
+          },
+          {
+            "id": "FE-06",
+            "esperado": "REVISAR",
+            "obtido": "REVISAR",
+            "resposta": "{\"classification\":\"REVISAR\"}",
+            "generation_ms": 2945.3,
+            "input_tokens": 412,
+            "output_tokens": 8,
+            "ms_cliente": 2950.9
+          },
+          {
+            "id": "FE-07",
+            "esperado": "REVISAR",
+            "obtido": "CONTRATADO",
+            "resposta": "{\"classification\":\"CONTRATADO\"}",
+            "generation_ms": 3847.9,
+            "input_tokens": 465,
+            "output_tokens": 9,
+            "ms_cliente": 3861.9
+          },
+          {
+            "id": "FE-08",
+            "esperado": "REVISAR",
+            "obtido": "CONTRATADO",
+            "resposta": "{\"classification\":\"CONTRATADO\"}",
+            "generation_ms": 3765.5,
+            "input_tokens": 455,
+            "output_tokens": 9,
+            "ms_cliente": 3773.7
+          },
+          {
+            "id": "FE-09",
+            "esperado": "REVISAR",
+            "obtido": "CONTRATADO",
+            "resposta": "{\"classification\":\"CONTRATADO\"}",
+            "generation_ms": 3125.4,
+            "input_tokens": 419,
+            "output_tokens": 9,
+            "ms_cliente": 3137.9
+          },
+          {
+            "id": "FE-10",
+            "esperado": "REVISAR",
+            "obtido": "REVISAR",
+            "resposta": "{\"classification\":\"REVISAR\"}",
+            "generation_ms": 3295.0,
+            "input_tokens": 443,
+            "output_tokens": 8,
+            "ms_cliente": 3302.6
+          },
+          {
+            "id": "FE-11",
+            "esperado": "REVISAR",
+            "obtido": "CONTRATADO",
+            "resposta": "{\"classification\":\"CONTRATADO\"}",
+            "generation_ms": 3529.9,
+            "input_tokens": 436,
+            "output_tokens": 9,
+            "ms_cliente": 3537.6
+          },
+          {
+            "id": "FE-12",
+            "esperado": "REVISAR",
+            "obtido": "CONTRATADO",
+            "resposta": "{\"classification\":\"CONTRATADO\"}",
+            "generation_ms": 3382.4,
+            "input_tokens": 457,
+            "output_tokens": 9,
+            "ms_cliente": 3393.6
+          }
+        ]
+      },
+      "ajustado": {
+        "nome": "Modelo ajustado (LoRA)",
+        "adaptador": true,
+        "rag": false,
+        "metricas": {
+          "n": 12,
+          "acertos": 11,
+          "acuracia": 0.917,
+          "f1_macro": 0.319,
+          "por_classe": {
+            "CONTRATADO": {
+              "precisao": 0.0,
+              "revocacao": 0.0,
+              "f1": 0.0
+            },
+            "DIVERGENTE": {
+              "precisao": 0.0,
+              "revocacao": 0.0,
+              "f1": 0.0
+            },
+            "REVISAR": {
+              "precisao": 1.0,
+              "revocacao": 0.917,
+              "f1": 0.957
+            }
+          },
+          "matriz_confusao": {
+            "CONTRATADO": {
+              "CONTRATADO": 0,
+              "DIVERGENTE": 0,
+              "REVISAR": 0,
+              "INVALIDO": 0
+            },
+            "DIVERGENTE": {
+              "CONTRATADO": 0,
+              "DIVERGENTE": 0,
+              "REVISAR": 0,
+              "INVALIDO": 0
+            },
+            "REVISAR": {
+              "CONTRATADO": 0,
+              "DIVERGENTE": 1,
+              "REVISAR": 11,
+              "INVALIDO": 0
+            }
+          },
+          "falsas_aprovacoes": [],
+          "respostas_invalidas": 0,
+          "latencia_ms": {
+            "media": 1551.0,
+            "mediana": 1552.8,
+            "p95": 1657.1,
+            "max": 1728.8
+          },
+          "tokens_entrada_media": 141.6,
+          "tokens_saida_media": 8.1,
+          "custo_por_1000_usos": {
+            "tempo_cpu_min": 25.8,
+            "energia_kwh_15w": 0.0065,
+            "energia_kwh_55w": 0.0237,
+            "reais_15w": 0.008,
+            "reais_55w": 0.0294
+          }
+        },
+        "casos": [
+          {
+            "id": "FE-01",
+            "esperado": "REVISAR",
+            "obtido": "REVISAR",
+            "resposta": "{\"classification\":\"REVISAR\"}",
+            "generation_ms": 1490.9,
+            "input_tokens": 146,
+            "output_tokens": 8,
+            "ms_cliente": 1498.4
+          },
+          {
+            "id": "FE-02",
+            "esperado": "REVISAR",
+            "obtido": "REVISAR",
+            "resposta": "{\"classification\":\"REVISAR\"}",
+            "generation_ms": 1532.3,
+            "input_tokens": 140,
+            "output_tokens": 8,
+            "ms_cliente": 1537.8
+          },
+          {
+            "id": "FE-03",
+            "esperado": "REVISAR",
+            "obtido": "REVISAR",
+            "resposta": "{\"classification\":\"REVISAR\"}",
+            "generation_ms": 1573.2,
+            "input_tokens": 145,
+            "output_tokens": 8,
+            "ms_cliente": 1580.2
+          },
+          {
+            "id": "FE-04",
+            "esperado": "REVISAR",
+            "obtido": "REVISAR",
+            "resposta": "{\"classification\":\"REVISAR\"}",
+            "generation_ms": 1451.3,
+            "input_tokens": 142,
+            "output_tokens": 8,
+            "ms_cliente": 1458.9
+          },
+          {
+            "id": "FE-05",
+            "esperado": "REVISAR",
+            "obtido": "REVISAR",
+            "resposta": "{\"classification\":\"REVISAR\"}",
+            "generation_ms": 1454.0,
+            "input_tokens": 145,
+            "output_tokens": 8,
+            "ms_cliente": 1460.5
+          },
+          {
+            "id": "FE-06",
+            "esperado": "REVISAR",
+            "obtido": "REVISAR",
+            "resposta": "{\"classification\":\"REVISAR\"}",
+            "generation_ms": 1430.2,
+            "input_tokens": 140,
+            "output_tokens": 8,
+            "ms_cliente": 1436.8
+          },
+          {
+            "id": "FE-07",
+            "esperado": "REVISAR",
+            "obtido": "REVISAR",
+            "resposta": "{\"classification\":\"REVISAR\"}",
+            "generation_ms": 1657.1,
+            "input_tokens": 144,
+            "output_tokens": 8,
+            "ms_cliente": 1665.8
+          },
+          {
+            "id": "FE-08",
+            "esperado": "REVISAR",
+            "obtido": "REVISAR",
+            "resposta": "{\"classification\":\"REVISAR\"}",
+            "generation_ms": 1647.2,
+            "input_tokens": 140,
+            "output_tokens": 8,
+            "ms_cliente": 1657.6
+          },
+          {
+            "id": "FE-09",
+            "esperado": "REVISAR",
+            "obtido": "DIVERGENTE",
+            "resposta": "{\"classification\":\"DIVERGENTE\"}",
+            "generation_ms": 1607.0,
+            "input_tokens": 142,
+            "output_tokens": 9,
+            "ms_cliente": 1614.1
+          },
+          {
+            "id": "FE-10",
+            "esperado": "REVISAR",
+            "obtido": "REVISAR",
+            "resposta": "{\"classification\":\"REVISAR\"}",
+            "generation_ms": 1728.8,
+            "input_tokens": 131,
+            "output_tokens": 8,
+            "ms_cliente": 1736.5
+          },
+          {
+            "id": "FE-11",
+            "esperado": "REVISAR",
+            "obtido": "REVISAR",
+            "resposta": "{\"classification\":\"REVISAR\"}",
+            "generation_ms": 1578.1,
+            "input_tokens": 140,
+            "output_tokens": 8,
+            "ms_cliente": 1586.6
+          },
+          {
+            "id": "FE-12",
+            "esperado": "REVISAR",
+            "obtido": "REVISAR",
+            "resposta": "{\"classification\":\"REVISAR\"}",
+            "generation_ms": 1461.6,
+            "input_tokens": 144,
+            "output_tokens": 8,
+            "ms_cliente": 1467.4
+          }
+        ]
+      },
+      "ajustado_rag": {
+        "nome": "Ajustado com RAG",
+        "adaptador": true,
+        "rag": true,
+        "metricas": {
+          "n": 12,
+          "acertos": 6,
+          "acuracia": 0.5,
+          "f1_macro": 0.222,
+          "por_classe": {
+            "CONTRATADO": {
+              "precisao": 0.0,
+              "revocacao": 0.0,
+              "f1": 0.0
+            },
+            "DIVERGENTE": {
+              "precisao": 0.0,
+              "revocacao": 0.0,
+              "f1": 0.0
+            },
+            "REVISAR": {
+              "precisao": 1.0,
+              "revocacao": 0.5,
+              "f1": 0.667
+            }
+          },
+          "matriz_confusao": {
+            "CONTRATADO": {
+              "CONTRATADO": 0,
+              "DIVERGENTE": 0,
+              "REVISAR": 0,
+              "INVALIDO": 0
+            },
+            "DIVERGENTE": {
+              "CONTRATADO": 0,
+              "DIVERGENTE": 0,
+              "REVISAR": 0,
+              "INVALIDO": 0
+            },
+            "REVISAR": {
+              "CONTRATADO": 0,
+              "DIVERGENTE": 6,
+              "REVISAR": 6,
+              "INVALIDO": 0
+            }
+          },
+          "falsas_aprovacoes": [],
+          "respostas_invalidas": 0,
+          "latencia_ms": {
+            "media": 3153.5,
+            "mediana": 3152.8,
+            "p95": 3389.1,
+            "max": 3530.2
+          },
+          "tokens_entrada_media": 430.3,
+          "tokens_saida_media": 8.5,
+          "custo_por_1000_usos": {
+            "tempo_cpu_min": 52.6,
+            "energia_kwh_15w": 0.0131,
+            "energia_kwh_55w": 0.0482,
+            "reais_15w": 0.0163,
+            "reais_55w": 0.0598
+          }
+        },
+        "casos": [
+          {
+            "id": "FE-01",
+            "esperado": "REVISAR",
+            "obtido": "DIVERGENTE",
+            "resposta": "{\"classification\":\"DIVERGENTE\"}",
+            "generation_ms": 3389.1,
+            "input_tokens": 412,
+            "output_tokens": 9,
+            "ms_cliente": 3397.8
+          },
+          {
+            "id": "FE-02",
+            "esperado": "REVISAR",
+            "obtido": "REVISAR",
+            "resposta": "{\"classification\":\"REVISAR\"}",
+            "generation_ms": 3089.1,
+            "input_tokens": 400,
+            "output_tokens": 8,
+            "ms_cliente": 3094.5
+          },
+          {
+            "id": "FE-03",
+            "esperado": "REVISAR",
+            "obtido": "DIVERGENTE",
+            "resposta": "{\"classification\":\"DIVERGENTE\"}",
+            "generation_ms": 3332.1,
+            "input_tokens": 464,
+            "output_tokens": 9,
+            "ms_cliente": 3340.9
+          },
+          {
+            "id": "FE-04",
+            "esperado": "REVISAR",
+            "obtido": "REVISAR",
+            "resposta": "{\"classification\":\"REVISAR\"}",
+            "generation_ms": 2824.2,
+            "input_tokens": 390,
+            "output_tokens": 8,
+            "ms_cliente": 2830.8
+          },
+          {
+            "id": "FE-05",
+            "esperado": "REVISAR",
+            "obtido": "REVISAR",
+            "resposta": "{\"classification\":\"REVISAR\"}",
+            "generation_ms": 2947.7,
+            "input_tokens": 411,
+            "output_tokens": 8,
+            "ms_cliente": 2954.6
+          },
+          {
+            "id": "FE-06",
+            "esperado": "REVISAR",
+            "obtido": "REVISAR",
+            "resposta": "{\"classification\":\"REVISAR\"}",
+            "generation_ms": 2773.3,
+            "input_tokens": 412,
+            "output_tokens": 8,
+            "ms_cliente": 2778.6
+          },
+          {
+            "id": "FE-07",
+            "esperado": "REVISAR",
+            "obtido": "DIVERGENTE",
+            "resposta": "{\"classification\":\"DIVERGENTE\"}",
+            "generation_ms": 3530.2,
+            "input_tokens": 465,
+            "output_tokens": 9,
+            "ms_cliente": 3537.4
+          },
+          {
+            "id": "FE-08",
+            "esperado": "REVISAR",
+            "obtido": "DIVERGENTE",
+            "resposta": "{\"classification\":\"DIVERGENTE\"}",
+            "generation_ms": 3318.1,
+            "input_tokens": 455,
+            "output_tokens": 9,
+            "ms_cliente": 3326.1
+          },
+          {
+            "id": "FE-09",
+            "esperado": "REVISAR",
+            "obtido": "REVISAR",
+            "resposta": "{\"classification\":\"REVISAR\"}",
+            "generation_ms": 3182.0,
+            "input_tokens": 419,
+            "output_tokens": 8,
+            "ms_cliente": 3188.6
+          },
+          {
+            "id": "FE-10",
+            "esperado": "REVISAR",
+            "obtido": "REVISAR",
+            "resposta": "{\"classification\":\"REVISAR\"}",
+            "generation_ms": 3090.3,
+            "input_tokens": 443,
+            "output_tokens": 8,
+            "ms_cliente": 3120.9
+          },
+          {
+            "id": "FE-11",
+            "esperado": "REVISAR",
+            "obtido": "DIVERGENTE",
+            "resposta": "{\"classification\":\"DIVERGENTE\"}",
+            "generation_ms": 3123.7,
+            "input_tokens": 436,
+            "output_tokens": 9,
+            "ms_cliente": 3132.4
+          },
+          {
+            "id": "FE-12",
+            "esperado": "REVISAR",
+            "obtido": "DIVERGENTE",
+            "resposta": "{\"classification\":\"DIVERGENTE\"}",
+            "generation_ms": 3242.4,
+            "input_tokens": 457,
+            "output_tokens": 9,
+            "ms_cliente": 3253.6
+          }
+        ]
+      }
+    },
+    "cpu_maquina_percent_media": null
+  },
+  "rag": {
+    "fonte": "sqlserver/evidence/parte3/ia-avaliacao-final.json",
+    "embed_model": "embeddinggemma",
+    "avaliacao_executada_em_utc": "2026-11-26T17:55:54.637588+00:00"
+  },
   "fontes_rag_por_caso_a": {
     "IA-001": [
       "DOC-ALFA-01",
       "DOC-ALFA-03",
       "DOC-ALFA-02",
-      "DOC-POL-12",
-      "DOC-POL-08"
+      "DOC-POL-08",
+      "DOC-POL-07"
     ],
     "IA-002": [
-      "DOC-ALFA-01",
-      "DOC-ALFA-03",
       "DOC-POL-07",
+      "DOC-ALFA-03",
+      "DOC-ALFA-01",
       "DOC-ALFA-02",
-      "DOC-POL-12"
+      "DOC-POL-05"
     ],
     "IA-003": [
       "DOC-POL-04",
-      "DOC-ALFA-03",
       "DOC-ALFA-02",
-      "DOC-POL-10",
-      "DOC-ALFA-01"
+      "DOC-ALFA-01",
+      "DOC-ALFA-03",
+      "DOC-POL-01"
     ],
     "IA-004": [
       "DOC-ALFA-01",
       "DOC-ALFA-03",
       "DOC-ALFA-02",
-      "DOC-POL-12",
-      "DOC-POL-02"
-    ],
-    "IA-005": [
-      "DOC-POL-08",
-      "DOC-POL-12",
-      "DOC-POL-07",
-      "DOC-POL-13",
-      "DOC-POL-11"
-    ],
-    "IA-006": [
-      "DOC-ALFA-01",
-      "DOC-ALFA-03",
-      "DOC-ALFA-02",
-      "DOC-POL-12",
+      "DOC-POL-01",
       "DOC-POL-08"
     ],
-    "IA-007": [
+    "IA-005": [
+      "DOC-POL-13",
+      "DOC-POL-12",
+      "DOC-POL-06",
+      "DOC-POL-02",
+      "DOC-POL-04"
+    ],
+    "IA-006": [
       "DOC-ALFA-01",
       "DOC-ALFA-03",
       "DOC-ALFA-02",
       "DOC-POL-08",
       "DOC-POL-12"
     ],
+    "IA-007": [
+      "DOC-ALFA-02",
+      "DOC-ALFA-01",
+      "DOC-ALFA-03",
+      "DOC-POL-08",
+      "DOC-POL-04"
+    ],
     "IA-008": [
       "DOC-ALFA-02",
       "DOC-ALFA-03",
       "DOC-ALFA-01",
-      "DOC-POL-12",
-      "DOC-POL-08"
+      "DOC-POL-08",
+      "DOC-POL-12"
     ],
     "IA-009": [
       "DOC-ALFA-01",
       "DOC-ALFA-03",
       "DOC-ALFA-02",
-      "DOC-POL-12",
-      "DOC-POL-08"
+      "DOC-POL-08",
+      "DOC-POL-01"
     ],
     "IA-010": [
-      "DOC-ALFA-03",
-      "DOC-POL-07",
       "DOC-ALFA-01",
+      "DOC-POL-07",
+      "DOC-ALFA-03",
       "DOC-ALFA-02",
       "DOC-POL-12"
     ],
@@ -2130,15 +2911,15 @@
       "DOC-ALFA-01",
       "DOC-ALFA-03",
       "DOC-ALFA-02",
-      "DOC-POL-12",
-      "DOC-POL-08"
+      "DOC-POL-08",
+      "DOC-POL-07"
     ],
     "IA-012": [
       "DOC-ALFA-01",
       "DOC-ALFA-03",
       "DOC-ALFA-02",
-      "DOC-POL-12",
-      "DOC-POL-08"
+      "DOC-POL-08",
+      "DOC-POL-12"
     ],
     "IA-013": [
       "DOC-ALFA-01",
@@ -2150,23 +2931,109 @@
     "IA-014": [
       "DOC-ALFA-01",
       "DOC-ALFA-03",
-      "DOC-POL-12",
+      "DOC-ALFA-02",
       "DOC-POL-07",
-      "DOC-ALFA-02"
+      "DOC-POL-08"
     ],
     "IA-015": [
       "DOC-ALFA-01",
       "DOC-ALFA-03",
       "DOC-ALFA-02",
       "DOC-POL-08",
-      "DOC-POL-12"
+      "DOC-POL-04"
     ],
     "IA-016": [
-      "DOC-POL-12",
+      "DOC-POL-04",
+      "DOC-POL-05",
       "DOC-POL-08",
+      "DOC-POL-07",
+      "DOC-POL-06"
+    ]
+  },
+  "fontes_rag_por_caso_c": {
+    "FE-01": [
+      "DOC-POL-06",
+      "DOC-POL-01",
+      "DOC-POL-05",
+      "DOC-POL-03",
+      "DOC-POL-12"
+    ],
+    "FE-02": [
+      "DOC-POL-04",
+      "DOC-POL-06",
+      "DOC-POL-12",
+      "DOC-POL-07",
+      "DOC-POL-05"
+    ],
+    "FE-03": [
+      "DOC-ALFA-01",
+      "DOC-ALFA-03",
+      "DOC-POL-05",
+      "DOC-ALFA-02",
+      "DOC-POL-01"
+    ],
+    "FE-04": [
+      "DOC-POL-08",
+      "DOC-POL-01",
+      "DOC-POL-06",
+      "DOC-POL-09",
+      "DOC-POL-05"
+    ],
+    "FE-05": [
+      "DOC-POL-04",
+      "DOC-POL-06",
+      "DOC-POL-12",
+      "DOC-POL-05",
+      "DOC-POL-01"
+    ],
+    "FE-06": [
+      "DOC-POL-08",
+      "DOC-POL-12",
+      "DOC-POL-01",
+      "DOC-POL-04",
+      "DOC-POL-05"
+    ],
+    "FE-07": [
+      "DOC-ALFA-01",
+      "DOC-ALFA-03",
+      "DOC-ALFA-02",
+      "DOC-POL-08",
+      "DOC-POL-01"
+    ],
+    "FE-08": [
+      "DOC-ALFA-01",
+      "DOC-ALFA-03",
+      "DOC-ALFA-02",
+      "DOC-POL-07",
+      "DOC-POL-08"
+    ],
+    "FE-09": [
+      "DOC-POL-09",
       "DOC-POL-03",
       "DOC-POL-06",
+      "DOC-POL-01",
+      "DOC-POL-13"
+    ],
+    "FE-10": [
+      "DOC-ALFA-01",
+      "DOC-ALFA-03",
+      "DOC-POL-06",
+      "DOC-ALFA-02",
       "DOC-POL-04"
+    ],
+    "FE-11": [
+      "DOC-POL-06",
+      "DOC-POL-09",
+      "DOC-ALFA-03",
+      "DOC-POL-03",
+      "DOC-ALFA-01"
+    ],
+    "FE-12": [
+      "DOC-ALFA-01",
+      "DOC-ALFA-03",
+      "DOC-ALFA-02",
+      "DOC-POL-07",
+      "DOC-POL-05"
     ]
   }
 }

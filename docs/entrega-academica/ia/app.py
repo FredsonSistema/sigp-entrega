@@ -45,6 +45,16 @@ MODEL_PROFILE = os.environ.get("MODEL_PROFILE", "baseline")
 # (140 s: abaixo dos 150 s do nó HTTP do n8n, para a API responder antes do n8n desistir).
 OLLAMA_TIMEOUT_SECONDS = int(os.environ.get("OLLAMA_TIMEOUT_SECONDS", "140"))
 OLLAMA_KEEP_ALIVE = os.environ.get("OLLAMA_KEEP_ALIVE", "30m")
+# RAG por embeddings (ia/rag-embeddings.md): vazio = só a busca lexical. Com modelo, a ordenação é por cosseno dentro
+# do escopo já filtrado; se o Ollama falhar, a busca volta para a lexical (a resposta informa qual foi usada).
+EMBED_MODEL = os.environ.get("EMBED_MODEL", "").strip()
+EMBED_URL = os.environ.get("EMBED_URL", OLLAMA_URL).rstrip("/")
+EMBED_TIMEOUT_SECONDS = int(os.environ.get("EMBED_TIMEOUT_SECONDS", "30"))
+# Prefixos recomendados por modelo (os mesmos usados na medição, ia/medir_rag_embeddings.py).
+EMBED_QUERY_PREFIX, EMBED_DOCUMENT_PREFIX = {
+    "embeddinggemma": ("task: search result | query: ", "title: none | text: "),
+    "nomic-embed-text": ("search_query: ", "search_document: "),
+}.get(EMBED_MODEL.split(":")[0], ("", ""))
 PROMPT_VERSION = "3.1"
 # v3.1: o prompt do modelo caiu de ~8.000 para ~2.900 caracteres sem mudar a decisão (que é da regra).
 # - contexto do banco: 3 linhas (eram 20 notas de carga que a regra não usa) e só os campos úteis;
@@ -258,16 +268,91 @@ def _load_corpus() -> list[dict]:
 
 
 CORPUS = _load_corpus()
+# Nomes das unidades de outros locais, tirados dos títulos do corpus ("Link principal — Garagem Sul").
+OTHER_UNIT_NAMES = sorted({
+    _normalise(item["title"].split("—", 1)[1].strip())
+    for item in CORPUS
+    if item["local_id"] not in {"*", LOCAL_ID} and "—" in item["title"]
+})
 PROMPT_TEMPLATE = PROMPT_PATH.read_text(encoding="utf-8")
 PROMPT_SHA256 = hashlib.sha256(PROMPT_TEMPLATE.encode("utf-8")).hexdigest()
 
 
-def retrieve_documents(query: str, local_id: str, provider_id: str, limit: int = 5) -> list[dict]:
-    scoped = [
+def _scoped_corpus(local_id: str, provider_id: str) -> list[dict]:
+    """O escopo vem antes de qualquer busca: só o local da credencial, o provedor e as políticas gerais."""
+    return [
         item for item in CORPUS
         if item["local_id"] in {"*", local_id}
         and item["provider_id"] in {"*", provider_id}
     ]
+
+
+def _public_document(item: dict) -> dict:
+    return {
+        "id": item["id"],
+        "title": item["title"],
+        "text": item["text"],
+        **({"claims": item["claims"]} if "claims" in item else {}),
+    }
+
+
+_DOCUMENT_VECTORS: dict[str, list[float]] = {}
+
+
+def _embed(texts: list[str]) -> list[list[float]]:
+    req = Request(
+        f"{EMBED_URL}/api/embed",
+        data=json.dumps({"model": EMBED_MODEL, "input": texts, "keep_alive": OLLAMA_KEEP_ALIVE}).encode("utf-8"),
+        headers={"Content-Type": "application/json"},
+        method="POST",
+    )
+    try:
+        with urlopen(req, timeout=EMBED_TIMEOUT_SECONDS) as response:
+            vectors = json.loads(response.read().decode("utf-8")).get("embeddings")
+    except (HTTPError, URLError, TimeoutError, OSError, ValueError) as exc:
+        raise RuntimeError(f"Embedding indisponível: {exc.__class__.__name__}") from exc
+    if not isinstance(vectors, list) or len(vectors) != len(texts):
+        raise RuntimeError("Embedding indisponível: resposta inesperada do Ollama.")
+    return vectors
+
+
+def _cosine(a: list[float], b: list[float]) -> float:
+    norm_a = math.sqrt(sum(x * x for x in a)) or 1.0
+    norm_b = math.sqrt(sum(x * x for x in b)) or 1.0
+    return sum(x * y for x, y in zip(a, b)) / (norm_a * norm_b)
+
+
+def _document_vectors() -> dict[str, list[float]]:
+    """Vetores dos 20 documentos, calculados uma vez (o corpus é fixo) e mantidos em memória."""
+    if len(_DOCUMENT_VECTORS) != len(CORPUS):
+        texts = [EMBED_DOCUMENT_PREFIX + item["title"] + ". " + item["text"] for item in CORPUS]
+        _DOCUMENT_VECTORS.update(zip((item["id"] for item in CORPUS), _embed(texts)))
+    return _DOCUMENT_VECTORS
+
+
+def _retrieve_embedding(query: str, local_id: str, provider_id: str, limit: int) -> list[dict]:
+    scoped = _scoped_corpus(local_id, provider_id)
+    if not _tokens(query) or not scoped:
+        return []
+    vectors = _document_vectors()
+    query_vector = _embed([EMBED_QUERY_PREFIX + query])[0]
+    ranked = sorted(scoped, key=lambda item: (-_cosine(query_vector, vectors[item["id"]]), item["id"]))
+    return [_public_document(item) for item in ranked[:limit]]
+
+
+def retrieve_with_method(query: str, local_id: str, provider_id: str, limit: int = 5) -> tuple[list[dict], str]:
+    """Busca com embeddings quando EMBED_MODEL está definido; lexical quando não está ou quando o Ollama falha."""
+    if EMBED_MODEL:
+        try:
+            return _retrieve_embedding(query, local_id, provider_id, limit), f"embedding:{EMBED_MODEL}"
+        except RuntimeError as exc:
+            app.logger.warning("Busca por embedding falhou (%s); usando a lexical.", exc)
+            return retrieve_documents(query, local_id, provider_id, limit), "lexical (fallback)"
+    return retrieve_documents(query, local_id, provider_id, limit), "lexical"
+
+
+def retrieve_documents(query: str, local_id: str, provider_id: str, limit: int = 5) -> list[dict]:
+    scoped = _scoped_corpus(local_id, provider_id)
     query_counts = Counter(_tokens(query))
     if not query_counts:
         return []
@@ -303,15 +388,7 @@ def retrieve_documents(query: str, local_id: str, provider_id: str, limit: int =
             scored.append((score, item))
 
     scored.sort(key=lambda result: (-result[0], result[1]["id"]))
-    return [
-        {
-            "id": item["id"],
-            "title": item["title"],
-            "text": item["text"],
-            **({"claims": item["claims"]} if "claims" in item else {}),
-        }
-        for _, item in scored[:limit]
-    ]
+    return [_public_document(item) for _, item in scored[:limit]]
 
 
 def _sql_literal(value: str) -> str:
@@ -507,6 +584,15 @@ def _classify_from_evidence(invoice: dict, retrieved: list[dict]) -> dict:
             "source_ids": source_ids,
         }
 
+    # Fatura que cita outra unidade: o contrato recuperado é o da unidade da credencial, então confirmar seria aprovar
+    # a conta de outro local com o contrato errado (caso FE-07). O motivo não repete o nome da outra unidade.
+    if any(name in _normalise(f"{invoice.get('provider', '')} {invoice['description']}") for name in OTHER_UNIT_NAMES):
+        return {
+            "classification": "REVISAR",
+            "reason": "A fatura cita outra unidade, fora do escopo desta credencial; exige validação humana.",
+            "source_ids": source_ids,
+        }
+
     amount = round(float(invoice["amount"]) * 100)
     claims = [
         item for item in retrieved
@@ -579,6 +665,7 @@ def health():
         "model": MODEL_NAME,
         "model_profile": MODEL_PROFILE,
         "model_backend": MODEL_BACKEND,
+        "embed_model": EMBED_MODEL or None,
     })
 
 
@@ -626,7 +713,7 @@ def analyze():
             str(amount),
             str(invoice.get("due_date", "")),
         ))
-        retrieved = retrieve_documents(rag_query, LOCAL_ID, provider_id)
+        retrieved, rag_method = retrieve_with_method(rag_query, LOCAL_ID, provider_id)
         log_retrieved_sources(correlation_id, [item["id"] for item in retrieved])
         assessment = _classify_from_evidence({**invoice, "amount": amount_value}, retrieved)
         prompt = json.dumps({
@@ -673,6 +760,7 @@ def analyze():
         "model_is_authoritative": False,
         "context_rows": len(database_context),
         "retrieved_documents": len(retrieved),
+        "rag_method": rag_method,
         "latency_ms": round((time.perf_counter() - started) * 1000, 2),
         "automatic_payment": False,
         "audit": "AI_RESPONSE",

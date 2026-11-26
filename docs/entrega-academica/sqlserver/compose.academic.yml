@@ -44,6 +44,8 @@ services:
       MODEL_URL: ${MODEL_URL:-http://ollama-academic:11434}
       MODEL_NAME: ${OLLAMA_MODEL:-qwen2.5:0.5b}
       MODEL_PROFILE: ${MODEL_PROFILE:-baseline}
+      # RAG por embeddings (docs/entrega-academica/ia/rag-embeddings.md); vazio = só a busca lexical.
+      EMBED_MODEL: ${EMBED_MODEL-embeddinggemma}
     ports:
       - "127.0.0.1:5010:5010"
     depends_on:

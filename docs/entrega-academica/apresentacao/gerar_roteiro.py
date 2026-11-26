@@ -184,12 +184,26 @@ def main() -> None:
         f"0 falsas aprovações em 16 pode chegar a {faixa(0, 16).split(' a ')[1]}. Por isso separamos a validação cega, congelada por hash "
         "(`ia/conjuntos-congelados.json`; mudar o arquivo quebra um teste). Ela é o número limpo.",
         "",
-        f"**Por que o modelo não decide?** Porque medimos: sozinho, ele respondeu REVISAR nos 16 casos; o modelo base sem RAG aprovou "
+        f"**Por que o modelo não decide?** Porque medimos: sozinho, ele acertou {B['metricas']['modelo_acertos']}/16, respondendo REVISAR em quase tudo; o modelo base sem RAG aprovou "
         f"{fa['base']['falsas']} cobranças indevidas. A regra sobre evidência estruturada acerta e é auditável.",
         "",
-        f"**O fine-tuning valeu a pena?** Não, e mostramos por quê: {fa['ajustado_rag']['acertos']}/16 com RAG, igual ao base. "
-        "O treino tinha frases curtas; o RAG entrega o texto do contrato, que diz o que não está incluído, e o modelo leu a negação como divergência. "
-        "No IA-009 ele ainda obedeceu à injeção. O próximo passo seria treinar com o texto real do RAG e com exemplos de injeção.",
+        f"**O fine-tuning valeu a pena?** Não, e mostramos por quê: fora do treino, {fa['ajustado_rag']['acertos']}/16 nos casos finais com RAG "
+        f"(base com RAG: {fa['base_rag']['acertos']}/16)"
+        + (f" e {F['conjuntos']['C']['ajustado_rag']['acertos']}/{F['conjuntos']['C']['ajustado_rag']['n']} fora de escopo" if 'C' in F['conjuntos'] else "")
+        + ". O treino tinha frases curtas; o RAG entrega o texto do contrato, que diz o que não está incluído, e o modelo leu a negação como divergência. "
+        + ("No IA-009 ele ainda obedeceu à injeção. " if 'IA-009' in (fa['ajustado_rag'].get('falsas_ids') or []) else "")
+        + "O próximo passo seria treinar com o texto real do RAG, com documentos fora de escopo e com exemplos de injeção.",
+        "",
+        "**Qual prompt o sistema avaliado usa?** A análise de fatura (`/api/analyze`) usa o v"
+        f"{B['servico']['prompt_version']}, com busca {('por embedding (' + B['servico']['embed_model'] + ')') if B['servico'].get('embed_model') else 'lexical'}; "
+        "o v4.2 é o da triagem do Gmail, outro fluxo. A avaliação final rodou no serviço com a mesma configuração que o pacote sobe, e "
+        "`tests/test_pacote_mesma_ia.py` falha se o pacote divergir.",
+        "",
+        "**O RAG com embeddings ajudou?** "
+        + (f"Nas paráfrases (a cobrança com outras palavras), a fonte certa veio em {d['rag']['metodos'][d['rag']['escolha']]['parafrases']['acertos']}/"
+           f"{d['rag']['metodos'][d['rag']['escolha']]['parafrases']['total']} contra {d['rag']['metodos']['lexical']['parafrases']['acertos']}/"
+           f"{d['rag']['metodos']['lexical']['parafrases']['total']} da busca por palavras, sem perder caso final. O critério foi versionado antes "
+           "de medir, e a busca só ordena o que o escopo do local já permite." if d.get('rag') and d['rag']['escolha'] else "Ver ia/rag-embeddings.md."),
         "",
         "**E se um ataque não for detectado?** O pior caso é uma fatura cujo serviço e valor já batem com o contrato sair CONTRATADO sem a "
         "marca de revisão. O ataque não aprova valor diferente, não traz dado de outro local (credencial, RLS e RAG filtrado) e não paga nada.",

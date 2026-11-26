@@ -1,5 +1,7 @@
 """Gera docs/entrega-academica/ia/casos-de-teste-final.md a partir das evidências (nenhum número digitado à mão).
-Fontes: sqlserver/evidence/parte3/ia-avaliacao-antes.json e ia-avaliacao-depois.json (avaliar_ia.py), casos-finais.json,
+Fontes: sqlserver/evidence/parte3/ia-avaliacao-antes.json (1ª rodada, antes das correções) e ia-avaliacao-final.json
+(o sistema entregue: prompt, modelo e busca que o pacote sobe; conferido por tests/test_pacote_mesma_ia.py),
+ia-avaliacao-fora-escopo-antes.json (casos fora de escopo antes da correção), casos-finais.json, casos-fora-escopo.json,
 injecao-casos.json e injecao-validacao.json. Os textos de análise (causa e correção) estão em ANALISE, abaixo.
 Uso, na raiz:  .venv\\Scripts\\python.exe docs/entrega-academica/ia/gerar_casos_final.py
 """
@@ -15,8 +17,20 @@ SAIDA = DIR / "casos-de-teste-final.md"
 CLASSES = ["CONTRATADO", "DIVERGENTE", "REVISAR"]
 
 antes = json.loads((EV / "ia-avaliacao-antes.json").read_text(encoding="utf-8"))
-depois = json.loads((EV / "ia-avaliacao-depois.json").read_text(encoding="utf-8"))
+depois = json.loads((EV / "ia-avaliacao-final.json").read_text(encoding="utf-8"))
+fora_antes = json.loads((EV / "ia-avaliacao-fora-escopo-antes.json").read_text(encoding="utf-8"))
 casos = {c["id"]: c for c in json.loads((DIR / "casos-finais.json").read_text(encoding="utf-8"))["casos"]}
+casos_fora = {c["id"]: c for c in json.loads((DIR / "casos-fora-escopo.json").read_text(encoding="utf-8"))["casos"]}
+# Rodadas intermediárias, só para o histórico (cada uma com o /health do serviço medido).
+RODADAS = [("depois das correções", "ia-avaliacao-depois.json"), ("prompt 3.1", "ia-avaliacao-prompt-v31.json"),
+           ("busca por embedding", "ia-avaliacao-rag-embeddings.json"), ("final", "ia-avaliacao-final.json")]
+
+ANALISE_FORA = {
+    "FE-07": ("Fatura da Conecta Alfa com serviço e valor iguais aos do contrato da Agência Centro, mas que diz ser da Garagem Sul. "
+              "A regra só olhava serviço e valor e confirmou a conta de outra unidade com o contrato errado (falsa aprovação).",
+              "Se a fatura cita o nome de uma unidade de outro local (tirado dos títulos do corpus), a decisão vira REVISAR; o motivo "
+              "não repete o nome da outra unidade. Teste de unidade novo."),
+}
 
 # Causa e correção de cada falha da rodada "antes" (texto de análise; os resultados vêm das evidências).
 ANALISE = {
@@ -67,7 +81,7 @@ def celula(x: dict) -> str:
 def tabela_metricas() -> list[str]:
     a, d = antes["casos_de_teste"]["metricas"], depois["casos_de_teste"]["metricas"]
     ia, id_ = antes["prompt_injection"]["metricas"], depois["prompt_injection"]["metricas"]
-    linhas = ["| Métrica | Antes | Depois |", "|---|---|---|"]
+    linhas = ["| Métrica | Antes | Final |", "|---|---|---|"]
     for nome, va, vd in [
         ("Casos aprovados (todas as verificações)", f"{a['casos_aprovados']}/{a['total']}", f"{d['casos_aprovados']}/{d['total']}"),
         ("Decisão certa (acurácia)", f"{a['decisao_do_sistema']['acertos']}/{a['total']} ({a['decisao_do_sistema']['acuracia']:.2f})",
@@ -114,12 +128,23 @@ def main() -> None:
         "# Casos de teste da IA — entrega final",
         "",
         "Gerado por `gerar_casos_final.py` a partir das evidências; nenhum número foi digitado à mão.",
-        f"Serviço real: `{s['model']}`, prompt v{s['prompt_version']} (SHA-256 `{s['prompt_sha256'][:16]}…`), escopo {s['database_scope']}. "
-        f"Rodada **antes**: {antes['executado_em_utc'][:19]} UTC · rodada **depois**: {depois['executado_em_utc'][:19]} UTC.",
+        "",
+        "| Rodada | Quando (UTC) | Modelo | Prompt | Busca (RAG) | Escopo |",
+        "|---|---|---|---|---|---|",
+        *[f"| {rot} | {r['executado_em_utc'][:19]} | `{r['servico']['model']}` | v{r['servico']['prompt_version']} "
+          f"(SHA-256 `{r['servico']['prompt_sha256'][:12]}…`) | {('embedding `' + r['servico']['embed_model'] + '`') if r['servico'].get('embed_model') else 'lexical'} | "
+          f"{r['servico']['database_scope']} |"
+          for rot, r in (("**Antes** (1ª rodada, antes das correções)", antes), ("**Final** (o sistema entregue)", depois))],
+        "",
+        "A rodada **final** foi feita no serviço com o mesmo prompt, modelo e busca que o pacote de entrega sobe "
+        "(`tests/test_pacote_mesma_ia.py` compara o pacote com o `/health` gravado nesta evidência). O prompt v4.2 é o da "
+        "triagem do Gmail (WF-08/WF-10), outro fluxo, avaliado em [`escolha-modelo-triagem.md`](escolha-modelo-triagem.md); "
+        "ver a tabela \"Qual prompt cada fluxo usa hoje\" em [`prompts/CHANGELOG.md`](prompts/CHANGELOG.md).",
         "",
         "A decisão é da **regra** sobre a evidência estruturada (contrato recuperado pelo RAG); o modelo sugere uma "
         "classificação que é medida, mas não tem autoridade. O esperado de cada caso foi tirado das regras e do corpus "
         "(`rag_documents.json`), não da saída do sistema. Entradas: [`casos-finais.json`](casos-finais.json), "
+        "[`casos-fora-escopo.json`](casos-fora-escopo.json), "
         "[`injecao-casos.json`](injecao-casos.json) e [`injecao-validacao.json`](injecao-validacao.json). Execução: "
         "[`avaliar_ia.py`](avaliar_ia.py).",
         "",
@@ -129,29 +154,32 @@ def main() -> None:
         "",
         "## Os 16 casos",
         "",
-        "| Caso | Tipo | Entrada | Esperado | Antes | Depois | Modelo (depois) |",
+        "| Caso | Tipo | Entrada | Esperado | Antes | Final | Modelo (final) |",
         "|---|---|---|---|---|---|---|",
     ]
     for cid, c in casos.items():
         L.append(f"| {cid} | {c['categoria']} | {entrada(c)} | {c['esperado']['classification']} | {celula(ra[cid])} | {celula(rd[cid])} | {rd[cid]['modelo']} |")
-    L += ["", "## Métricas por classe", "", *tabela_classes(antes, "Antes"), "", *tabela_classes(depois, "Depois"), ""]
+    L += ["", "## Métricas por classe", "", *tabela_classes(antes, "Antes"), "", *tabela_classes(depois, "Final"), ""]
 
     L += ["## Análise das falhas (rodada antes)", ""]
     for cid, (causa, correcao) in ANALISE.items():
         x = ra[cid]
         L += [f"**{cid}: {casos[cid]['descricao']}** Esperado {x['esperado']}, obtido {celula(x)}.", "",
-              f"- Causa: {causa}", f"- Correção: {correcao} Depois: {celula(rd[cid])}.", ""]
+              f"- Causa: {causa}", f"- Correção: {correcao} Final: {celula(rd[cid])}.", ""]
     falhas_reais = sorted(k for k, v in ra.items() if not v["ok"])
     L += [f"Falhas da rodada antes conferidas na evidência: {', '.join(falhas_reais)}.", ""]
 
     L += ["## O modelo sozinho", "",
-          f"Na rodada depois, o modelo respondeu: {', '.join(f'{k} em {v}' for k, v in modelo.most_common())} dos {sum(modelo.values())} casos. "
-          "O acerto dele é só a parcela de casos cujo esperado é REVISAR: o Qwen 0,5B, com o prompt v3.0, não distingue "
-          "CONTRATADO de DIVERGENTE. Por isso a decisão é da regra, e a comparação com o modelo ajustado (LoRA) e com o RAG "
-          "fica no documento do fine-tuning.", ""]
+          f"Na rodada final, o modelo respondeu: {', '.join(f'{k} em {v}' for k, v in modelo.most_common())} dos {sum(modelo.values())} casos. "
+          + (f"O acerto dele é só a parcela de casos cujo esperado é REVISAR: o Qwen 0,5B, com o prompt v{s['prompt_version']}, não distingue "
+             "CONTRATADO de DIVERGENTE. " if set(modelo) == {"REVISAR"} else "")
+          + "Por isso a decisão é da regra, e a comparação com o modelo ajustado (LoRA) e com o RAG "
+          "fica em [`finetuning/comparacao-final.md`](finetuning/comparacao-final.md).", ""]
+
+    L += secao_fora_de_escopo()
 
     L += ["## Prompt injection: bateria (13 ataques e 2 controles)", "",
-          "| Caso | Técnica | Pede | Antes | Depois | Modelo (depois) |", "|---|---|---|---|---|---|"]
+          "| Caso | Técnica | Pede | Antes | Final | Modelo (final) |", "|---|---|---|---|---|---|"]
     ia = {x["id"]: x for x in antes["prompt_injection"]["casos"]}
     idp = {x["id"]: x for x in depois["prompt_injection"]["casos"]}
     for cid, x in idp.items():
@@ -159,7 +187,7 @@ def main() -> None:
             return f"{y['obtido']} ({'detectado' if y['detectado_como_injecao'] else 'não detectado'})"
         L.append(f"| {cid} | {x['tecnica']} | {x['pede']} | {r(ia[cid])} | {r(x)} | {x['modelo']} |")
     L += ["", "A bateria foi escrita antes da correção, mas os padrões foram ajustados olhando para ela; por isso o resultado "
-          "\"depois\" dela é otimista. O número que mede a generalização é o da validação cega, abaixo.", ""]
+          "final dela é otimista. O número que mede a generalização é o da validação cega, abaixo.", ""]
 
     if depois.get("validacao_cega"):
         v = depois["validacao_cega"]
@@ -197,7 +225,7 @@ def main() -> None:
           *secao_confianca(depois),
           "## Limites",
           "",
-          "- 16 casos e 26 ataques são poucos e sintéticos; servem para achar falhas, não para estimar a taxa de erro em produção.",
+          "- 16 casos, 12 fora de escopo e 26 ataques são poucos e sintéticos; servem para achar falhas, não para estimar a taxa de erro em produção.",
           "- Detecção por padrões não reconhece engenharia social nem homóglifos (validação cega). Próximo passo: normalizar homóglifos (tabela de confusáveis do Unicode) e um classificador de instrução treinado, avaliados em outro conjunto cego.",
           "- O esperado foi definido pelo grupo a partir do corpus; casos ambíguos foram evitados de propósito.",
           ""]
@@ -215,6 +243,10 @@ def secao_confianca(depois: dict) -> list[str]:
               ("Falsas aprovações nos 16 casos", len(m["falsas_aprovacoes"]), m["total"], "desenvolvimento: 0 observadas não prova 0%"),
               ("Ataques detectados na bateria", depois["prompt_injection"]["metricas"]["ataques_detectados"],
                depois["prompt_injection"]["metricas"]["ataques"], "desenvolvimento (padrões ajustados nela): otimista")]
+    if depois.get("fora_de_escopo"):
+        f = depois["fora_de_escopo"]["metricas"]
+        linhas.append(("Decisão certa nos 12 fora de escopo", f["decisao_do_sistema"]["acertos"], f["total"],
+                       "escrito antes de rodar; 1 falha corrigida olhando para ele: otimista"))
     if depois.get("validacao_cega"):
         v = depois["validacao_cega"]["metricas"]
         linhas.append(("Ataques detectados na validação cega", v["ataques_detectados"], v["ataques"], "**congelado**, nunca usado para ajustar: a medida limpa"))
@@ -228,9 +260,49 @@ def secao_confianca(depois: dict) -> list[str]:
     L += ["", "Conjuntos congelados ([`conjuntos-congelados.json`](conjuntos-congelados.json); mudar o arquivo quebra "
           "`tests/test_conjunto_cego.py`, e um conjunto cego novo vira outro arquivo): "
           + "; ".join(f"`{n}` em {v['congelado_em']} (SHA-256 `{v['sha256'][:12]}…`)" for n, v in trava["congelados"].items()) + ".", "",
-          "Com o prompt 3.1 (contexto e documentos enxutos; ver `finetuning/comparacao-final.md`), a mesma avaliação deu os mesmos "
-          "resultados: 16/16, 13/13 ataques, 4/8 na validação cega com as mesmas falhas e o modelo respondendo REVISAR nos 16 "
-          "(`../sqlserver/evidence/parte3/ia-avaliacao-prompt-v31.json`).", ""]
+          "Histórico das rodadas depois das correções (mesmos casos; cada arquivo grava o `/health` do serviço medido):", "",
+          "| Rodada | Arquivo | Prompt | Busca | Casos certos | Fora de escopo | Bateria de injeção | Validação cega |",
+          "|---|---|---|---|---|---|---|---|"]
+    for rot, nome in RODADAS:
+        cam = EV / nome
+        if not cam.exists():
+            continue
+        r = json.loads(cam.read_text(encoding="utf-8"))
+        m, sv = r["casos_de_teste"]["metricas"], r["servico"]
+        fe = (r.get("fora_de_escopo") or {}).get("metricas")
+        vc = (r.get("validacao_cega") or {}).get("metricas")
+        L.append(f"| {rot} | [`{nome}`](../sqlserver/evidence/parte3/{nome}) | v{sv['prompt_version']} | "
+                 f"{sv.get('embed_model') or 'lexical'} | {m['decisao_do_sistema']['acertos']}/{m['total']} | "
+                 f"{(str(fe['decisao_do_sistema']['acertos']) + '/' + str(fe['total'])) if fe else '—'} | "
+                 f"{r['prompt_injection']['metricas']['ataques_detectados']}/{r['prompt_injection']['metricas']['ataques']} | "
+                 f"{(str(vc['ataques_detectados']) + '/' + str(vc['ataques'])) if vc else '—'} |")
+    L.append("")
+    return L
+
+
+def secao_fora_de_escopo() -> list[str]:
+    if not depois.get("fora_de_escopo"):
+        return []
+    ra = {x["id"]: x for x in fora_antes["fora_de_escopo"]["casos"]}
+    rf = {x["id"]: x for x in depois["fora_de_escopo"]["casos"]}
+    ma, mf = fora_antes["fora_de_escopo"]["metricas"], depois["fora_de_escopo"]["metricas"]
+    L = ["## Casos fora de escopo (12)", "",
+         "Documentos que não são fatura de internet do LOC-001: outra conta, fatura de outro local, outro idioma, pergunta, "
+         "descrição vazia, estorno. O esperado (REVISAR em todos) foi escrito e versionado antes de rodar "
+         "([`casos-fora-escopo.json`](casos-fora-escopo.json)); nenhum caso repete um cenário do treino do fine-tuning "
+         "([`finetuning/verificar_sobreposicao.py`](finetuning/verificar_sobreposicao.py)).", "",
+         "| Caso | Tipo | Entrada | Esperado | Antes da correção | Final | Modelo (final) |",
+         "|---|---|---|---|---|---|---|"]
+    for cid, c in casos_fora.items():
+        L.append(f"| {cid} | {c['categoria']} | {entrada(c)} | {c['esperado']['classification']} | {celula(ra[cid])} | "
+                 f"{celula(rf[cid])} | {rf[cid]['modelo']} |")
+    L += ["", f"Antes da correção: {ma['decisao_do_sistema']['acertos']}/{ma['total']}, falsas aprovações "
+          f"{', '.join(ma['falsas_aprovacoes']) or 'nenhuma'}. Final: {mf['decisao_do_sistema']['acertos']}/{mf['total']}, falsas aprovações "
+          f"{', '.join(mf['falsas_aprovacoes']) or 'nenhuma'}; segurança (escopo, sem pagamento, sem vazamento, sem fonte de outro local) "
+          f"{mf['seguranca_ok']}.", ""]
+    for cid, (causa, correcao) in ANALISE_FORA.items():
+        L += [f"**{cid}: {casos_fora[cid]['descricao']}** Antes: {celula(ra[cid])}.", "",
+              f"- Causa: {causa}", f"- Correção: {correcao} Final: {celula(rf[cid])}.", ""]
     return L
 
 

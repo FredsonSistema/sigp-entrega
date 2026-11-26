@@ -102,6 +102,12 @@ details.item .corpo b{color:var(--txt);font-weight:600}
   <div class="grade g4" id="kpis"></div>
 </section>
 
+<section id="respostas" data-titulo="Comentários da professora">
+  <h2>Respostas aos comentários da professora</h2>
+  <p class="sub">Devolutiva da Entrega 2. Uma linha por comentário; os números vêm das evidências, e o detalhe está no arquivo indicado.</p>
+  <div class="tw" style="max-height:none"><table><thead><tr><th>Disciplina</th><th>Comentário</th><th>O que foi feito</th><th>Evidência</th></tr></thead><tbody id="tabRespostas"></tbody></table></div>
+</section>
+
 <section id="llm" data-titulo="Evolução da IA">
   <h2>Como a IA evoluiu</h2>
   <p class="sub">Da entrega 2 à entrega final: prompts, casos de teste, ataques e modelo ajustado. Cada marco aponta para a evidência.</p>
@@ -118,7 +124,8 @@ details.item .corpo b{color:var(--txt);font-weight:600}
 
 <section id="casos" data-titulo="Casos de teste">
   <h2>16 casos de teste da IA</h2>
-  <p class="sub">O esperado vem das regras e dos contratos, não da saída do sistema. Troque entre a rodada antes e a depois das correções e clique numa linha para ver o motivo.</p>
+  <p class="sub">O esperado vem das regras e dos contratos, não da saída do sistema. Troque entre a 1ª rodada (antes das correções) e a final, feita no sistema entregue, e clique numa linha para ver o motivo.</p>
+  <p class="nota" id="servicoFinal"></p>
   <div><div class="seg" id="segCasos"></div><div class="seg" id="segCat"></div></div>
   <div class="grade g4" id="kpiCasos" style="margin-bottom:14px"></div>
   <div class="grade g2">
@@ -129,7 +136,19 @@ details.item .corpo b{color:var(--txt);font-weight:600}
     <p class="sub" style="margin:0 0 8px">Com 16 casos ou 8 ataques, um resultado perfeito ainda deixa uma faixa larga. Onde o acerto real provavelmente está:</p>
     <div class="tw"><table><thead><tr><th>Medida</th><th>Observado</th><th>Faixa provável (95%)</th><th>Conjunto</th></tr></thead><tbody id="tabConf"></tbody></table></div>
     <div class="nota" id="notaConf" style="margin-top:8px"></div></div>
-  <div class="fonte">Fonte: <code>sqlserver/evidence/parte3/ia-avaliacao-antes.json</code>, <code>ia-avaliacao-depois.json</code> e <code>ia/conjuntos-congelados.json</code></div>
+  <div class="card" style="margin-top:14px" id="cardFora"><h3 style="margin-top:0">12 casos fora de escopo</h3>
+    <p class="sub" style="margin:0 0 8px">Outra conta, outro local, outro idioma, documento que não é fatura. Em todos, o certo é REVISAR; o esperado foi escrito antes de rodar.</p>
+    <div class="tw"><table><thead><tr><th>Caso</th><th>Tipo</th><th>Descrição</th><th>Final</th><th>Modelo</th></tr></thead><tbody id="tabFora"></tbody></table></div>
+    <div class="nota" id="notaFora" style="margin-top:8px"></div></div>
+  <div class="fonte">Fonte: <code>sqlserver/evidence/parte3/ia-avaliacao-antes.json</code>, <code>ia-avaliacao-final.json</code> (o sistema entregue), <code>ia-avaliacao-fora-escopo-antes.json</code> e <code>ia/conjuntos-congelados.json</code></div>
+</section>
+
+<section id="rag" data-titulo="RAG">
+  <h2>RAG: busca por palavras × busca por embedding</h2>
+  <p class="sub">Critério fixado e versionado antes de medir. A busca só ordena os documentos que o escopo do local e do provedor já permite.</p>
+  <div class="grade g3" id="kpiRag" style="margin-bottom:14px"></div>
+  <div class="tw" style="max-height:none"><table><thead><tr><th>Método</th><th>Paráfrases (fonte no top 5)</th><th>Casos finais</th><th>MRR</th><th>Latência</th><th>Fora do escopo</th></tr></thead><tbody id="tabRag"></tbody></table></div>
+  <div class="fonte" id="fonteRag"></div>
 </section>
 
 <section id="injecao" data-titulo="Prompt injection">
@@ -137,7 +156,7 @@ details.item .corpo b{color:var(--txt);font-weight:600}
   <p class="sub">A bateria foi escrita antes da correção. A validação cega foi escrita depois e não serviu para ajustar nada: é ela que mede se a defesa generaliza.</p>
   <div class="grade g3" id="kpiInj" style="margin-bottom:14px"></div>
   <div class="seg" id="segInj"></div>
-  <div class="tw"><table><thead><tr><th>Caso</th><th>Técnica</th><th>Pede</th><th>Antes</th><th>Depois</th><th>Modelo</th></tr></thead><tbody id="tabInj"></tbody></table></div>
+  <div class="tw"><table><thead><tr><th>Caso</th><th>Técnica</th><th>Pede</th><th>Antes</th><th>Final</th><th>Modelo</th></tr></thead><tbody id="tabInj"></tbody></table></div>
   <h3>Por que um ataque não detectado ainda não aprova nada</h3>
   <ol class="camadas" id="camadas"></ol>
   <div class="fonte">Fonte: <code>ia/injecao-casos.json</code>, <code>ia/injecao-validacao.json</code> e as avaliações em <code>sqlserver/evidence/parte3/</code></div>
@@ -259,6 +278,8 @@ $('#kpis').innerHTML = [
   kpi('Decisão certa (16 casos)', `${A.metricas.acertos}/16`, `${B.metricas.acertos}/16`, `F1 macro ${br(A.metricas.f1_macro, 3)} → ${br(B.metricas.f1_macro, 3)}`),
   kpi('Falsas aprovações', String(A.metricas.falsas_aprovacoes.length), String(B.metricas.falsas_aprovacoes.length), 'CONTRATADO onde não devia'),
   kpi('Ataques de injeção detectados', `${A.injecao_metricas.ataques_detectados}/${A.injecao_metricas.ataques}`, `${B.injecao_metricas.ataques_detectados}/${B.injecao_metricas.ataques}`, 'bateria (13 técnicas)'),
+  ...(B.fora ? [kpi('Casos fora de escopo', null, `${B.fora.acertos}/${B.fora.total}`, `falsas aprovações: ${B.fora.falsas_aprovacoes.length}`)] : []),
+  ...(D.rag && D.rag.escolha ? [kpi('RAG: paráfrases com a fonte certa', `${D.rag.metodos.lexical.parafrases.acertos}/${D.rag.metodos.lexical.parafrases.total}`, `${D.rag.metodos[D.rag.escolha].parafrases.acertos}/${D.rag.metodos[D.rag.escolha].parafrases.total}`, 'lexical → embedding')] : []),
   kpi('Validação cega da injeção', null, `${B.validacao_metricas.ataques_detectados}/${B.validacao_metricas.ataques}`, 'frases novas, sem ajuste: o número honesto', 'warn'),
   kpi('Escalonamento de privilégio', `${escAntes} passaram`, `${escDepois}/${S.escalonamento.filter((x) => x.fase === 'depois').length} OK`, 'operador gravava no local de outro'),
   kpi('Trilha de auditoria', `${tAntes} falhas`, `${tDepois}/${(S.trilha.depois || []).length}`, 'quem fez o quê, sem como forjar'),
@@ -284,14 +305,31 @@ const marcos = [
   ['Produção · alertas pela IA (prompt v5.0)', `${L.wf06_alertas.llm_aceitas} de ${L.wf06_alertas.cenarios} cenários com o texto da LLM aceito pela checagem; ${L.wf06_alertas.texto_padrao} caiu no texto fixo (${esc(L.wf06_alertas.modelo)}).`],
   ['Final · 16 casos, antes das correções', `Decisão certa ${A.metricas.acertos}/16; falsa aprovação em ${A.metricas.falsas_aprovacoes.join(', ') || 'nenhum'}; injeção detectada ${A.injecao_metricas.ataques_detectados}/${A.injecao_metricas.ataques}.`],
   ['Final · depois das correções', `Decisão certa ${B.metricas.acertos}/16, nenhuma falsa aprovação, injeção ${B.injecao_metricas.ataques_detectados}/${B.injecao_metricas.ataques}; validação cega ${B.validacao_metricas.ataques_detectados}/${B.validacao_metricas.ataques}.`],
-  ['Final · o modelo sozinho', `O Qwen 0,5B respondeu REVISAR em todos os casos (${B.metricas.modelo_acertos}/16 = só os de esperado REVISAR): sozinho, não classifica.`],
-  ['Final · fine-tuning nos casos reais', F ? `Ajustado com RAG ${F.conjuntos.A.ajustado_rag.acertos}/16, igual ao base com RAG (${F.conjuntos.A.base_rag.acertos}/16); falsas aprovações ${F.conjuntos.A.base_rag.falsas} → ${F.conjuntos.A.ajustado_rag.falsas}. O ajuste não compensou como decisão.` : ''],
+  ['Final · o modelo sozinho', `O Qwen 0,5B acertou ${B.metricas.modelo_acertos}/16 respondendo REVISAR em quase tudo: sozinho, não classifica.`],
+  ...(D.rag && D.rag.escolha ? [['Final · RAG com embeddings', `Fonte certa nas paráfrases: lexical ${D.rag.metodos.lexical.parafrases.acertos}/${D.rag.metodos.lexical.parafrases.total} → ${D.rag.escolha.split(':')[1]} ${D.rag.metodos[D.rag.escolha].parafrases.acertos}/${D.rag.metodos[D.rag.escolha].parafrases.total}, sem perder caso final; ligado no sistema entregue.`]] : []),
+  ...(B.fora ? [['Final · fora de escopo', `${B.fora.acertos}/${B.fora.total} depois de corrigir uma falsa aprovação (fatura de outra unidade aprovada com o contrato da Agência Centro).`]] : []),
+  ['Final · fine-tuning fora do treino', F ? `Ajustado com RAG ${F.conjuntos.A.ajustado_rag.acertos}/16 nos casos finais (base com RAG ${F.conjuntos.A.base_rag.acertos}/16)${F.conjuntos.C ? ` e ${F.conjuntos.C.ajustado_rag.acertos}/${F.conjuntos.C.ajustado_rag.n} fora de escopo` : ''}; falsas aprovações nos finais ${F.conjuntos.A.base_rag.falsas} → ${F.conjuntos.A.ajustado_rag.falsas}. O ajuste não generaliza.` : ''],
 ];
+$('#tabRespostas').innerHTML = (D.respostas_professora || []).map((r) => `<tr><td>${pill(r.disciplina, 'info')}</td><td>${esc(r.comentario)}</td><td>${esc(r.resposta)}</td><td class="mono" style="font-size:12px">${esc(r.evidencia)}</td></tr>`).join('');
 $('#tempoIa').innerHTML = marcos.map(([t, p]) => `<div class="marco"><h4>${esc(t)}</h4><p>${esc(p)}</p></div>`).join('');
 $('#prompts').innerHTML = L.prompts.map((p) => `<details class="item"><summary>${pill(p.versao, 'info')} <span>${esc(p.estado)}</span></summary><div class="corpo">${esc(p.mudancas)}</div></details>`).join('');
 
 /* ---------- casos */
 let rodada = 'depois', categoria = 'todas';
+$('#servicoFinal').innerHTML = `Rodada final: <code>${esc(B.servico.model)}</code>, prompt v${esc(B.servico.prompt_version)}, busca ${B.servico.embed_model ? 'por embedding (<code>' + esc(B.servico.embed_model) + '</code>)' : 'lexical'}, escopo ${esc(B.servico.database_scope)}: o mesmo que o pacote sobe. O prompt v4.2 é o da triagem do Gmail, outro fluxo.`;
+if (B.fora) {
+  $('#tabFora').innerHTML = B.fora.casos.map((c) => `<tr><td class="mono">${esc(c.id)}</td><td>${esc(c.categoria)}</td><td>${esc(c.descricao)}</td><td>${pill(c.obtido + (c.obtido === c.esperado ? '' : ' ✗'), c.obtido === c.esperado ? corClasse(c.obtido) : 'bad')}</td><td>${c.modelo ? pill(c.modelo) : '—'}</td></tr>`).join('');
+  $('#notaFora').textContent = `Final ${B.fora.acertos}/${B.fora.total}; falsas aprovações: ${B.fora.falsas_aprovacoes.join(', ') || 'nenhuma'}; segurança ${B.fora.seguranca}. A 1ª rodada aprovou o FE-07 (Conecta Alfa, link principal, valor do contrato, mas da Garagem Sul); a regra passou a mandar para revisão a fatura que cita outra unidade.`;
+} else { $('#cardFora').remove(); }
+const RG = D.rag;
+if (RG) {
+  const lex = RG.metodos.lexical, escRag = RG.escolha ? RG.metodos[RG.escolha] : null;
+  $('#kpiRag').innerHTML = [kpi('Paráfrases: fonte certa no top 5', `${lex.parafrases.acertos}/${lex.parafrases.total}`, escRag ? `${escRag.parafrases.acertos}/${escRag.parafrases.total}` : '—', RG.escolha ? `lexical → ${RG.escolha.split(':')[1]}` : 'nenhum método passou'),
+    kpi('Casos finais: fonte certa', `${lex.finais.acertos}/${lex.finais.total}`, escRag ? `${escRag.finais.acertos}/${escRag.finais.total}` : '—', 'critério 1: não piorar'),
+    kpi('Documentos de outro local', null, String(Object.values(RG.metodos).reduce((s, m) => s + m.fora_do_escopo.length, 0)), 'o escopo vem antes da busca')].join('');
+  $('#tabRag').innerHTML = Object.entries(RG.metodos).map(([k, m]) => `<tr${k === RG.escolha ? ' style="background:rgba(45,212,191,.08)"' : ''}><td class="mono">${esc(k)}${k === RG.escolha ? ' ' + pill('escolhido', 'ok') : ''}</td><td>${m.parafrases.acertos}/${m.parafrases.total}</td><td>${m.finais.acertos}/${m.finais.total}</td><td>${br(m.mrr, 2)}</td><td>${br(m.latencia_ms, 0)} ms</td><td>${m.fora_do_escopo.length ? pill(m.fora_do_escopo.join(', '), 'bad') : 'nenhum'}</td></tr>`).join('');
+  $('#fonteRag').innerHTML = `Fonte: <code>${esc(RG.fonte)}</code>`;
+}
 const cats = ['todas', ...new Set(B.casos.map((c) => c.categoria))];
 function desenhaCasos() {
   const R = rodada === 'antes' ? A : B;
@@ -306,13 +344,13 @@ function desenhaCasos() {
   $('#matrizConf').innerHTML = `<table class="matriz"><thead><tr><th>Esperado ↓ / obtido →</th>${cl.map((c) => `<th>${c.slice(0, 4)}</th>`).join('')}<th>sem resp.</th></tr></thead><tbody>
     ${cl.map((e) => `<tr><td>${e}</td>${[...cl, 'SEM_RESPOSTA'].map((o) => { const v = m.matriz[e][o]; return `<td class="${v && (e === o) ? 'sim' : v ? '' : 'nao'}" ${v && e !== o ? 'style="color:#f87171;font-weight:600"' : ''}>${v}</td>`; }).join('')}</tr>`).join('')}</tbody></table>`;
 }
-segmento('#segCasos', [['antes', 'Antes das correções'], ['depois', 'Depois']], rodada, (v) => { rodada = v; desenhaCasos(); $('#detalheCaso').textContent = 'Clique num caso para ver o detalhe.'; });
+segmento('#segCasos', [['antes', 'Antes das correções'], ['depois', 'Final (sistema entregue)']], rodada, (v) => { rodada = v; desenhaCasos(); $('#detalheCaso').textContent = 'Clique num caso para ver o detalhe.'; });
 segmento('#segCat', cats.map((c) => [c, c === 'todas' ? 'Todos os tipos' : c]), categoria, (v) => { categoria = v; desenhaCasos(); });
 $('#tabCasos').addEventListener('click', (e) => {
   const tr = e.target.closest('[data-caso]'); if (!tr) return;
   const id = tr.dataset.caso; const a = A.casos.find((c) => c.id === id), b = B.casos.find((c) => c.id === id);
   $('#detalheCaso').innerHTML = `<b style="color:var(--txt)">${esc(id)} · ${esc(b.descricao)}</b><br>Esperado ${pill(b.esperado, corClasse(b.esperado))}<br>
-    <b>Antes:</b> ${a.http !== 200 ? 'HTTP ' + a.http : esc(a.obtido)} — ${esc(a.motivo)}<br><b>Depois:</b> ${esc(b.obtido)} — ${esc(b.motivo)}<br>
+    <b>Antes:</b> ${a.http !== 200 ? 'HTTP ' + a.http : esc(a.obtido)} — ${esc(a.motivo)}<br><b>Final:</b> ${esc(b.obtido)} — ${esc(b.motivo)}<br>
     <b>Fontes citadas:</b> <span class="mono">${esc((b.fontes || []).join(', ') || 'nenhuma')}</span>`;
 });
 desenhaCasos();
@@ -354,10 +392,12 @@ function desenhaFt() {
   $('#ftCusto').innerHTML = ordemFt.map((k) => { const c = C[k].custo || {};
     return `<tr><td>${esc(C[k].nome)}</td><td>${br(C[k].tokens, 0)}</td><td>${br(C[k].latencia_media_ms / 1000, 2)} s</td><td>${br(c.tempo_cpu_min)} min</td><td>R$ ${br(c.reais_15w, 3)} a ${br(c.reais_55w, 3)}</td></tr>`; }).join('');
   $('#ftConclusao').innerHTML = conjFt === 'A'
-    ? `<b>Nos 16 casos reais, o ajuste não compensou como decisão.</b> O base aprova quase tudo (${C.base.falsas} falsas aprovações sem RAG). O ajustado ficou cauteloso, mas com RAG lê "não inclui IP adicional" do contrato como divergência até no link contratado: aprendeu o formato curto do treino, não a tarefa. A falsa aprovação que sobrou (${C.ajustado_rag.falsas}) foi o modelo obedecendo a um prompt injection. A regra acerta 16/16.`
+    ? `<b>Nos 16 casos finais, o ajuste não compensou como decisão.</b> O base aprova quase tudo (${C.base.falsas} falsas aprovações sem RAG). O ajustado ficou cauteloso, mas com RAG lê "não inclui IP adicional" do contrato como divergência até no link contratado: aprendeu o formato curto do treino, não a tarefa.${C.ajustado_rag.falsas_ids && C.ajustado_rag.falsas_ids.includes('IA-009') ? ' A falsa aprovação que sobrou (IA-009) foi o modelo obedecendo a um prompt injection.' : ''} A regra acerta ${B.metricas.acertos}/16. RAG = documentos que o sistema entregue recuperou.`
+    : conjFt === 'C'
+    ? `<b>Fora de escopo, nenhum caso parecido com o treino:</b> o ajustado sem RAG acerta ${C.ajustado.acertos}/${C.ajustado.n} porque responde REVISAR quando não tem evidência, não por reconhecer o escopo; com RAG cai para ${C.ajustado_rag.acertos}/${C.ajustado_rag.n} e responde DIVERGENTE em ${C.ajustado_rag.respostas.DIVERGENTE}. O base aprova ${C.base.respostas.CONTRATADO}/${C.base.n}. A regra acerta ${B.fora ? B.fora.acertos + '/' + B.fora.total : '—'}.`
     : `<b>Na distribuição do treino, o ajuste funciona:</b> ${C.base_rag.acertos}/20 → ${C.ajustado_rag.acertos}/20 com evidência, e as falsas aprovações caem de ${C.base_rag.falsas} para ${C.ajustado_rag.falsas}. Reproduz o resultado da entrega 2.`;
 }
-if (F) { segmento('#segFt', [['A', '16 casos finais (RAG real)'], ['B', '20 casos de teste do treino']], conjFt, (v) => { conjFt = v; desenhaFt(); }); desenhaFt(); }
+if (F) { segmento('#segFt', [['A', '16 casos finais (RAG real)'], ...(F.conjuntos.C ? [['C', '12 fora de escopo']] : []), ['B', '20 casos de teste do treino']], conjFt, (v) => { conjFt = v; desenhaFt(); }); desenhaFt(); }
 
 /* ---------- segurança */
 const paineis = {

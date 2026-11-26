@@ -1,0 +1,3231 @@
+{
+  "gerado_em": "2026-11-26T13:42:42+00:00",
+  "criterio": "ia/rag-embeddings-criterio.md",
+  "escopo": {
+    "local_id": "LOC-001",
+    "documentos_permitidos_prov001": [
+      "DOC-ALFA-01",
+      "DOC-ALFA-02",
+      "DOC-ALFA-03",
+      "DOC-POL-01",
+      "DOC-POL-02",
+      "DOC-POL-03",
+      "DOC-POL-04",
+      "DOC-POL-05",
+      "DOC-POL-06",
+      "DOC-POL-07",
+      "DOC-POL-08",
+      "DOC-POL-09",
+      "DOC-POL-10",
+      "DOC-POL-11",
+      "DOC-POL-12",
+      "DOC-POL-13"
+    ]
+  },
+  "modelos": {
+    "nomic-embed-text": {
+      "download_bytes": 274302450,
+      "digest": "0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+      "dimensao": 768,
+      "vetorizar_corpus_20_docs_ms": 3936.5,
+      "prefixo_consulta": "search_query: ",
+      "prefixo_documento": "search_document: "
+    },
+    "embeddinggemma": {
+      "download_bytes": 621875917,
+      "digest": "85462619ee721b466c5927d109d4cb765861907d5417b9109caebc4e614679f1",
+      "dimensao": 768,
+      "vetorizar_corpus_20_docs_ms": 4819.1,
+      "prefixo_consulta": "task: search result | query: ",
+      "prefixo_documento": "title: none | text: "
+    },
+    "bge-m3": {
+      "download_bytes": 1157672605,
+      "digest": "7907646426070047a77226ac3e684fbbe8410524f7b4a74d02837e43f2146bab",
+      "dimensao": 1024,
+      "vetorizar_corpus_20_docs_ms": 7879.1,
+      "prefixo_consulta": "",
+      "prefixo_documento": ""
+    }
+  },
+  "metodos": {
+    "lexical": {
+      "parafrases": {
+        "revocacao_5": {
+          "acertos": 7,
+          "total": 14,
+          "taxa": 0.5
+        },
+        "revocacao_3": {
+          "acertos": 6,
+          "total": 14,
+          "taxa": 0.4286
+        },
+        "mrr": 0.3274,
+        "latencia_mediana_ms": 0.5,
+        "latencia_max_ms": 1.1
+      },
+      "casos_finais": {
+        "revocacao_5": {
+          "acertos": 14,
+          "total": 14,
+          "taxa": 1.0
+        },
+        "revocacao_3": {
+          "acertos": 14,
+          "total": 14,
+          "taxa": 1.0
+        },
+        "mrr": 0.9167,
+        "latencia_mediana_ms": 0.5,
+        "latencia_max_ms": 0.8
+      },
+      "documentos_fora_do_escopo": [],
+      "detalhe": [
+        {
+          "conjunto": "parafrases",
+          "id": "RP-01",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-02",
+            "DOC-ALFA-03",
+            "DOC-POL-08",
+            "DOC-POL-09"
+          ],
+          "latencia_ms": 1.1
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-02",
+          "fontes": [
+            "DOC-POL-07"
+          ],
+          "top5": [
+            "DOC-POL-10",
+            "DOC-POL-07",
+            "DOC-ALFA-01",
+            "DOC-POL-12",
+            "DOC-ALFA-02"
+          ],
+          "latencia_ms": 0.6
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-03",
+          "fontes": [
+            "DOC-ALFA-02"
+          ],
+          "top5": [
+            "DOC-ALFA-02",
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-POL-09",
+            "DOC-POL-10"
+          ],
+          "latencia_ms": 0.4
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-04",
+          "fontes": [
+            "DOC-POL-04"
+          ],
+          "top5": [
+            "DOC-ALFA-03",
+            "DOC-POL-10",
+            "DOC-ALFA-01",
+            "DOC-POL-07",
+            "DOC-POL-11"
+          ],
+          "latencia_ms": 0.4
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-05",
+          "fontes": [
+            "DOC-POL-05"
+          ],
+          "top5": [
+            "DOC-ALFA-03",
+            "DOC-ALFA-01",
+            "DOC-POL-07",
+            "DOC-POL-11",
+            "DOC-ALFA-02"
+          ],
+          "latencia_ms": 0.5
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-06",
+          "fontes": [
+            "DOC-POL-08"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-02",
+            "DOC-ALFA-03"
+          ],
+          "latencia_ms": 0.5
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-07",
+          "fontes": [
+            "DOC-POL-09"
+          ],
+          "top5": [
+            "DOC-POL-01",
+            "DOC-ALFA-01",
+            "DOC-ALFA-02",
+            "DOC-ALFA-03"
+          ],
+          "latencia_ms": 0.4
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-08",
+          "fontes": [
+            "DOC-POL-06"
+          ],
+          "top5": [
+            "DOC-ALFA-03",
+            "DOC-ALFA-01",
+            "DOC-POL-07",
+            "DOC-POL-11",
+            "DOC-ALFA-02"
+          ],
+          "latencia_ms": 0.6
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-09",
+          "fontes": [
+            "DOC-POL-10"
+          ],
+          "top5": [
+            "DOC-ALFA-03",
+            "DOC-POL-10",
+            "DOC-ALFA-01",
+            "DOC-POL-05",
+            "DOC-POL-07"
+          ],
+          "latencia_ms": 0.5
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-10",
+          "fontes": [
+            "DOC-POL-03"
+          ],
+          "top5": [
+            "DOC-ALFA-02",
+            "DOC-ALFA-01",
+            "DOC-POL-01",
+            "DOC-POL-02",
+            "DOC-POL-09"
+          ],
+          "latencia_ms": 0.5
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-11",
+          "fontes": [
+            "DOC-POL-01"
+          ],
+          "top5": [
+            "DOC-POL-01",
+            "DOC-POL-06",
+            "DOC-POL-10",
+            "DOC-POL-03",
+            "DOC-ALFA-02"
+          ],
+          "latencia_ms": 0.5
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-12",
+          "fontes": [
+            "DOC-POL-02"
+          ],
+          "top5": [
+            "DOC-ALFA-02",
+            "DOC-ALFA-01",
+            "DOC-ALFA-03"
+          ],
+          "latencia_ms": 0.5
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-13",
+          "fontes": [
+            "DOC-ALFA-03"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-02",
+            "DOC-ALFA-03"
+          ],
+          "latencia_ms": 0.6
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-14",
+          "fontes": [
+            "DOC-POL-08"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-POL-12",
+            "DOC-POL-07",
+            "DOC-POL-08",
+            "DOC-ALFA-02"
+          ],
+          "latencia_ms": 0.4
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-001",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-12",
+            "DOC-POL-08"
+          ],
+          "latencia_ms": 0.5
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-002",
+          "fontes": [
+            "DOC-POL-07"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-POL-07",
+            "DOC-ALFA-02",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 0.4
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-003",
+          "fontes": [
+            "DOC-POL-04"
+          ],
+          "top5": [
+            "DOC-POL-04",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-10",
+            "DOC-ALFA-01"
+          ],
+          "latencia_ms": 0.5
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-004",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-12",
+            "DOC-POL-02"
+          ],
+          "latencia_ms": 0.6
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-006",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-12",
+            "DOC-POL-08"
+          ],
+          "latencia_ms": 0.5
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-007",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 0.8
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-008",
+          "fontes": [
+            "DOC-ALFA-02"
+          ],
+          "top5": [
+            "DOC-ALFA-02",
+            "DOC-ALFA-03",
+            "DOC-ALFA-01",
+            "DOC-POL-12",
+            "DOC-POL-08"
+          ],
+          "latencia_ms": 0.5
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-009",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-12",
+            "DOC-POL-08"
+          ],
+          "latencia_ms": 0.6
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-010",
+          "fontes": [
+            "DOC-POL-07"
+          ],
+          "top5": [
+            "DOC-ALFA-03",
+            "DOC-POL-07",
+            "DOC-ALFA-01",
+            "DOC-ALFA-02",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 0.5
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-011",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-12",
+            "DOC-POL-08"
+          ],
+          "latencia_ms": 0.6
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-012",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-12",
+            "DOC-POL-08"
+          ],
+          "latencia_ms": 0.5
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-013",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-12",
+            "DOC-POL-08"
+          ],
+          "latencia_ms": 0.5
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-014",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-POL-12",
+            "DOC-POL-07",
+            "DOC-ALFA-02"
+          ],
+          "latencia_ms": 0.4
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-015",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 0.7
+        }
+      ]
+    },
+    "embedding:nomic-embed-text": {
+      "parafrases": {
+        "revocacao_5": {
+          "acertos": 9,
+          "total": 14,
+          "taxa": 0.6429
+        },
+        "revocacao_3": {
+          "acertos": 7,
+          "total": 14,
+          "taxa": 0.5
+        },
+        "mrr": 0.3179,
+        "latencia_mediana_ms": 67.2,
+        "latencia_max_ms": 162.1
+      },
+      "casos_finais": {
+        "revocacao_5": {
+          "acertos": 14,
+          "total": 14,
+          "taxa": 1.0
+        },
+        "revocacao_3": {
+          "acertos": 14,
+          "total": 14,
+          "taxa": 1.0
+        },
+        "mrr": 0.9643,
+        "latencia_mediana_ms": 87.5,
+        "latencia_max_ms": 221.5
+      },
+      "documentos_fora_do_escopo": [],
+      "detalhe": [
+        {
+          "conjunto": "parafrases",
+          "id": "RP-01",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 59.9
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-02",
+          "fontes": [
+            "DOC-POL-07"
+          ],
+          "top5": [
+            "DOC-POL-10",
+            "DOC-POL-07",
+            "DOC-ALFA-03",
+            "DOC-POL-12",
+            "DOC-ALFA-01"
+          ],
+          "latencia_ms": 69.8
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-03",
+          "fontes": [
+            "DOC-ALFA-02"
+          ],
+          "top5": [
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-ALFA-01",
+            "DOC-POL-08",
+            "DOC-POL-13"
+          ],
+          "latencia_ms": 81.0
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-04",
+          "fontes": [
+            "DOC-POL-04"
+          ],
+          "top5": [
+            "DOC-ALFA-03",
+            "DOC-ALFA-01",
+            "DOC-POL-12",
+            "DOC-POL-08",
+            "DOC-POL-13"
+          ],
+          "latencia_ms": 94.1
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-05",
+          "fontes": [
+            "DOC-POL-05"
+          ],
+          "top5": [
+            "DOC-ALFA-03",
+            "DOC-ALFA-01",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 82.6
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-06",
+          "fontes": [
+            "DOC-POL-08"
+          ],
+          "top5": [
+            "DOC-ALFA-03",
+            "DOC-POL-08",
+            "DOC-ALFA-01",
+            "DOC-POL-07",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 70.3
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-07",
+          "fontes": [
+            "DOC-POL-09"
+          ],
+          "top5": [
+            "DOC-ALFA-03",
+            "DOC-POL-03",
+            "DOC-POL-04",
+            "DOC-POL-13",
+            "DOC-POL-06"
+          ],
+          "latencia_ms": 162.1
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-08",
+          "fontes": [
+            "DOC-POL-06"
+          ],
+          "top5": [
+            "DOC-ALFA-03",
+            "DOC-ALFA-01",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 64.4
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-09",
+          "fontes": [
+            "DOC-POL-10"
+          ],
+          "top5": [
+            "DOC-POL-13",
+            "DOC-ALFA-03",
+            "DOC-POL-11",
+            "DOC-POL-06",
+            "DOC-POL-10"
+          ],
+          "latencia_ms": 57.9
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-10",
+          "fontes": [
+            "DOC-POL-03"
+          ],
+          "top5": [
+            "DOC-ALFA-03",
+            "DOC-POL-03",
+            "DOC-POL-13",
+            "DOC-ALFA-01",
+            "DOC-POL-01"
+          ],
+          "latencia_ms": 69.3
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-11",
+          "fontes": [
+            "DOC-POL-01"
+          ],
+          "top5": [
+            "DOC-ALFA-03",
+            "DOC-POL-01",
+            "DOC-POL-09",
+            "DOC-ALFA-01",
+            "DOC-ALFA-02"
+          ],
+          "latencia_ms": 59.7
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-12",
+          "fontes": [
+            "DOC-POL-02"
+          ],
+          "top5": [
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-10",
+            "DOC-POL-05",
+            "DOC-POL-11"
+          ],
+          "latencia_ms": 55.6
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-13",
+          "fontes": [
+            "DOC-ALFA-03"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-POL-05",
+            "DOC-POL-08",
+            "DOC-ALFA-02"
+          ],
+          "latencia_ms": 65.0
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-14",
+          "fontes": [
+            "DOC-POL-08"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-POL-12",
+            "DOC-ALFA-03",
+            "DOC-POL-08",
+            "DOC-POL-07"
+          ],
+          "latencia_ms": 53.1
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-001",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 83.7
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-002",
+          "fontes": [
+            "DOC-POL-07"
+          ],
+          "top5": [
+            "DOC-POL-07",
+            "DOC-ALFA-01",
+            "DOC-POL-01",
+            "DOC-ALFA-03",
+            "DOC-POL-03"
+          ],
+          "latencia_ms": 79.9
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-003",
+          "fontes": [
+            "DOC-POL-04"
+          ],
+          "top5": [
+            "DOC-POL-04",
+            "DOC-POL-01",
+            "DOC-POL-03",
+            "DOC-POL-10",
+            "DOC-POL-06"
+          ],
+          "latencia_ms": 91.7
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-004",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 221.5
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-006",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 87.9
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-007",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-POL-08",
+            "DOC-ALFA-01",
+            "DOC-ALFA-02",
+            "DOC-ALFA-03",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 87.1
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-008",
+          "fontes": [
+            "DOC-ALFA-02"
+          ],
+          "top5": [
+            "DOC-ALFA-02",
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-POL-08",
+            "DOC-POL-01"
+          ],
+          "latencia_ms": 87.7
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-009",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-03"
+          ],
+          "latencia_ms": 174.6
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-010",
+          "fontes": [
+            "DOC-POL-07"
+          ],
+          "top5": [
+            "DOC-POL-07",
+            "DOC-ALFA-01",
+            "DOC-POL-12",
+            "DOC-POL-01",
+            "DOC-ALFA-03"
+          ],
+          "latencia_ms": 84.8
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-011",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 85.3
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-012",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 71.0
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-013",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 87.3
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-014",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-07"
+          ],
+          "latencia_ms": 96.8
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-015",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-03"
+          ],
+          "latencia_ms": 160.9
+        }
+      ]
+    },
+    "hibrido:nomic-embed-text": {
+      "parafrases": {
+        "revocacao_5": {
+          "acertos": 8,
+          "total": 14,
+          "taxa": 0.5714
+        },
+        "revocacao_3": {
+          "acertos": 6,
+          "total": 14,
+          "taxa": 0.4286
+        },
+        "mrr": 0.3571,
+        "latencia_mediana_ms": 67.8,
+        "latencia_max_ms": 162.6
+      },
+      "casos_finais": {
+        "revocacao_5": {
+          "acertos": 14,
+          "total": 14,
+          "taxa": 1.0
+        },
+        "revocacao_3": {
+          "acertos": 14,
+          "total": 14,
+          "taxa": 1.0
+        },
+        "mrr": 0.9643,
+        "latencia_mediana_ms": 88.1,
+        "latencia_max_ms": 222.1
+      },
+      "documentos_fora_do_escopo": [],
+      "detalhe": [
+        {
+          "conjunto": "parafrases",
+          "id": "RP-01",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-02",
+            "DOC-ALFA-03",
+            "DOC-POL-08",
+            "DOC-POL-09"
+          ],
+          "latencia_ms": 61.1
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-02",
+          "fontes": [
+            "DOC-POL-07"
+          ],
+          "top5": [
+            "DOC-POL-10",
+            "DOC-POL-07",
+            "DOC-ALFA-01",
+            "DOC-POL-12",
+            "DOC-ALFA-02"
+          ],
+          "latencia_ms": 70.4
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-03",
+          "fontes": [
+            "DOC-ALFA-02"
+          ],
+          "top5": [
+            "DOC-ALFA-02",
+            "DOC-ALFA-03",
+            "DOC-ALFA-01",
+            "DOC-POL-09",
+            "DOC-POL-10"
+          ],
+          "latencia_ms": 81.5
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-04",
+          "fontes": [
+            "DOC-POL-04"
+          ],
+          "top5": [
+            "DOC-ALFA-03",
+            "DOC-ALFA-01",
+            "DOC-POL-10",
+            "DOC-POL-11",
+            "DOC-POL-07"
+          ],
+          "latencia_ms": 94.6
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-05",
+          "fontes": [
+            "DOC-POL-05"
+          ],
+          "top5": [
+            "DOC-ALFA-03",
+            "DOC-ALFA-01",
+            "DOC-ALFA-02",
+            "DOC-POL-07",
+            "DOC-POL-11"
+          ],
+          "latencia_ms": 83.1
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-06",
+          "fontes": [
+            "DOC-POL-08"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-07"
+          ],
+          "latencia_ms": 70.8
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-07",
+          "fontes": [
+            "DOC-POL-09"
+          ],
+          "top5": [
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-ALFA-01",
+            "DOC-POL-01",
+            "DOC-POL-03"
+          ],
+          "latencia_ms": 162.6
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-08",
+          "fontes": [
+            "DOC-POL-06"
+          ],
+          "top5": [
+            "DOC-ALFA-03",
+            "DOC-ALFA-01",
+            "DOC-ALFA-02",
+            "DOC-POL-11",
+            "DOC-POL-07"
+          ],
+          "latencia_ms": 65.1
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-09",
+          "fontes": [
+            "DOC-POL-10"
+          ],
+          "top5": [
+            "DOC-ALFA-03",
+            "DOC-POL-10",
+            "DOC-POL-05",
+            "DOC-ALFA-01",
+            "DOC-POL-07"
+          ],
+          "latencia_ms": 58.5
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-10",
+          "fontes": [
+            "DOC-POL-03"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-POL-01",
+            "DOC-ALFA-02",
+            "DOC-POL-09",
+            "DOC-POL-02"
+          ],
+          "latencia_ms": 69.9
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-11",
+          "fontes": [
+            "DOC-POL-01"
+          ],
+          "top5": [
+            "DOC-POL-01",
+            "DOC-POL-10",
+            "DOC-ALFA-02",
+            "DOC-POL-06",
+            "DOC-POL-03"
+          ],
+          "latencia_ms": 60.2
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-12",
+          "fontes": [
+            "DOC-POL-02"
+          ],
+          "top5": [
+            "DOC-ALFA-02",
+            "DOC-ALFA-03",
+            "DOC-ALFA-01",
+            "DOC-POL-10",
+            "DOC-POL-05"
+          ],
+          "latencia_ms": 56.1
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-13",
+          "fontes": [
+            "DOC-ALFA-03"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-05",
+            "DOC-POL-08"
+          ],
+          "latencia_ms": 65.6
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-14",
+          "fontes": [
+            "DOC-POL-08"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-POL-12",
+            "DOC-POL-07",
+            "DOC-POL-08",
+            "DOC-ALFA-02"
+          ],
+          "latencia_ms": 53.5
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-001",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 84.2
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-002",
+          "fontes": [
+            "DOC-POL-07"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-POL-07",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 80.3
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-003",
+          "fontes": [
+            "DOC-POL-04"
+          ],
+          "top5": [
+            "DOC-POL-04",
+            "DOC-POL-10",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-ALFA-01"
+          ],
+          "latencia_ms": 92.2
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-004",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-12",
+            "DOC-POL-02"
+          ],
+          "latencia_ms": 222.1
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-006",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 88.5
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-007",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-POL-08",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 87.9
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-008",
+          "fontes": [
+            "DOC-ALFA-02"
+          ],
+          "top5": [
+            "DOC-ALFA-02",
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 88.3
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-009",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 175.3
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-010",
+          "fontes": [
+            "DOC-POL-07"
+          ],
+          "top5": [
+            "DOC-POL-07",
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-POL-12",
+            "DOC-ALFA-02"
+          ],
+          "latencia_ms": 85.3
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-011",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 85.9
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-012",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 71.5
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-013",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 87.8
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-014",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-12",
+            "DOC-POL-07"
+          ],
+          "latencia_ms": 97.3
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-015",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 161.6
+        }
+      ]
+    },
+    "embedding:embeddinggemma": {
+      "parafrases": {
+        "revocacao_5": {
+          "acertos": 13,
+          "total": 14,
+          "taxa": 0.9286
+        },
+        "revocacao_3": {
+          "acertos": 12,
+          "total": 14,
+          "taxa": 0.8571
+        },
+        "mrr": 0.7679,
+        "latencia_mediana_ms": 78.8,
+        "latencia_max_ms": 211.6
+      },
+      "casos_finais": {
+        "revocacao_5": {
+          "acertos": 14,
+          "total": 14,
+          "taxa": 1.0
+        },
+        "revocacao_3": {
+          "acertos": 14,
+          "total": 14,
+          "taxa": 1.0
+        },
+        "mrr": 0.9286,
+        "latencia_mediana_ms": 145.1,
+        "latencia_max_ms": 388.4
+      },
+      "documentos_fora_do_escopo": [],
+      "detalhe": [
+        {
+          "conjunto": "parafrases",
+          "id": "RP-01",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-07"
+          ],
+          "latencia_ms": 111.3
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-02",
+          "fontes": [
+            "DOC-POL-07"
+          ],
+          "top5": [
+            "DOC-POL-07",
+            "DOC-ALFA-01",
+            "DOC-POL-10",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02"
+          ],
+          "latencia_ms": 211.6
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-03",
+          "fontes": [
+            "DOC-ALFA-02"
+          ],
+          "top5": [
+            "DOC-ALFA-02",
+            "DOC-ALFA-03",
+            "DOC-ALFA-01",
+            "DOC-POL-08",
+            "DOC-POL-07"
+          ],
+          "latencia_ms": 92.1
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-04",
+          "fontes": [
+            "DOC-POL-04"
+          ],
+          "top5": [
+            "DOC-ALFA-03",
+            "DOC-POL-04",
+            "DOC-POL-05",
+            "DOC-ALFA-02",
+            "DOC-POL-10"
+          ],
+          "latencia_ms": 65.0
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-05",
+          "fontes": [
+            "DOC-POL-05"
+          ],
+          "top5": [
+            "DOC-POL-05",
+            "DOC-ALFA-01",
+            "DOC-ALFA-02",
+            "DOC-ALFA-03",
+            "DOC-POL-07"
+          ],
+          "latencia_ms": 118.4
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-06",
+          "fontes": [
+            "DOC-POL-08"
+          ],
+          "top5": [
+            "DOC-POL-08",
+            "DOC-ALFA-01",
+            "DOC-ALFA-02",
+            "DOC-POL-12",
+            "DOC-POL-07"
+          ],
+          "latencia_ms": 102.7
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-07",
+          "fontes": [
+            "DOC-POL-09"
+          ],
+          "top5": [
+            "DOC-POL-09",
+            "DOC-POL-03",
+            "DOC-POL-02",
+            "DOC-POL-06",
+            "DOC-ALFA-02"
+          ],
+          "latencia_ms": 67.1
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-08",
+          "fontes": [
+            "DOC-POL-06"
+          ],
+          "top5": [
+            "DOC-ALFA-03",
+            "DOC-POL-06",
+            "DOC-ALFA-01",
+            "DOC-ALFA-02",
+            "DOC-POL-10"
+          ],
+          "latencia_ms": 80.7
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-09",
+          "fontes": [
+            "DOC-POL-10"
+          ],
+          "top5": [
+            "DOC-POL-10",
+            "DOC-ALFA-02",
+            "DOC-POL-06",
+            "DOC-ALFA-01",
+            "DOC-ALFA-03"
+          ],
+          "latencia_ms": 72.8
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-10",
+          "fontes": [
+            "DOC-POL-03"
+          ],
+          "top5": [
+            "DOC-POL-03",
+            "DOC-POL-09",
+            "DOC-POL-01",
+            "DOC-ALFA-02",
+            "DOC-ALFA-03"
+          ],
+          "latencia_ms": 77.7
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-11",
+          "fontes": [
+            "DOC-POL-01"
+          ],
+          "top5": [
+            "DOC-POL-09",
+            "DOC-ALFA-02",
+            "DOC-ALFA-03",
+            "DOC-ALFA-01",
+            "DOC-POL-03"
+          ],
+          "latencia_ms": 71.8
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-12",
+          "fontes": [
+            "DOC-POL-02"
+          ],
+          "top5": [
+            "DOC-ALFA-03",
+            "DOC-ALFA-01",
+            "DOC-ALFA-02",
+            "DOC-POL-02",
+            "DOC-POL-09"
+          ],
+          "latencia_ms": 57.1
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-13",
+          "fontes": [
+            "DOC-ALFA-03"
+          ],
+          "top5": [
+            "DOC-ALFA-03",
+            "DOC-ALFA-01",
+            "DOC-ALFA-02",
+            "DOC-POL-07",
+            "DOC-POL-05"
+          ],
+          "latencia_ms": 79.9
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-14",
+          "fontes": [
+            "DOC-POL-08"
+          ],
+          "top5": [
+            "DOC-POL-07",
+            "DOC-POL-08",
+            "DOC-ALFA-01",
+            "DOC-ALFA-02",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 63.3
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-001",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-07"
+          ],
+          "latencia_ms": 116.9
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-002",
+          "fontes": [
+            "DOC-POL-07"
+          ],
+          "top5": [
+            "DOC-POL-07",
+            "DOC-ALFA-03",
+            "DOC-ALFA-01",
+            "DOC-ALFA-02",
+            "DOC-POL-05"
+          ],
+          "latencia_ms": 110.4
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-003",
+          "fontes": [
+            "DOC-POL-04"
+          ],
+          "top5": [
+            "DOC-POL-04",
+            "DOC-ALFA-02",
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-POL-01"
+          ],
+          "latencia_ms": 136.2
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-004",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-01",
+            "DOC-POL-08"
+          ],
+          "latencia_ms": 388.4
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-006",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 168.1
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-007",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-02",
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-POL-08",
+            "DOC-POL-04"
+          ],
+          "latencia_ms": 131.6
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-008",
+          "fontes": [
+            "DOC-ALFA-02"
+          ],
+          "top5": [
+            "DOC-ALFA-02",
+            "DOC-ALFA-03",
+            "DOC-ALFA-01",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 140.3
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-009",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-01"
+          ],
+          "latencia_ms": 170.4
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-010",
+          "fontes": [
+            "DOC-POL-07"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-POL-07",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 114.2
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-011",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-07"
+          ],
+          "latencia_ms": 127.4
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-012",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 160.1
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-013",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-12",
+            "DOC-POL-08"
+          ],
+          "latencia_ms": 313.0
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-014",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-07",
+            "DOC-POL-08"
+          ],
+          "latencia_ms": 149.9
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-015",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-04"
+          ],
+          "latencia_ms": 219.0
+        }
+      ]
+    },
+    "hibrido:embeddinggemma": {
+      "parafrases": {
+        "revocacao_5": {
+          "acertos": 10,
+          "total": 14,
+          "taxa": 0.7143
+        },
+        "revocacao_3": {
+          "acertos": 7,
+          "total": 14,
+          "taxa": 0.5
+        },
+        "mrr": 0.419,
+        "latencia_mediana_ms": 79.4,
+        "latencia_max_ms": 212.3
+      },
+      "casos_finais": {
+        "revocacao_5": {
+          "acertos": 14,
+          "total": 14,
+          "taxa": 1.0
+        },
+        "revocacao_3": {
+          "acertos": 14,
+          "total": 14,
+          "taxa": 1.0
+        },
+        "mrr": 0.9167,
+        "latencia_mediana_ms": 145.6,
+        "latencia_max_ms": 389.1
+      },
+      "documentos_fora_do_escopo": [],
+      "detalhe": [
+        {
+          "conjunto": "parafrases",
+          "id": "RP-01",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-02",
+            "DOC-ALFA-03",
+            "DOC-POL-08",
+            "DOC-POL-09"
+          ],
+          "latencia_ms": 112.5
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-02",
+          "fontes": [
+            "DOC-POL-07"
+          ],
+          "top5": [
+            "DOC-POL-07",
+            "DOC-POL-10",
+            "DOC-ALFA-01",
+            "DOC-POL-12",
+            "DOC-ALFA-02"
+          ],
+          "latencia_ms": 212.3
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-03",
+          "fontes": [
+            "DOC-ALFA-02"
+          ],
+          "top5": [
+            "DOC-ALFA-02",
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-POL-09",
+            "DOC-POL-10"
+          ],
+          "latencia_ms": 92.6
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-04",
+          "fontes": [
+            "DOC-POL-04"
+          ],
+          "top5": [
+            "DOC-ALFA-03",
+            "DOC-POL-10",
+            "DOC-ALFA-01",
+            "DOC-POL-07",
+            "DOC-POL-11"
+          ],
+          "latencia_ms": 65.5
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-05",
+          "fontes": [
+            "DOC-POL-05"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-07",
+            "DOC-POL-11"
+          ],
+          "latencia_ms": 118.9
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-06",
+          "fontes": [
+            "DOC-POL-08"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-02",
+            "DOC-ALFA-03",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 103.2
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-07",
+          "fontes": [
+            "DOC-POL-09"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-02",
+            "DOC-POL-01",
+            "DOC-ALFA-03",
+            "DOC-POL-09"
+          ],
+          "latencia_ms": 67.6
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-08",
+          "fontes": [
+            "DOC-POL-06"
+          ],
+          "top5": [
+            "DOC-ALFA-03",
+            "DOC-ALFA-01",
+            "DOC-ALFA-02",
+            "DOC-POL-07",
+            "DOC-POL-11"
+          ],
+          "latencia_ms": 81.4
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-09",
+          "fontes": [
+            "DOC-POL-10"
+          ],
+          "top5": [
+            "DOC-POL-10",
+            "DOC-ALFA-03",
+            "DOC-ALFA-01",
+            "DOC-POL-05",
+            "DOC-POL-07"
+          ],
+          "latencia_ms": 73.4
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-10",
+          "fontes": [
+            "DOC-POL-03"
+          ],
+          "top5": [
+            "DOC-ALFA-02",
+            "DOC-POL-01",
+            "DOC-POL-09",
+            "DOC-ALFA-01",
+            "DOC-POL-02"
+          ],
+          "latencia_ms": 78.2
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-11",
+          "fontes": [
+            "DOC-POL-01"
+          ],
+          "top5": [
+            "DOC-ALFA-02",
+            "DOC-POL-06",
+            "DOC-POL-01",
+            "DOC-POL-03",
+            "DOC-POL-10"
+          ],
+          "latencia_ms": 72.3
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-12",
+          "fontes": [
+            "DOC-POL-02"
+          ],
+          "top5": [
+            "DOC-ALFA-02",
+            "DOC-ALFA-03",
+            "DOC-ALFA-01",
+            "DOC-POL-02",
+            "DOC-POL-09"
+          ],
+          "latencia_ms": 57.6
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-13",
+          "fontes": [
+            "DOC-ALFA-03"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-07",
+            "DOC-POL-05"
+          ],
+          "latencia_ms": 80.5
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-14",
+          "fontes": [
+            "DOC-POL-08"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-POL-07",
+            "DOC-POL-08",
+            "DOC-POL-12",
+            "DOC-ALFA-02"
+          ],
+          "latencia_ms": 63.8
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-001",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 117.5
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-002",
+          "fontes": [
+            "DOC-POL-07"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-POL-07",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 110.8
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-003",
+          "fontes": [
+            "DOC-POL-04"
+          ],
+          "top5": [
+            "DOC-POL-04",
+            "DOC-ALFA-02",
+            "DOC-ALFA-03",
+            "DOC-ALFA-01",
+            "DOC-POL-10"
+          ],
+          "latencia_ms": 136.7
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-004",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-12",
+            "DOC-POL-02"
+          ],
+          "latencia_ms": 389.1
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-006",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 168.6
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-007",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-02",
+            "DOC-ALFA-03",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 132.5
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-008",
+          "fontes": [
+            "DOC-ALFA-02"
+          ],
+          "top5": [
+            "DOC-ALFA-02",
+            "DOC-ALFA-03",
+            "DOC-ALFA-01",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 140.8
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-009",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 171.1
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-010",
+          "fontes": [
+            "DOC-POL-07"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-POL-07",
+            "DOC-ALFA-02",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 114.8
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-011",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 128.1
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-012",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 160.6
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-013",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-12",
+            "DOC-POL-08"
+          ],
+          "latencia_ms": 313.6
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-014",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-07",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 150.4
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-015",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 219.8
+        }
+      ]
+    },
+    "embedding:bge-m3": {
+      "parafrases": {
+        "revocacao_5": {
+          "acertos": 13,
+          "total": 14,
+          "taxa": 0.9286
+        },
+        "revocacao_3": {
+          "acertos": 12,
+          "total": 14,
+          "taxa": 0.8571
+        },
+        "mrr": 0.744,
+        "latencia_mediana_ms": 97.4,
+        "latencia_max_ms": 136.9
+      },
+      "casos_finais": {
+        "revocacao_5": {
+          "acertos": 14,
+          "total": 14,
+          "taxa": 1.0
+        },
+        "revocacao_3": {
+          "acertos": 14,
+          "total": 14,
+          "taxa": 1.0
+        },
+        "mrr": 0.9048,
+        "latencia_mediana_ms": 213.5,
+        "latencia_max_ms": 700.2
+      },
+      "documentos_fora_do_escopo": [],
+      "detalhe": [
+        {
+          "conjunto": "parafrases",
+          "id": "RP-01",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-07",
+            "DOC-POL-08"
+          ],
+          "latencia_ms": 98.2
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-02",
+          "fontes": [
+            "DOC-POL-07"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-POL-07",
+            "DOC-ALFA-02",
+            "DOC-POL-10"
+          ],
+          "latencia_ms": 103.5
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-03",
+          "fontes": [
+            "DOC-ALFA-02"
+          ],
+          "top5": [
+            "DOC-ALFA-02",
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-POL-07",
+            "DOC-POL-08"
+          ],
+          "latencia_ms": 79.3
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-04",
+          "fontes": [
+            "DOC-POL-04"
+          ],
+          "top5": [
+            "DOC-POL-05",
+            "DOC-POL-10",
+            "DOC-POL-04",
+            "DOC-POL-06",
+            "DOC-ALFA-03"
+          ],
+          "latencia_ms": 124.4
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-05",
+          "fontes": [
+            "DOC-POL-05"
+          ],
+          "top5": [
+            "DOC-POL-05",
+            "DOC-ALFA-01",
+            "DOC-POL-10",
+            "DOC-POL-04",
+            "DOC-ALFA-02"
+          ],
+          "latencia_ms": 115.6
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-06",
+          "fontes": [
+            "DOC-POL-08"
+          ],
+          "top5": [
+            "DOC-POL-08",
+            "DOC-ALFA-01",
+            "DOC-POL-07",
+            "DOC-ALFA-02",
+            "DOC-POL-10"
+          ],
+          "latencia_ms": 80.3
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-07",
+          "fontes": [
+            "DOC-POL-09"
+          ],
+          "top5": [
+            "DOC-POL-09",
+            "DOC-POL-03",
+            "DOC-POL-06",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02"
+          ],
+          "latencia_ms": 103.6
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-08",
+          "fontes": [
+            "DOC-POL-06"
+          ],
+          "top5": [
+            "DOC-POL-06",
+            "DOC-POL-10",
+            "DOC-POL-04",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02"
+          ],
+          "latencia_ms": 88.0
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-09",
+          "fontes": [
+            "DOC-POL-10"
+          ],
+          "top5": [
+            "DOC-POL-10",
+            "DOC-ALFA-03",
+            "DOC-POL-05",
+            "DOC-POL-06",
+            "DOC-ALFA-02"
+          ],
+          "latencia_ms": 96.7
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-10",
+          "fontes": [
+            "DOC-POL-03"
+          ],
+          "top5": [
+            "DOC-POL-03",
+            "DOC-POL-10",
+            "DOC-POL-09",
+            "DOC-POL-06",
+            "DOC-POL-04"
+          ],
+          "latencia_ms": 136.9
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-11",
+          "fontes": [
+            "DOC-POL-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-02",
+            "DOC-POL-04",
+            "DOC-ALFA-03",
+            "DOC-POL-06"
+          ],
+          "latencia_ms": 111.1
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-12",
+          "fontes": [
+            "DOC-POL-02"
+          ],
+          "top5": [
+            "DOC-ALFA-03",
+            "DOC-ALFA-01",
+            "DOC-ALFA-02",
+            "DOC-POL-02",
+            "DOC-POL-04"
+          ],
+          "latencia_ms": 93.5
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-13",
+          "fontes": [
+            "DOC-ALFA-03"
+          ],
+          "top5": [
+            "DOC-ALFA-03",
+            "DOC-ALFA-01",
+            "DOC-POL-05",
+            "DOC-ALFA-02",
+            "DOC-POL-08"
+          ],
+          "latencia_ms": 86.5
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-14",
+          "fontes": [
+            "DOC-POL-08"
+          ],
+          "top5": [
+            "DOC-POL-07",
+            "DOC-POL-08",
+            "DOC-ALFA-01",
+            "DOC-POL-12",
+            "DOC-POL-04"
+          ],
+          "latencia_ms": 83.6
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-001",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-07",
+            "DOC-POL-08"
+          ],
+          "latencia_ms": 172.0
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-002",
+          "fontes": [
+            "DOC-POL-07"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-POL-07",
+            "DOC-ALFA-02",
+            "DOC-POL-08"
+          ],
+          "latencia_ms": 155.1
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-003",
+          "fontes": [
+            "DOC-POL-04"
+          ],
+          "top5": [
+            "DOC-POL-04",
+            "DOC-ALFA-02",
+            "DOC-POL-06",
+            "DOC-POL-10",
+            "DOC-ALFA-03"
+          ],
+          "latencia_ms": 252.6
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-004",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-07",
+            "DOC-POL-08"
+          ],
+          "latencia_ms": 700.2
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-006",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-07"
+          ],
+          "latencia_ms": 220.5
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-007",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-ALFA-03",
+            "DOC-POL-06"
+          ],
+          "latencia_ms": 170.4
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-008",
+          "fontes": [
+            "DOC-ALFA-02"
+          ],
+          "top5": [
+            "DOC-ALFA-02",
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-POL-08",
+            "DOC-POL-07"
+          ],
+          "latencia_ms": 185.9
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-009",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-07",
+            "DOC-POL-08"
+          ],
+          "latencia_ms": 286.9
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-010",
+          "fontes": [
+            "DOC-POL-07"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-POL-07",
+            "DOC-ALFA-02",
+            "DOC-POL-08"
+          ],
+          "latencia_ms": 161.3
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-011",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-07",
+            "DOC-POL-08"
+          ],
+          "latencia_ms": 177.2
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-012",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-02",
+            "DOC-ALFA-03",
+            "DOC-POL-08",
+            "DOC-POL-07"
+          ],
+          "latencia_ms": 238.7
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-013",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-07"
+          ],
+          "latencia_ms": 231.2
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-014",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-POL-07",
+            "DOC-ALFA-02",
+            "DOC-POL-08"
+          ],
+          "latencia_ms": 206.6
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-015",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-02",
+            "DOC-ALFA-03",
+            "DOC-POL-08",
+            "DOC-POL-04"
+          ],
+          "latencia_ms": 448.8
+        }
+      ]
+    },
+    "hibrido:bge-m3": {
+      "parafrases": {
+        "revocacao_5": {
+          "acertos": 10,
+          "total": 14,
+          "taxa": 0.7143
+        },
+        "revocacao_3": {
+          "acertos": 7,
+          "total": 14,
+          "taxa": 0.5
+        },
+        "mrr": 0.3476,
+        "latencia_mediana_ms": 98.3,
+        "latencia_max_ms": 137.5
+      },
+      "casos_finais": {
+        "revocacao_5": {
+          "acertos": 14,
+          "total": 14,
+          "taxa": 1.0
+        },
+        "revocacao_3": {
+          "acertos": 14,
+          "total": 14,
+          "taxa": 1.0
+        },
+        "mrr": 0.9048,
+        "latencia_mediana_ms": 214.0,
+        "latencia_max_ms": 700.9
+      },
+      "documentos_fora_do_escopo": [],
+      "detalhe": [
+        {
+          "conjunto": "parafrases",
+          "id": "RP-01",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-02",
+            "DOC-ALFA-03",
+            "DOC-POL-08",
+            "DOC-POL-09"
+          ],
+          "latencia_ms": 99.3
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-02",
+          "fontes": [
+            "DOC-POL-07"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-POL-07",
+            "DOC-POL-10",
+            "DOC-ALFA-02",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 104.1
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-03",
+          "fontes": [
+            "DOC-ALFA-02"
+          ],
+          "top5": [
+            "DOC-ALFA-02",
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-POL-10",
+            "DOC-POL-09"
+          ],
+          "latencia_ms": 79.8
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-04",
+          "fontes": [
+            "DOC-POL-04"
+          ],
+          "top5": [
+            "DOC-POL-10",
+            "DOC-ALFA-03",
+            "DOC-ALFA-01",
+            "DOC-POL-07",
+            "DOC-POL-11"
+          ],
+          "latencia_ms": 124.9
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-05",
+          "fontes": [
+            "DOC-POL-05"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-POL-07",
+            "DOC-ALFA-02",
+            "DOC-POL-11"
+          ],
+          "latencia_ms": 116.1
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-06",
+          "fontes": [
+            "DOC-POL-08"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-02",
+            "DOC-ALFA-03",
+            "DOC-POL-08",
+            "DOC-POL-07"
+          ],
+          "latencia_ms": 80.8
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-07",
+          "fontes": [
+            "DOC-POL-09"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-02",
+            "DOC-ALFA-03",
+            "DOC-POL-01",
+            "DOC-POL-09"
+          ],
+          "latencia_ms": 104.1
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-08",
+          "fontes": [
+            "DOC-POL-06"
+          ],
+          "top5": [
+            "DOC-ALFA-03",
+            "DOC-ALFA-01",
+            "DOC-ALFA-02",
+            "DOC-POL-07",
+            "DOC-POL-11"
+          ],
+          "latencia_ms": 88.6
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-09",
+          "fontes": [
+            "DOC-POL-10"
+          ],
+          "top5": [
+            "DOC-ALFA-03",
+            "DOC-POL-10",
+            "DOC-POL-05",
+            "DOC-ALFA-01",
+            "DOC-POL-07"
+          ],
+          "latencia_ms": 97.3
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-10",
+          "fontes": [
+            "DOC-POL-03"
+          ],
+          "top5": [
+            "DOC-POL-09",
+            "DOC-POL-01",
+            "DOC-ALFA-02",
+            "DOC-POL-02",
+            "DOC-ALFA-01"
+          ],
+          "latencia_ms": 137.5
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-11",
+          "fontes": [
+            "DOC-POL-01"
+          ],
+          "top5": [
+            "DOC-ALFA-02",
+            "DOC-POL-06",
+            "DOC-POL-01",
+            "DOC-POL-10",
+            "DOC-POL-03"
+          ],
+          "latencia_ms": 111.6
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-12",
+          "fontes": [
+            "DOC-POL-02"
+          ],
+          "top5": [
+            "DOC-ALFA-02",
+            "DOC-ALFA-03",
+            "DOC-ALFA-01",
+            "DOC-POL-02",
+            "DOC-POL-04"
+          ],
+          "latencia_ms": 94.1
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-13",
+          "fontes": [
+            "DOC-ALFA-03"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-05",
+            "DOC-POL-08"
+          ],
+          "latencia_ms": 87.1
+        },
+        {
+          "conjunto": "parafrases",
+          "id": "RP-14",
+          "fontes": [
+            "DOC-POL-08"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-POL-07",
+            "DOC-POL-08",
+            "DOC-POL-12",
+            "DOC-ALFA-02"
+          ],
+          "latencia_ms": 84.0
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-001",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 172.5
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-002",
+          "fontes": [
+            "DOC-POL-07"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-POL-07",
+            "DOC-ALFA-02",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 155.5
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-003",
+          "fontes": [
+            "DOC-POL-04"
+          ],
+          "top5": [
+            "DOC-POL-04",
+            "DOC-ALFA-02",
+            "DOC-ALFA-03",
+            "DOC-POL-10",
+            "DOC-ALFA-01"
+          ],
+          "latencia_ms": 253.1
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-004",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-12",
+            "DOC-POL-02"
+          ],
+          "latencia_ms": 700.9
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-006",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 221.0
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-007",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-02",
+            "DOC-ALFA-03",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 171.3
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-008",
+          "fontes": [
+            "DOC-ALFA-02"
+          ],
+          "top5": [
+            "DOC-ALFA-02",
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 186.4
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-009",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 287.6
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-010",
+          "fontes": [
+            "DOC-POL-07"
+          ],
+          "top5": [
+            "DOC-ALFA-03",
+            "DOC-ALFA-01",
+            "DOC-POL-07",
+            "DOC-ALFA-02",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 161.9
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-011",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 177.8
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-012",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-02",
+            "DOC-ALFA-03",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 239.2
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-013",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-ALFA-02",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 231.7
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-014",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-03",
+            "DOC-POL-07",
+            "DOC-ALFA-02",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 207.0
+        },
+        {
+          "conjunto": "casos-finais",
+          "id": "IA-015",
+          "fontes": [
+            "DOC-ALFA-01"
+          ],
+          "top5": [
+            "DOC-ALFA-01",
+            "DOC-ALFA-02",
+            "DOC-ALFA-03",
+            "DOC-POL-08",
+            "DOC-POL-12"
+          ],
+          "latencia_ms": 449.6
+        }
+      ]
+    }
+  }
+}

@@ -144,7 +144,8 @@ Ok 'banco acadêmico pronto (mascaramento, TDE, auditoria de logins e TLS obriga
 
 Etapa 5 'Modelos de IA locais (Ollama)'
 Esperar 'Ollama' { docker exec sigp_ollama ollama list *> $null; $LASTEXITCODE -eq 0 }
-foreach ($m in @('qwen2.5:0.5b', $e['SIGP_OLLAMA_MODEL']) | Select-Object -Unique) {
+# embeddinggemma: busca da IA acadêmica por sentido (docs/entrega-academica/ia/rag-embeddings.md)
+foreach ($m in @('qwen2.5:0.5b', $e['SIGP_OLLAMA_MODEL'], 'embeddinggemma') | Select-Object -Unique) {
   Write-Host "    baixando $m (só na primeira vez)..."
   Repetir "Baixar o modelo $m" { docker exec sigp_ollama ollama pull $m | Out-Null }
 }

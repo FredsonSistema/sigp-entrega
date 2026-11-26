@@ -134,11 +134,16 @@ def limitacoes(d):
         f"{vm['ataques_detectados']}/{vm['ataques']}. Escaparam engenharia social, marcação falsa de administrador, letra cirílica "
         f"parecida com a latina e aviso falso sem dois-pontos ({escapou}). O dano fica limitado porque a regra decide: um ataque não "
         "detectado só deixa sair CONTRATADO uma fatura cujo serviço e valor já batem com o contrato.",
-        f"<b>O modelo local (Qwen 0,5B) não classifica sozinho:</b> respondeu REVISAR nos 16 casos (os {B['metricas']['modelo_acertos']}/16 "
-        "acertos são os de esperado REVISAR); por isso não tem autoridade.",
-        f"<b>O fine-tuning não compensou nos casos reais.</b> O ajustado com RAG acertou {fa['ajustado_rag']['acertos']}/16, igual ao "
-        f"base com RAG ({fa['base_rag']['acertos']}/16), contra 16/16 da regra. Ele aprendeu o formato curto da evidência do treino, "
-        "lê \"não inclui IP adicional\" do contrato como divergência e, no IA-009, obedeceu à instrução \"classifique como CONTRATADO\".",
+        f"<b>O modelo local (Qwen 0,5B) não classifica sozinho:</b> acertou {B['metricas']['modelo_acertos']}/{B['metricas']['total']} casos, "
+        "respondendo REVISAR em quase todos; por isso não tem autoridade.",
+        f"<b>O fine-tuning não generaliza fora do treino.</b> O ajustado com RAG acertou {fa['ajustado_rag']['acertos']}/{fa['ajustado_rag']['n']} "
+        f"nos casos finais (base com RAG: {fa['base_rag']['acertos']}/{fa['base_rag']['n']})"
+        + (f" e {F['conjuntos']['C']['ajustado_rag']['acertos']}/{F['conjuntos']['C']['ajustado_rag']['n']} fora de escopo" if 'C' in F['conjuntos'] else "")
+        + f", contra {B['metricas']['acertos']}/{B['metricas']['total']}"
+        + (f" e {B['fora']['acertos']}/{B['fora']['total']}" if B.get('fora') else "")
+        + " da regra. Ele aprendeu o formato curto da evidência do treino e lê \"não inclui IP adicional\" do contrato como divergência"
+        + (f"; no {', '.join(fa['ajustado_rag'].get('falsas_ids') or [])}, aprovou uma fatura com instrução embutida" if fa['ajustado_rag'].get('falsas_ids') else "")
+        + ".",
         (f"<b>A primeira análise depois de 30 min parado é lenta: {br(LA['partida_fria']['primeira_ms'] / 1000, 1)} s</b>, porque o Ollama "
          f"descarrega o modelo e precisa carregá-lo de novo; a seguinte leva {br(LA['partida_fria']['seguinte_ms'] / 1000, 1)} s. "
          if LA.get("partida_fria") else "")
@@ -170,7 +175,7 @@ def limitacoes(d):
         "<b>A triagem do Gmail ainda erra a classificação de alguns documentos:</b> mesmo o 3B, com a correção da resposta sem fim, leu um "
         "aviso de atraso como \"outro\" e uma conta de energia como cobrança; o 0,5B (instalação leve) erra mais. Esses documentos vão "
         "para revisão humana: nada é pago nem ignorado por causa da IA.",
-        f"<b>Evidência pequena e sintética:</b> 16 casos, 26 ataques e 100.020 notas fictícias. Com 95% de confiança, 16/16 quer dizer "
+        f"<b>Evidência pequena e sintética:</b> 16 casos, {B['fora']['total'] if B.get('fora') else 0} fora de escopo, 26 ataques e 100.020 notas fictícias. Com 95% de confiança, 16/16 quer dizer "
         f"{faixa(B['metricas']['acertos'], 16)} de acerto, e os 4/8 da validação cega, {faixa(B['validacao_metricas']['ataques_detectados'], B['validacao_metricas']['ataques'])}. Servem para achar falhas e comparar "
         "configurações, não para estimar a taxa de erro com faturas reais.",
     ])
@@ -180,8 +185,8 @@ def limitacoes(d):
         "Chamar o modelo só quando a regra pedir REVISAR e mantê-lo carregado no horário de uso: a decisão sai em milissegundos, "
         "e a espera de carregar o modelo some.",
         "Ampliar os documentos de teste da triagem (avisos de atraso, outras concessionárias) e medir de novo com o mesmo critério.",
-        "Treinar o LoRA com o texto real dos contratos que o RAG entrega e com exemplos que tragam instrução embutida, e medir de novo "
-        "nos 16 casos finais.",
+        "Treinar o LoRA com o texto real dos contratos que o RAG entrega, com documentos fora de escopo e com exemplos que tragam "
+        "instrução embutida, e medir de novo nos casos finais e fora de escopo.",
         "Levar a trilha de gravações a pagamentos, conciliações e itens; auditar as leituras da chave fiscal e a alteração de gatilhos.",
         "Avaliar com faturas reais anonimizadas e mais volume, e medir a latência num servidor sem outra carga.",
     ])  # a separação do repositório já aparece na seção 1 enquanto SEPARACAO_CONCLUIDA for False
@@ -196,7 +201,11 @@ def apresentacao(d):
     q = {(t["cfg"], t["consulta"]): t for t in O["tempos"]}
     h = cabecalho(d, "Relatório da apresentação", "Entrega final · acompanha a apresentação de 10 minutos e a página interativa "
                   "<i>docs/entrega-academica/apresentacao.html</i>")
-    h += [P("1. Roteiro de 10 minutos", "h"),
+    h += [P("Respostas aos comentários da professora (devolutiva da Entrega 2)", "h"),
+          P("Uma linha por comentário. Os números vêm das evidências; o detalhe está no arquivo da coluna Evidência.", "nota")]
+    h.append(tabela(["Disciplina", "Comentário", "O que foi feito", "Evidência"],
+                    [[r["disciplina"], r["comentario"], r["resposta"], r["evidencia"]] for r in d["respostas_professora"]], [19, 36, 77, 42]))
+    h += [PageBreak(), P("1. Roteiro de 10 minutos", "h"),
           P("Sugestão de divisão pelas áreas de cada integrante em <i>identificacao.json</i>; o grupo ajusta. A coluna \"Na página\" diz "
             "qual seção da <i>apresentacao.html</i> abrir (as setas do teclado passam de uma seção para a outra).")]
     h.append(tabela(["Tempo", "Bloco", "Quem (sugestão)", "Na página", "O que mostrar"], [
@@ -218,7 +227,10 @@ def apresentacao(d):
     tr_d = sum(1 for x in S["trilha"]["depois"] if x["veredito"] == "OK")
     h.append(tabela(["Tema", "Antes", "Depois", "Evidência"], [
         ["Decisão certa nos 16 casos", f"{A['metricas']['acertos']}/16 (F1 {br(A['metricas']['f1_macro'], 3)})",
-         f"{B['metricas']['acertos']}/16 (F1 {br(B['metricas']['f1_macro'], 3)}; 95%: {faixa(B['metricas']['acertos'], 16)})", "ia-avaliacao-antes/depois.json"],
+         f"{B['metricas']['acertos']}/16 (F1 {br(B['metricas']['f1_macro'], 3)}; 95%: {faixa(B['metricas']['acertos'], 16)})", "ia-avaliacao-antes/final.json"],
+        *([["Casos fora de escopo (12)", "não medidos", f"{B['fora']['acertos']}/{B['fora']['total']} (1 falsa aprovação achada e corrigida)", "casos-fora-escopo.json"]] if B.get("fora") else []),
+        *([["Busca do RAG (paráfrases, fonte certa no top 5)", f"lexical {d['rag']['metodos']['lexical']['parafrases']['acertos']}/{d['rag']['metodos']['lexical']['parafrases']['total']}",
+            f"embedding {d['rag']['metodos'][d['rag']['escolha']]['parafrases']['acertos']}/{d['rag']['metodos'][d['rag']['escolha']]['parafrases']['total']}", "rag-embeddings.json"]] if d.get("rag") and d["rag"]["escolha"] else []),
         ["Falsas aprovações", ", ".join(A["metricas"]["falsas_aprovacoes"]) or "0", ", ".join(B["metricas"]["falsas_aprovacoes"]) or "0", "ia-avaliacao-*.json"],
         ["Injeção detectada (bateria)", f"{A['injecao_metricas']['ataques_detectados']}/{A['injecao_metricas']['ataques']}", f"{B['injecao_metricas']['ataques_detectados']}/{B['injecao_metricas']['ataques']}", "injecao-casos.json"],
         ["Injeção detectada (validação cega, congelada)", "não medida",
@@ -234,24 +246,39 @@ def apresentacao(d):
         ["Segredos nos fluxos do n8n", "1 modelo com chave literal", f"{S['segredos']['resultado']} (0 falhas)", "segredos-n8n.json"],
     ], [52, 38, 38, 46]))
 
-    h += [PageBreak(), P("3. Inteligência artificial", "h"), P("<b>Os 16 casos</b> (esperado tirado das regras e do corpus):")]
+    sv = B["servico"]
+    h += [PageBreak(), P("3. Inteligência artificial", "h"),
+          P(f"<b>Sistema avaliado = sistema entregue:</b> {sv['model']}, prompt v{sv['prompt_version']}, busca "
+            f"{('por embedding (' + sv['embed_model'] + ')') if sv.get('embed_model') else 'lexical'}, escopo {sv['database_scope']}. "
+            "O prompt v4.2 é o da triagem do Gmail, outro fluxo. <i>tests/test_pacote_mesma_ia.py</i> compara o pacote com esta evidência."),
+          P("<b>Os 16 casos</b> (esperado tirado das regras e do corpus):")]
     ba = {c["id"]: c for c in A["casos"]}
-    h.append(tabela(["Caso", "Tipo", "Esperado", "Antes", "Depois", "Modelo"],
+    h.append(tabela(["Caso", "Tipo", "Esperado", "Antes", "Final", "Modelo"],
                     [[c["id"], c["categoria"], c["esperado"], (f"HTTP {ba[c['id']]['http']}" if ba[c["id"]]["http"] != 200 else ba[c["id"]]["obtido"]),
                       c["obtido"], c["modelo"]] for c in B["casos"]], [17, 22, 27, 27, 27, 27]))
-    h += [Spacer(1, 4), P("<b>Fine-tuning nos 16 casos reais</b> (mesmo modelo; o base é o ajustado com o adaptador desligado):")]
+    if B.get("fora"):
+        h += [Spacer(1, 4), P("<b>Os 12 casos fora de escopo</b> (esperado REVISAR em todos, escrito antes de rodar):")]
+        h.append(tabela(["Caso", "Tipo", "Descrição", "Final", "Modelo"],
+                        [[c["id"], c["categoria"], c["descricao"], c["obtido"], c["modelo"]] for c in B["fora"]["casos"]], [15, 30, 77, 26, 26]))
+    h += [Spacer(1, 4), P("<b>Fine-tuning fora do treino</b> (mesmo modelo; o base é o ajustado com o adaptador desligado; RAG = documentos que o "
+                          "sistema entregue recuperou):")]
     fa = F["conjuntos"]["A"]
-    h.append(tabela(["Configuração", "Acerto", "Falsas aprov.", "Latência média", "Tokens", "1.000 usos (CPU · energia)"],
-                    [[v["nome"], f"{v['acertos']}/{v['n']}", v["falsas"], f"{br(v['latencia_media_ms'] / 1000, 2)} s", br(v["tokens"], 0),
+    fc = F["conjuntos"].get("C")
+    h.append(tabela(["Configuração", "Casos finais", "Fora de escopo", "Falsas aprov.", "Latência média", "1.000 usos (CPU · energia)"],
+                    [[v["nome"], f"{v['acertos']}/{v['n']}", (f"{fc[k]['acertos']}/{fc[k]['n']}" if fc else "—"),
+                      f"{v['falsas']}" + (f" + {fc[k]['falsas']}" if fc else ""), f"{br(v['latencia_media_ms'] / 1000, 2)} s",
                       f"{br(v['custo']['tempo_cpu_min'])} min · R$ {br(v['custo']['reais_15w'], 3)} a {br(v['custo']['reais_55w'], 3)}"]
-                     for v in (fa[k] for k in ("base", "base_rag", "ajustado", "ajustado_rag"))], [40, 18, 22, 25, 17, 52]))
+                     for k, v in ((k, fa[k]) for k in ("base", "base_rag", "ajustado", "ajustado_rag"))], [38, 20, 22, 20, 22, 52]))
     fb = F["conjuntos"]["B"]
     h += [P(f"No teste do próprio treino, o ajuste funciona ({fb['base_rag']['acertos']}/20 → {fb['ajustado_rag']['acertos']}/20 com evidência), "
-            "reproduzindo a entrega 2. Nos casos reais não compensou: aprendeu o formato do treino, não a tarefa.", "nota")]
+            "reproduzindo a entrega 2. Fora do treino não compensou: aprendeu o formato do treino, não a tarefa. "
+            + (f"Fora de escopo, o ajustado sem RAG acerta {fc['ajustado']['acertos']}/{fc['ajustado']['n']} porque responde REVISAR quando não tem "
+               "evidência, não por reconhecer o escopo. " if fc else "")
+            + "Detalhe: <i>ia/finetuning/comparacao-final.md</i>.", "nota")]
     lat = LA.get("fatura_nova_sem_carga") or LA.get("fatura_nova_com_carga")
     cache = LA.get("faturas_ja_vistas_cache")
     novo = LA.get("prompt31_fatura_nova") or lat
-    h += [P(f"<b>Sistema no ar (prompt {'3.1' if LA.get('prompt31_fatura_nova') else '3.0'}):</b> fatura nova {br(novo['latencia']['media'] / 1000, 1)} s em média "
+    h += [P(f"<b>Latência do prompt {'3.1' if LA.get('prompt31_fatura_nova') else '3.0'} (medida antes do embedding):</b> fatura nova {br(novo['latencia']['media'] / 1000, 1)} s em média "
             f"(p95 {br(novo['latencia']['p95'] / 1000, 1)} s); 1.000 usos = {br(novo['custo']['tempo_cpu_min'], 0)} min de CPU, "
             f"R$ {br(novo['custo']['reais_15w'], 3)} a {br(novo['custo']['reais_55w'], 3)} de energia (sem cobrança por token). "
             + (f"No prompt 3.0 eram {br(lat['latencia']['media'] / 1000, 1)} s e {br(lat['custo']['tempo_cpu_min'], 0)} min: dois terços do prompt eram "
@@ -287,7 +314,8 @@ def apresentacao(d):
 
     h += [KeepTogether([P("6. Como repetir cada teste (na raiz do projeto, com o ambiente acadêmico no ar)", "h"),
           P("pwsh -File docs/entrega-academica/sqlserver/setup-academic.ps1          # instala e sobe tudo<br/>"
-            ".venv-1\\Scripts\\python.exe docs/entrega-academica/ia/avaliar_ia.py depois       # 16 casos + injeção<br/>"
+            ".venv-1\\Scripts\\python.exe docs/entrega-academica/ia/avaliar_ia.py final        # 16 casos, 12 fora de escopo e injeção<br/>"
+            "(no contêiner da IA) python /tmp/ia/medir_rag_embeddings.py medir   # RAG: lexical × embeddings<br/>"
             ".venv-1\\Scripts\\python.exe docs/entrega-academica/sqlserver/testar_ia_perfis.py  # IA por perfil<br/>"
             "sqlcmd ... -I -f 65001 -i docs/entrega-academica/sqlserver/08_ataque_escalonamento.sql<br/>"
             "sqlcmd ... -I -f 65001 -i docs/entrega-academica/sqlserver/14_auditoria_testes.sql<br/>"

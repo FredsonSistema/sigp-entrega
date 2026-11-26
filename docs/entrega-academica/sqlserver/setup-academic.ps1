@@ -239,6 +239,11 @@ if (-not $ollamaReady) {
 if ($LASTEXITCODE -ne 0) {
     throw "Não foi possível baixar o modelo local qwen2.5:0.5b."
 }
+# Modelo de embedding da busca (ia/rag-embeddings.md). Sem ele a IA usa a busca lexical.
+& docker exec sigp_ollama_academic ollama pull embeddinggemma
+if ($LASTEXITCODE -ne 0) {
+    throw "Não foi possível baixar o modelo de embedding embeddinggemma."
+}
 
 $aiReady = $false
 for ($attempt = 0; $attempt -lt 60; $attempt++) {

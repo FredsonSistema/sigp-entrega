@@ -31,7 +31,7 @@ Na Entrega 2 o SIGp abria como uma aba do navegador. Agora o atalho **SIGp** da 
 
 ## O que foi corrigido
 
-Cada linha é um teste que **reprovou** na primeira execução, foi corrigido e retestado (42 itens). O texto completo (falha, correção, reteste e commit) está em [`historico-evolucao.md`](historico-evolucao.md).
+Cada linha é um teste que **reprovou** na primeira execução, foi corrigido e retestado (43 itens). O texto completo (falha, correção, reteste e commit) está em [`historico-evolucao.md`](historico-evolucao.md).
 
 | # | Data | Área | O que foi testado | Reteste | Commit |
 |---|---|---|---|---|---|
@@ -77,6 +77,7 @@ Cada linha é um teste que **reprovou** na primeira execução, foi corrigido e 
 | H-46 | 26/11 | IA (casos de teste) | 12 casos fora de escopo, pedido da Prof.ª Bruna: outra conta (energia, água, aluguel, telefonia móvel, software, compra de equipamento), outro local, outro idioma e documentos que não são fatura, com o esperado (REVISAR) escrito… | APROVADO (avaliação final: fora de escopo 12/12, segurança 12/12, casos finais 16/16, injeção 13/13, validação cega igual (4/8); fine-tuning medido fora do… | `f67551b` |
 | H-47 | 26/11 | Documentos da entrega | O que os relatórios dizem é o que foi avaliado e o que vai no pacote? (pedido da Prof.ª Bruna: o relatório citava um prompt e o fluxo avaliado rodava outro) | APROVADO (relatórios e página gerados de novo, relatório de limitações com 2 páginas, teste da página 24/24, `tests/test_pacote_mesma_ia.py` 4/4) | `f67551b` |
 | H-48 | 26/11 | Interface | O SIGp numa janela própria do Windows, em vez de uma aba do navegador: atalho na área de trabalho (`abrir-sigp.ps1`, Edge em modo aplicativo com perfil separado, ícone desenhado na instalação), que liga os containers se o… | APROVADO (no PowerShell 5.1: atalho com o ícone, a janela abriu com o título do SIGp, sem barra de endereço, num processo do Edge com `--app` e perfil próprio;… | `ce01b8d` |
+| H-49 | 26/11 | Documentos da entrega | Revisão independente do material da postagem, feita num contexto limpo contra os comentários da professora e os requisitos (respostas e evidências, números conferidos nos JSON, nenhum resto da apresentação, só o repositório da… | APROVADO (nenhum documento da entrega chama a v3.0 de prompt atual; pacote montado de novo, testes do pacote OK e 0 links quebrados nos documentos) | `10629c0` |
 
 ## O que permaneceu inalterado
 

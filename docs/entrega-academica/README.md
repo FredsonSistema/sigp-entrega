@@ -49,7 +49,7 @@ Conferido pelo gerador: cada documento abaixo existe no repositório da entrega;
 | BD | Trilha 'quem fez o quê', protegida contra alteração | [`seguranca/trilha-auditoria.md`](seguranca/trilha-auditoria.md) | ledger: APROVADO |
 | BD | Auditoria do que a IA respondeu e a IA por perfil | [`seguranca/auditoria-e-ia-por-perfil.md`](seguranca/auditoria-e-ia-por-perfil.md) | APROVADO |
 | BD | Vulnerabilidades, restauração do backup e injeção de SQL | [`seguranca/avaliacao-vulnerabilidades.md`](seguranca/avaliacao-vulnerabilidades.md) | 25 regras passando, 0 falhas |
-| IA e BD | Histórico de falhas, correções e retestes | [`historico-evolucao.md`](historico-evolucao.md) | 48 itens |
+| IA e BD | Histórico de falhas, correções e retestes | [`historico-evolucao.md`](historico-evolucao.md) | 49 itens |
 | IA e BD | Mudanças desde a Entrega 2 | [`MUDANCAS-DESDE-ENTREGA-2.md`](MUDANCAS-DESDE-ENTREGA-2.md) | melhorado, corrigido e inalterado |
 | IA e BD | Respostas aos comentários da professora | [`README.md`](README.md) | 8 comentários |
 | IA e BD | Relatório de limitações (até 2 páginas) | [`relatorio-limitacoes.pdf`](relatorio-limitacoes.pdf) | gerado das evidências |

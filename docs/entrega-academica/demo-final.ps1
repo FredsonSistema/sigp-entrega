@@ -3,7 +3,7 @@
 # sqlserver/evidence/parte3/demo-final-saida.txt (o "plano B": se algo falhar ao vivo, mostre esse arquivo).
 # Nenhuma senha aparece: o script lê o .env.academic e passa a senha por variável de ambiente.
 # Uso, na raiz do projeto:  pwsh -File docs/entrega-academica/demo-final.ps1  [-SemPausa]
-# Roteiro completo (quem fala, tempos, perguntas prováveis): docs/entrega-academica/roteiro-apresentacao.md
+# Onde está cada requisito e o resultado: docs/entrega-academica/README.md
 param([switch]$SemPausa)
 $ErrorActionPreference = 'Stop'
 [Console]::OutputEncoding = [Text.Encoding]::UTF8

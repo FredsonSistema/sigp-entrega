@@ -1,8 +1,7 @@
 {
   "grupo": "",
   "data": "16 de novembro de 2026",
-  "repositorio": "https://github.com/FredsonSistema/sigp",
-  "repositorio_pacote": "https://github.com/FredsonSistema/sigp-entrega",
+  "repositorio": "https://github.com/FredsonSistema/sigp-entrega",
   "disciplinas": [
     "Projeto de Inteligência Artificial",
     "Segurança e Otimização de Banco de Dados"

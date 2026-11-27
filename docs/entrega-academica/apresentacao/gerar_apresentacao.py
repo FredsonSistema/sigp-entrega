@@ -1,4 +1,4 @@
-"""Gera docs/entrega-academica/apresentacao.html: a página interativa da apresentação final.
+"""Gera docs/entrega-academica/apresentacao.html: a página interativa dos resultados da entrega final.
 
 Junta o modelo (apresentacao/modelo.html: estrutura, estilo e interação) com os dados das evidências (dados.py).
 A página funciona sozinha, sem internet nem bibliotecas externas. Nenhum número é digitado à mão: rode de novo depois de

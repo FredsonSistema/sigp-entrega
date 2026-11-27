@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SIGp — apresentação da entrega final</title>
+<title>SIGp — resultados da entrega final</title>
 <style>
 :root{--bg:#0a0e13;--panel:#10171f;--panel2:#0c1218;--line:#1c2733;--line2:#2a3646;--txt:#e6edf3;--muted:#8b98a9;--faint:#5f6c7d;
 --accent:#2dd4bf;--accentbg:rgba(45,212,191,.12);--ok:#22c55e;--warn:#f59e0b;--bad:#ef4444;--blue:#60a5fa;--violet:#a78bfa}
@@ -88,7 +88,7 @@ details.item .corpo b{color:var(--txt);font-weight:600}
   <p id="cabecalho"></p>
   <div class="integrantes" id="integrantes"></div>
 </header>
-<nav aria-label="Seções da apresentação" id="menu"></nav>
+<nav aria-label="Seções da página" id="menu"></nav>
 <main>
 
 <section id="visao" data-titulo="Visão geral">
@@ -106,6 +106,20 @@ details.item .corpo b{color:var(--txt);font-weight:600}
   <h2>Respostas aos comentários da professora</h2>
   <p class="sub">Devolutiva da Entrega 2. Uma linha por comentário; os números vêm das evidências, e o detalhe está no arquivo indicado.</p>
   <div class="tw" style="max-height:none"><table><thead><tr><th>Disciplina</th><th>Comentário</th><th>O que foi feito</th><th>Evidência</th></tr></thead><tbody id="tabRespostas"></tbody></table></div>
+</section>
+
+<section id="mudancas" data-titulo="Mudanças desde a Entrega 2">
+  <h2>Mudanças desde a Entrega 2</h2>
+  <div class="card"><h3 style="margin-top:0">Interface: da web para uma janela do Windows</h3>
+    <p class="sub" style="margin:0">Na Entrega 2 o SIGp abria numa aba do navegador. Agora o atalho <b>SIGp</b> da área de trabalho abre o sistema numa janela própria do Windows, sem barra de endereço e sem abas, com título e ícone na barra de tarefas (Edge em modo aplicativo, perfil separado; <code>abrir-sigp.ps1</code>). Se o computador foi reiniciado, o atalho liga os containers. As telas são as mesmas e tudo continua local.</p></div>
+  <h3>O que melhorou</h3>
+  <div class="tw" style="max-height:none"><table><thead><tr><th>Tema</th><th>Antes</th><th>Depois</th><th>Evidência</th></tr></thead><tbody id="tabMelhorado"></tbody></table></div>
+  <h3>O que foi corrigido</h3><p class="nota" id="notaCorrigido"></p>
+  <h3>O que permaneceu inalterado</h3>
+  <div class="tw" style="max-height:none"><table><thead><tr><th>O quê</th><th>Como está</th><th>Onde conferir</th></tr></thead><tbody id="tabInalterado"></tbody></table></div>
+  <h3>Onde está cada requisito</h3>
+  <div class="tw" style="max-height:none"><table><thead><tr><th>Disciplina</th><th>Requisito</th><th>Documento</th><th>Resultado</th></tr></thead><tbody id="tabRequisitos"></tbody></table></div>
+  <div class="fonte">Fonte: <code>MUDANCAS-DESDE-ENTREGA-2.md</code> e <code>historico-evolucao.md</code></div>
 </section>
 
 <section id="llm" data-titulo="Evolução da IA">
@@ -310,6 +324,12 @@ const marcos = [
   ...(B.fora ? [['Final · fora de escopo', `${B.fora.acertos}/${B.fora.total} depois de corrigir uma falsa aprovação (fatura de outra unidade aprovada com o contrato da Agência Centro).`]] : []),
   ['Final · fine-tuning fora do treino', F ? `Ajustado com RAG ${F.conjuntos.A.ajustado_rag.acertos}/16 nos casos finais (base com RAG ${F.conjuntos.A.base_rag.acertos}/16)${F.conjuntos.C ? ` e ${F.conjuntos.C.ajustado_rag.acertos}/${F.conjuntos.C.ajustado_rag.n} fora de escopo` : ''}; falsas aprovações nos finais ${F.conjuntos.A.base_rag.falsas} → ${F.conjuntos.A.ajustado_rag.falsas}. O ajuste não generaliza.` : ''],
 ];
+if (D.mudancas) {
+  $('#tabMelhorado').innerHTML = D.mudancas.melhorado.map((x) => `<tr><td>${esc(x.tema)}</td><td>${esc(x.antes)}</td><td>${esc(x.depois)}</td><td class="mono" style="font-size:12px">${esc(x.evidencia)}</td></tr>`).join('');
+  $('#notaCorrigido').textContent = `${D.mudancas.corrigido.length} testes reprovaram na primeira execução e foram corrigidos e retestados: ${D.mudancas.corrigido.map((x) => x.id).join(', ')}. Cada um está na seção Histórico, com a falha, a correção e o reteste.`;
+  $('#tabInalterado').innerHTML = D.mudancas.inalterado.map((x) => `<tr><td>${esc(x.item)}</td><td>${esc(x.como)}</td><td class="mono" style="font-size:12px">${esc(x.evidencia)}</td></tr>`).join('');
+}
+$('#tabRequisitos').innerHTML = (D.requisitos || []).map((r) => `<tr><td>${pill(r.disciplina, 'info')}</td><td>${esc(r.requisito)}</td><td class="mono" style="font-size:12px">${esc(r.documento)}</td><td>${esc(r.resultado)}</td></tr>`).join('');
 $('#tabRespostas').innerHTML = (D.respostas_professora || []).map((r) => `<tr><td>${pill(r.disciplina, 'info')}</td><td>${esc(r.comentario)}</td><td>${esc(r.resposta)}</td><td class="mono" style="font-size:12px">${esc(r.evidencia)}</td></tr>`).join('');
 $('#tempoIa').innerHTML = marcos.map(([t, p]) => `<div class="marco"><h4>${esc(t)}</h4><p>${esc(p)}</p></div>`).join('');
 $('#prompts').innerHTML = L.prompts.map((p) => `<details class="item"><summary>${pill(p.versao, 'info')} <span>${esc(p.estado)}</span></summary><div class="corpo">${esc(p.mudancas)}</div></details>`).join('');

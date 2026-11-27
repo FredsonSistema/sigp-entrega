@@ -1,7 +1,8 @@
 """Gera os PDFs da entrega final a partir das evidências (mesmos dados da página apresentacao.html, via dados.py):
 
   docs/entrega-academica/relatorio-limitacoes.pdf   relatório de limitações (1 a 2 páginas; o script confere)
-  docs/entrega-academica/relatorio-apresentacao.pdf relatório que acompanha a apresentação de 10 minutos
+  docs/entrega-academica/relatorio-final.pdf        relatório final (respostas à professora, mudanças desde a Entrega 2,
+                                                    requisitos, resultados, histórico e contribuição individual)
 
 Uso, na raiz:  .venv-1\\Scripts\\python.exe docs/entrega-academica/apresentacao/gerar_relatorios.py
 """
@@ -26,7 +27,7 @@ import dados  # noqa: E402
 
 ENTREGA = DIR.parent
 # Estado da fase de separação do repositório e do pacote de instalação (atualizar ao concluir e gerar de novo).
-SEPARACAO_CONCLUIDA = False
+SEPARACAO_CONCLUIDA = True
 
 NAVY, TEAL, INK, MUTED, PALE, MINT, RED, GOLD = (colors.HexColor(c) for c in
                                                  ("#15324B", "#178F8A", "#243746", "#5E7180", "#EAF2F7", "#E6F4F1", "#A83B3B", "#D69A2D"))
@@ -103,8 +104,8 @@ def cabecalho(d, titulo, subtitulo):
     nomes = ", ".join(i["nome"] for i in d["projeto"]["integrantes"])
     return [P(titulo, "titulo"),
             P(f"{subtitulo}<br/>{' · '.join(d['projeto']['disciplinas'])} · {nomes}<br/>"
-              f"Gerado em {date.today().strftime('%d/%m/%Y')} a partir das evidências do repositório ({d['projeto']['repositorio']}); "
-              f"pacote de instalação com base fictícia: {d['projeto'].get('repositorio_pacote') or '—'}.", "sub")]
+              f"Gerado em {date.today().strftime('%d/%m/%Y')} a partir das evidências do repositório da entrega "
+              f"({d['projeto']['repositorio']}), com base fictícia e instalação em um comando.", "sub")]
 
 
 def gerar(caminho, titulo, historia):
@@ -193,35 +194,35 @@ def limitacoes(d):
     return h
 
 
-# ------------------------------------------------------------------ relatório da apresentação
+# ------------------------------------------------------------------ relatório final
 def apresentacao(d):
     A, B, F, S, O, L, H, LA = (d[k] for k in ("ia_antes", "ia_depois", "finetuning", "seguranca", "otimizacao", "evolucao_llm", "historico", "latencia"))
     nomes = [i["nome"].split()[0] for i in d["projeto"]["integrantes"]]
     n = lambda i: nomes[i] if i < len(nomes) else "—"  # noqa: E731
     q = {(t["cfg"], t["consulta"]): t for t in O["tempos"]}
-    h = cabecalho(d, "Relatório da apresentação", "Entrega final · acompanha a apresentação de 10 minutos e a página interativa "
-                  "<i>docs/entrega-academica/apresentacao.html</i>")
+    h = cabecalho(d, "Relatório final", "Entrega final · material da postagem. Página interativa com os mesmos dados: "
+                  "<i>docs/entrega-academica/apresentacao.html</i> (abre sem internet)")
     h += [P("Respostas aos comentários da professora (devolutiva da Entrega 2)", "h"),
           P("Uma linha por comentário. Os números vêm das evidências; o detalhe está no arquivo da coluna Evidência.", "nota")]
     h.append(tabela(["Disciplina", "Comentário", "O que foi feito", "Evidência"],
                     [[r["disciplina"], r["comentario"], r["resposta"], r["evidencia"]] for r in d["respostas_professora"]], [19, 36, 77, 42]))
-    h += [PageBreak(), P("1. Roteiro de 10 minutos", "h"),
-          P("Sugestão de divisão pelas áreas de cada integrante em <i>identificacao.json</i>; o grupo ajusta. A coluna \"Na página\" diz "
-            "qual seção da <i>apresentacao.html</i> abrir (as setas do teclado passam de uma seção para a outra).")]
-    h.append(tabela(["Tempo", "Bloco", "Quem (sugestão)", "Na página", "O que mostrar"], [
-        ["1 min", "O problema", n(0), "Visão geral", "Contas de internet de dezenas de locais; faturas por e-mail; conferência manual que atrasa e deixa passar cobrança indevida."],
-        ["2 min", "A arquitetura", n(0), "Visão geral", "Gmail → n8n → SIGp → SQL Server (RLS, mascaramento, auditoria) → RAG → LLM local → regra decide → trilha. A IA sugere, a regra decide, nada é pago sozinho."],
-        ["1 min 30", "Demonstração: IA", n(1), "Casos de teste · Prompt injection", "Trocar antes/depois (12/16 → 16/16); abrir IA-015 (a falsa aprovação corrigida); bateria 13/13 e validação cega 4/8."],
-        ["1 min 30", "Demonstração: segurança", n(2), "Segurança", "Escalonamento (falha reproduzida e barrada), trilha (antes 9 falhas, depois 12/12), matriz e prova do DENY."],
-        ["1 min", "Demonstração: integração", n(3), "Segurança → IA por perfil", "A mesma IA com cada credencial: só o próprio local; a injeção não vaza nada; a IA não falsifica a trilha."],
-        ["2 min", "Resultados e medições", n(3), "Fine-tuning · Otimização · Latência", "4 configurações (o ajuste não compensou e por quê); consultas 168,7 → 25,3 ms e 54,4 → 10,7 ms; "
-         + (f"fatura nova {br(LA['fatura_nova_com_carga']['latencia']['media'] / 1000, 1)} s → {br(LA['prompt31_fatura_nova']['latencia']['media'] / 1000, 1)} s (prompt 3.1)"
-            if LA.get('prompt31_fatura_nova') and LA.get('fatura_nova_com_carga') else "latência por fatura nova")
-         + " e o custo por 1.000 usos; o intervalo de 95% dos casos."],
-        ["1 min", "Limitações e aprendizados", "todos", "Histórico", "Filtrar por REPROVADO e ERRO DO TESTE: testar antes de corrigir, medir sem cache, desconfiar do próprio teste."],
-    ], [15, 30, 24, 33, 72]))
-
-    h += [P("2. Antes e depois", "h")]
+    M = d["mudancas"]
+    h += [PageBreak(), P("1. Mudanças desde a Entrega 2", "h"),
+          P("<b>Interface: da web para uma janela do Windows.</b> Na Entrega 2 o SIGp abria numa aba do navegador. Agora o atalho "
+            "<b>SIGp</b> da área de trabalho abre o sistema numa janela própria do Windows, sem barra de endereço e sem abas, com título e "
+            "ícone na barra de tarefas (Microsoft Edge em modo aplicativo, com perfil separado; <i>abrir-sigp.ps1</i>). Se o computador foi "
+            "reiniciado, o atalho liga o Docker e os containers. As telas são as mesmas e tudo continua local. Teste e reteste: H-48."),
+          P("<b>O que melhorou</b> (antes = 1ª medição desta etapa, no sistema como estava na Entrega 2; depois = medição final):")]
+    h.append(tabela(["Tema", "Antes", "Depois"], [[x["tema"], x["antes"], x["depois"]] for x in M["melhorado"] if x["tema"] != "Interface"], [48, 52, 74]))
+    h += [P(f"<b>O que foi corrigido:</b> {len(M['corrigido'])} testes reprovaram na primeira execução e foram corrigidos e retestados; "
+            "a lista está na seção 6 e, com o texto completo, em <i>historico-evolucao.md</i> e <i>MUDANCAS-DESDE-ENTREGA-2.md</i>."),
+          P("<b>O que permaneceu inalterado:</b>")]
+    h.append(tabela(["O quê", "Como está"], [[x["item"], x["como"]] for x in M["inalterado"]], [42, 132]))
+    h += [P("2. Onde está cada requisito", "h")]
+    h.append(tabela(["Disciplina", "Requisito", "Documento", "Resultado"],
+                    [[r["disciplina"], r["requisito"], r["documento"], r["resultado"]] for r in d["requisitos"]], [19, 62, 48, 45]))
+    nomes = [i["nome"].split()[0] for i in d["projeto"]["integrantes"]]  # noqa: F841
+    h += [PageBreak(), P("3. Antes e depois", "h")]
     esc_a = sum(1 for x in S["escalonamento"] if x["fase"] == "antes" and x["obtido"] == "PERMITIDO")
     tr_a = sum(1 for x in S["trilha"]["antes"] if x["veredito"] == "FALHA")
     tr_d = sum(1 for x in S["trilha"]["depois"] if x["veredito"] == "OK")
@@ -247,7 +248,7 @@ def apresentacao(d):
     ], [52, 38, 38, 46]))
 
     sv = B["servico"]
-    h += [PageBreak(), P("3. Inteligência artificial", "h"),
+    h += [PageBreak(), P("4. Inteligência artificial", "h"),
           P(f"<b>Sistema avaliado = sistema entregue:</b> {sv['model']}, prompt v{sv['prompt_version']}, busca "
             f"{('por embedding (' + sv['embed_model'] + ')') if sv.get('embed_model') else 'lexical'}, escopo {sv['database_scope']}. "
             "O prompt v4.2 é o da triagem do Gmail, outro fluxo. <i>tests/test_pacote_mesma_ia.py</i> compara o pacote com esta evidência."),
@@ -296,7 +297,7 @@ def apresentacao(d):
                 f"{TM['padrao']} por padrão e {TM['opcional']} opcional. A correção passou a valer no WF-08 da produção. Ver <i>ia/escolha-modelo-triagem.md</i>.", "nota")]
     h += [P("<b>Prompts</b>: " + "; ".join(f"{p['versao']} ({p['estado']})" for p in L["prompts"]) + ".", "nota")]
 
-    h += [P("4. Segurança e integração", "h")]
+    h += [P("5. Segurança e integração", "h")]
     h.append(tabela(["Teste", "Resultado"], [
         ["Escalonamento de privilégio (8 ataques + controle)", "Falha reproduzida com só o FILTER; com os predicados BLOCK, todos barrados e o controle permitido"],
         ["Trilha de auditoria (12 verificações)", f"Antes: {tr_a} falhas (nada registrado; operador forjava evento). Depois: {tr_d}/{len(S['trilha']['depois'])}"],
@@ -309,10 +310,10 @@ def apresentacao(d):
         ["Segredos no n8n", f"{S['segredos']['resultado']}: {S['segredos']['segredos_procurados']} segredos procurados em {S['segredos']['arquivos_do_repositorio']} arquivos e {S['segredos']['workflows_ao_vivo']} workflows ao vivo"],
     ], [60, 114]))
 
-    h += [P("5. Histórico: o que reprovou, a correção e o reteste", "h")]
+    h += [P("6. Histórico: o que reprovou, a correção e o reteste", "h")]
     h.append(tabela(["#", "Área", "1ª execução", "Reteste"], [[x["id"], x["area"], x["primeira"], x["reteste"]] for x in H], [12, 34, 72, 56]))
 
-    h += [KeepTogether([P("6. Como repetir cada teste (na raiz do projeto, com o ambiente acadêmico no ar)", "h"),
+    h += [KeepTogether([P("7. Como repetir cada teste (na raiz do projeto, com o ambiente acadêmico no ar)", "h"),
           P("pwsh -File docs/entrega-academica/sqlserver/setup-academic.ps1          # instala e sobe tudo<br/>"
             ".venv-1\\Scripts\\python.exe docs/entrega-academica/ia/avaliar_ia.py final        # 16 casos, 12 fora de escopo e injeção<br/>"
             "(no contêiner da IA) python /tmp/ia/medir_rag_embeddings.py medir   # RAG: lexical × embeddings<br/>"
@@ -324,7 +325,7 @@ def apresentacao(d):
             ".venv-1\\Scripts\\python.exe docs/entrega-academica/apresentacao/gerar_apresentacao.py", "cod"),
           P("A senha do sqlcmd vai só pela variável SQLCMDPASSWORD, lida do .env.academic; nenhum comando leva senha.", "nota")])]
 
-    h += [P("7. Contribuição individual", "h"),
+    h += [P("8. Contribuição individual", "h"),
           P("Divisão final do trabalho (3 a 5 linhas por integrante, sobre o projeto inteiro). Matrículas em <i>identificacao.json</i>.", "nota")]
     for i in d["projeto"]["integrantes"]:
         h += [P(f"<b>{i['nome']}.</b> {i['contribuicao']}")]
@@ -338,8 +339,11 @@ def main() -> None:
     print(f"ok: {lim} ({paginas} página(s))")
     if paginas > 2:
         sys.exit("O relatório de limitações passou de 2 páginas; encurte o texto.")
-    apr = ENTREGA / "relatorio-apresentacao.pdf"
-    print(f"ok: {apr} ({gerar(apr, 'Relatório da apresentação', apresentacao(d))} página(s))")
+    fin = ENTREGA / "relatorio-final.pdf"
+    faltam = [r["documento"] for r in d["requisitos"] if not r["existe"] and r["documento"] != "relatorio-final.pdf"]
+    if faltam:
+        sys.exit(f"Documento de requisito ausente: {faltam}")
+    print(f"ok: {fin} ({gerar(fin, 'Relatório final', apresentacao(d))} página(s))")
 
 
 if __name__ == "__main__":

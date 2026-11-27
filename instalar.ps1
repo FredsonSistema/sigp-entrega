@@ -202,5 +202,5 @@ Write-Host '  Tela do SIGp:       http://127.0.0.1:8000/agencias.html  (entre co
 Write-Host '  n8n:                http://127.0.0.1:5678                 (entre com o seu e-mail e a mesma senha)'
 Write-Host '  IA acadêmica:       http://127.0.0.1:5010/health'
 Write-Host '  Demonstração:       pwsh -File docs/entrega-academica/demo-final.ps1'
-Write-Host '  Roteiro:            docs/entrega-academica/roteiro-apresentacao.md'
+Write-Host '  Mudanças e requisitos: docs/entrega-academica/MUDANCAS-DESDE-ENTREGA-2.md e README.md'
 Write-Host '  Configurar Gmail, alertas e notificações: docs/entrega-academica/GUIA-CONFIGURACAO.md'

@@ -8,7 +8,7 @@
 #   3. instala o Docker Desktop no modo do usuário (sem administrador) e aceita a licença; liga o Docker e espera;
 #   4. baixa o PowerShell 7 portátil (sem administrador) e o pacote do SIGp (sem Git);
 #   5. roda o instalar.ps1 do pacote, que no fim pede o seu nome e a sua senha para criar o acesso;
-#   6. cria o atalho "SIGp" na área de trabalho e abre a tela.
+#   6. cria o atalho "SIGp" na área de trabalho e abre a janela própria do SIGp (abrir-sigp.ps1).
 # Opções (variáveis de ambiente, antes do comando):
 #   $env:SIGP_PASTA = 'D:\sigp'                 pasta da instalação (padrão: Documentos\sigp-entrega)
 #   $env:SIGP_MODELO_TRIAGEM = 'qwen2.5:0.5b'    instalação leve (~1,5 GB a menos, triagem do Gmail mais fraca)
@@ -157,14 +157,39 @@ if ($env:SIGP_MODELO_TRIAGEM) { $args5 += @('-ModeloTriagem', $env:SIGP_MODELO_T
 & $pwsh @args5
 if ($LASTEXITCODE -ne 0) { throw "O instalador parou com erro (veja a mensagem acima). Corrija e rode o mesmo comando de novo: o que já foi feito é mantido." }
 
-# 6. Atalho e tela
-Passo 6 'Atalho e tela'
-$url = 'http://127.0.0.1:8000/agencias.html'
-$atalho = Join-Path ([Environment]::GetFolderPath('Desktop')) 'SIGp.url'
-Set-Content -Path $atalho -Value @('[InternetShortcut]', "URL=$url") -Encoding ASCII
+# 6. Atalho e janela: o SIGp abre numa janela própria do Windows (abrir-sigp.ps1: Edge no modo aplicativo, sem barra de
+#    endereço nem abas), que também liga os containers se o computador foi reiniciado.
+Passo 6 'Atalho e janela do SIGp'
+$abrir = Join-Path $pasta 'abrir-sigp.ps1'
+$icone = Join-Path $pasta 'sigp.ico'
+if (-not (Test-Path $icone)) {
+  # Ícone desenhado aqui (sem arquivo binário no repositório): "S" branco sobre o azul do SIGp.
+  Add-Type -AssemblyName System.Drawing
+  $bmp = New-Object System.Drawing.Bitmap 64, 64
+  $g = [System.Drawing.Graphics]::FromImage($bmp)
+  $g.SmoothingMode = 'AntiAlias'; $g.TextRenderingHint = 'AntiAlias'
+  $g.Clear([System.Drawing.Color]::FromArgb(21, 50, 75))
+  $g.FillRectangle((New-Object System.Drawing.SolidBrush ([System.Drawing.Color]::FromArgb(23, 143, 138))), 0, 52, 64, 12)
+  $fonte = New-Object System.Drawing.Font 'Segoe UI', 34, ([System.Drawing.FontStyle]::Bold), ([System.Drawing.GraphicsUnit]::Pixel)
+  $fmt = New-Object System.Drawing.StringFormat; $fmt.Alignment = 'Center'; $fmt.LineAlignment = 'Center'
+  $g.DrawString('S', $fonte, [System.Drawing.Brushes]::White, (New-Object System.Drawing.RectangleF 0, -3, 64, 58), $fmt)
+  $ico = [System.Drawing.Icon]::FromHandle($bmp.GetHicon())
+  $fs = [IO.File]::Create($icone); $ico.Save($fs); $fs.Close()
+  $g.Dispose(); $bmp.Dispose()
+}
+$antigo = Join-Path ([Environment]::GetFolderPath('Desktop')) 'SIGp.url'
+if (Test-Path $antigo) { Remove-Item $antigo }   # atalho de navegador das versões anteriores
+$atalho = Join-Path ([Environment]::GetFolderPath('Desktop')) 'SIGp.lnk'
+$lnk = (New-Object -ComObject WScript.Shell).CreateShortcut($atalho)
+$lnk.TargetPath = Join-Path $env:SystemRoot 'System32\WindowsPowerShell\v1.0\powershell.exe'
+$lnk.Arguments = "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$abrir`""
+$lnk.WorkingDirectory = $pasta
+$lnk.IconLocation = "$icone,0"
+$lnk.Description = 'SIGp: gestão de contas de provedores (janela própria)'
+$lnk.Save()
 Remove-ItemProperty -Path $chaveRunOnce -Name 'SIGp-instalacao' -ErrorAction SilentlyContinue
-Ok 'atalho "SIGp" na área de trabalho'
-Start-Process $url
+Ok 'atalho "SIGp" na área de trabalho (abre a janela do SIGp)'
+& (Join-Path $env:SystemRoot 'System32\WindowsPowerShell\v1.0\powershell.exe') -NoProfile -ExecutionPolicy Bypass -File $abrir
 Write-Host "`nPronto. Entre com o usuário e a senha que você criou." -ForegroundColor Green
 Write-Host '  Tela do SIGp: http://127.0.0.1:8000/agencias.html   ·   n8n: http://127.0.0.1:5678'
 Write-Host "  Guarde num lugar seguro (são só desta máquina): $pasta\.env, docs\entrega-academica\sqlserver\.env.academic e segredos-locais\tde"

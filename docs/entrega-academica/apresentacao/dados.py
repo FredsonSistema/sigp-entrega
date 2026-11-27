@@ -255,10 +255,146 @@ def _respostas(d: dict) -> list[dict]:
                                 f"digest guardado fora do banco ({L['resultado']}).",
                     "evidencia": L["fonte"]})
     out.append({"disciplina": "IA e BD", "comentario": "Repositório só com a parte acadêmica, com commits de todos os integrantes.",
-                "resposta": "Repositório de entrega separado (pacote com base fictícia, instalação em um comando). Commits de cada integrante: "
-                            "cada um faz os seus, na própria conta.",
-                "evidencia": d["projeto"].get("repositorio_pacote") or "—"})
+                "resposta": "A entrega é o repositório do pacote: só o fluxo avaliado (gestão de contas de provedores), a parte acadêmica e "
+                            "uma base fictícia, com instalação em um comando. É o único repositório citado nos documentos.",
+                "evidencia": d["projeto"].get("repositorio") or "—"})
     return out
+
+
+def _git_datas(caminho: Path) -> list[str]:
+    """Datas dos commits que mudaram o arquivo (vazio fora de um repositório Git)."""
+    import subprocess
+    try:
+        r = subprocess.run(["git", "log", "--format=%ad", "--date=short", "--", str(caminho)], cwd=RAIZ,
+                           capture_output=True, text=True, timeout=30)
+        return [x for x in r.stdout.split() if x]
+    except (OSError, subprocess.SubprocessError):
+        return []
+
+
+def _mudancas(d: dict) -> dict:
+    """Mudanças desde a Entrega 2: melhorado (antes → depois, medido), corrigido (histórico) e inalterado (conferido)."""
+    A, B, F, R, O, S, LA = d["ia_antes"], d["ia_depois"], d["finetuning"], d.get("rag"), d["otimizacao"], d["seguranca"], d["latencia"]
+    q = {(x["cfg"], x["consulta"]): x for x in O["tempos"]}
+    e2 = _json(EV2 / "ai-test-results.json") or {}
+    e2_obs = [x["observed"] for x in e2.get("results", [])]
+    vul_a, vul_d = (_json(EV3 / "vulnerabilidades-antes.json") or {}).get("resumo"), (_json(EV3 / "vulnerabilidades-depois.json") or {}).get("resumo")
+    tde_r, sqli = _json(EV3 / "restauracao-tde.json") or {}, _json(EV3 / "injecao-sql-depois.json") or {}
+    esc_a = sum(1 for x in S["escalonamento"] if x["fase"] == "antes" and x["obtido"] == "PERMITIDO")
+    esc_d = sum(1 for x in S["escalonamento"] if x["fase"] == "depois" and x["veredito"] == "OK")
+    tr_a = sum(1 for x in S["trilha"]["antes"] if x["veredito"] == "FALHA")
+    tr_d = sum(1 for x in S["trilha"]["depois"] if x["veredito"] == "OK")
+    L = S.get("ledger") or {}
+    m = []
+    m.append({"tema": "Interface", "antes": "tela numa aba do navegador", "depois": "janela própria do Windows, aberta pelo atalho SIGp "
+              "(Edge em modo aplicativo, sem barra de endereço nem abas); liga os containers se o computador foi reiniciado",
+              "evidencia": "abrir-sigp.ps1 · historico-evolucao.md (H-48)"})
+    m.append({"tema": "IA: decisão nos 16 casos", "antes": f"{A['metricas']['acertos']}/16, falsa aprovação em {', '.join(A['metricas']['falsas_aprovacoes']) or 'nenhum'}",
+              "depois": f"{B['metricas']['acertos']}/16, nenhuma falsa aprovação", "evidencia": "ia/casos-de-teste-final.md"})
+    if B.get("fora"):
+        m.append({"tema": "IA: casos fora de escopo (novos)", "antes": "não havia", "depois": f"{B['fora']['acertos']}/{B['fora']['total']}, "
+                  "depois de corrigir a aprovação de fatura de outra unidade", "evidencia": "ia/casos-fora-escopo.json · ia/casos-de-teste-final.md"})
+    if R and R["escolha"]:
+        lx, es = R["metodos"]["lexical"]["parafrases"], R["metodos"][R["escolha"]]["parafrases"]
+        m.append({"tema": "IA: RAG (fonte certa nas paráfrases)", "antes": f"busca por palavras, {lx['acertos']}/{lx['total']}",
+                  "depois": f"embedding {R['escolha'].split(':', 1)[1]}, {es['acertos']}/{es['total']}", "evidencia": "ia/rag-embeddings.md"})
+    if LA.get("prompt31_fatura_nova") and LA.get("fatura_nova_com_carga"):
+        m.append({"tema": "IA: tempo da análise de uma fatura nova", "antes": f"{br_(LA['fatura_nova_com_carga']['latencia']['media'] / 1000)} s (prompt 3.0)",
+                  "depois": f"{br_(LA['prompt31_fatura_nova']['latencia']['media'] / 1000)} s (prompt 3.1)", "evidencia": "ia/finetuning/comparacao-final.md"})
+    m.append({"tema": "IA: prompt injection detectado", "antes": f"{A['injecao_metricas']['ataques_detectados']}/{A['injecao_metricas']['ataques']} na bateria",
+              "depois": f"{B['injecao_metricas']['ataques_detectados']}/{B['injecao_metricas']['ataques']} na bateria; "
+                        f"{B['validacao_metricas']['ataques_detectados']}/{B['validacao_metricas']['ataques']} na validação cega (nova, congelada)",
+              "evidencia": "ia/casos-de-teste-final.md"})
+    if F and "C" in F["conjuntos"]:
+        m.append({"tema": "IA: fine-tuning", "antes": "medido só no teste do próprio treino",
+                  "depois": f"medido fora do treino: {F['conjuntos']['A']['ajustado_rag']['acertos']}/16 nos casos finais e "
+                            f"{F['conjuntos']['C']['ajustado_rag']['acertos']}/{F['conjuntos']['C']['ajustado_rag']['n']} fora de escopo (não generaliza)",
+                  "evidencia": "ia/finetuning/comparacao-final.md"})
+    m.append({"tema": "BD: consulta 1 (mediana)", "antes": f"{br_(q[('A', 1)]['mediana'])} ms, {br_(q[('A', 1)]['leituras'], 0)} leituras",
+              "depois": f"{br_(q[('D', 1)]['mediana'])} ms, {br_(q[('D', 1)]['leituras'], 0)} leituras (resumo diário)", "evidencia": "seguranca/otimizacao-consultas.md"})
+    m.append({"tema": "BD: consulta 2 (mediana)", "antes": f"{br_(q[('A', 2)]['mediana'])} ms, {br_(q[('A', 2)]['leituras'], 0)} leituras",
+              "depois": f"{br_(q[('C', 2)]['mediana'])} ms, {br_(q[('C', 2)]['leituras'], 0)} leituras (índice filtrado)", "evidencia": "seguranca/otimizacao-consultas.md"})
+    m.append({"tema": "BD: escalonamento de privilégio", "antes": f"{esc_a} ataques passaram", "depois": f"{esc_d} verificações OK, todos barrados",
+              "evidencia": "seguranca/ataque-escalonamento.md"})
+    m.append({"tema": "BD: trilha de auditoria", "antes": f"{tr_a} falhas", "depois": f"{tr_d}/{len(S['trilha']['depois'])} OK", "evidencia": "seguranca/trilha-auditoria.md"})
+    if L:
+        m.append({"tema": "BD: trilha à prova de alteração", "antes": f"o sa reescrevia {L['antes'].get('UPDATE', '?')} e apagava {L['antes'].get('DELETE', '?')} eventos",
+                  "depois": f"tabela ledger só de inserção; verificação {L['resultado']}", "evidencia": "seguranca/trilha-auditoria.md"})
+    if S.get("tde"):
+        m.append({"tema": "BD: criptografia do arquivo e do backup (TDE)", "antes": f"chave fiscal {S['tde']['chave_fiscal_em_texto_no_backup_antes']} vezes em texto no backup",
+                  "depois": f"{S['tde']['chave_fiscal_em_texto_no_backup_depois']} vezes; restauração em outro servidor: {tde_r.get('resultado', '—')}",
+                  "evidencia": "seguranca/restauracao-tde.md"})
+    if vul_a and vul_d:
+        m.append({"tema": "BD: avaliação de vulnerabilidades (27 regras)", "antes": f"{vul_a.get('PASSOU')} passando, {vul_a.get('FALHOU')} falhas",
+                  "depois": f"{vul_d.get('PASSOU')} passando, {vul_d.get('FALHOU')} falhas, {vul_d.get('ACEITO')} riscos aceitos com justificativa",
+                  "evidencia": "seguranca/avaliacao-vulnerabilidades.md"})
+    if sqli:
+        m.append({"tema": "BD: injeção de SQL", "antes": "não testada", "depois": f"API, procedimentos e primitiva do banco: {sqli.get('resultado')}",
+                  "evidencia": "seguranca/injecao-sql.md"})
+    m.append({"tema": "Segredos nos fluxos do n8n", "antes": "1 modelo com chave literal", "depois": f"{S['segredos']['resultado']}", "evidencia": "ia/segredos-n8n.md"})
+    m.append({"tema": "Instalação", "antes": "script do ambiente acadêmico e passos do guia, com o Docker já instalado", "depois": "um comando (Instalar SIGp.cmd): Docker, chaves, banco, modelos, workflows, base fictícia e o acesso",
+              "evidencia": "GUIA-INSTALACAO.md"})
+    m.append({"tema": "Entrada manual de notas (função nova)", "antes": "só por e-mail", "depois": "PDF e/ou XML enviados pela tela passam pela mesma leitura e IA (WF-10)",
+              "evidencia": "historico-evolucao.md (H-38)"})
+
+    corrigido = [x for x in d["historico"] if x["tipo"] in ("REPROVADO", "ERRO DO TESTE")]
+
+    inal = []
+    if e2_obs:
+        modelos = sorted({x.get("model") for x in e2_obs if x.get("model")})
+        metodo = sorted({x.get("decision_method") for x in e2_obs if x.get("decision_method")})
+        inal.append({"item": "Quem decide", "como": f"a regra sobre a evidência estruturada (`{', '.join(metodo)}` na Entrega 2 e hoje); o modelo só sugere e não tem autoridade",
+                     "evidencia": "sqlserver/evidence/parte2/ai-test-results.json · ia/app.py"})
+        inal.append({"item": "Modelo da análise de fatura", "como": f"{', '.join(modelos)} no Ollama local, na Entrega 2 e hoje ({B['servico']['model']})",
+                     "evidencia": "sqlserver/evidence/parte2/ai-test-results.json · ia-avaliacao-final.json"})
+    inal.append({"item": "Pagamento", "como": "nenhum pagamento automático (automatic_payment sempre falso)", "evidencia": "ia/app.py"})
+    inal.append({"item": "Escopo", "como": "o local vem da credencial do serviço, não do pedido; RLS por local no banco", "evidencia": "sqlserver/README.md"})
+    for rotulo, rel, desc in (("Adaptador LoRA", "ia/finetuning/output/qwen2.5-0.5b-lora/adapter_model.safetensors", "o mesmo da Entrega 2 (não foi treinado de novo; só medido de novo)"),
+                              ("Corpus do RAG", "ia/rag_documents.json", "os mesmos 20 documentos fictícios (mudou a forma de buscar, não o conteúdo)"),
+                              ("Validação cega da injeção", "ia/injecao-validacao.json", "congelada por SHA-256 e nunca usada para ajustar; o resultado (4/8) é relatado como saiu")):
+        datas = _git_datas(ENTREGA / rel)
+        inal.append({"item": rotulo, "como": desc + (f"; último commit do arquivo: {datas[0]}" if datas else ""), "evidencia": rel})
+    inal.append({"item": "Regras de competência e vencimento", "como": "as regras do SIGp que definem a competência e o vencimento das notas não mudaram nesta etapa (a regra de decisão da IA ganhou uma verificação, H-46)", "evidencia": "historico-evolucao.md"})
+    inal.append({"item": "Telas", "como": "as mesmas telas do SIGp; mudou só onde elas abrem (janela própria em vez de aba do navegador)", "evidencia": "abrir-sigp.ps1"})
+    inal.append({"item": "Dados", "como": "base 100% fictícia no pacote e 100.020 notas sintéticas no banco acadêmico; nenhum dado real", "evidencia": "entrega/base_ficticia.py"})
+    inal.append({"item": "Triagem do Gmail", "como": "prompt v4.2 (WF-08/WF-10); só a resposta sem fim foi corrigida (maxLength e limite de tokens)", "evidencia": "ia/escolha-modelo-triagem.md"})
+    return {"melhorado": m, "corrigido": corrigido, "inalterado": inal,
+            "entrega2": {"data": str(e2.get("executed_at_utc", ""))[:10], "casos": e2.get("case_count"), "prompt": sorted({x.get("prompt_version") for x in e2_obs})}}
+
+
+def _requisitos(d: dict) -> list[dict]:
+    """Onde está cada requisito da entrega final e o resultado medido; confere que cada documento existe."""
+    B, F, S, O, R = d["ia_depois"], d["finetuning"], d["seguranca"], d["otimizacao"], d.get("rag")
+    q = {(x["cfg"], x["consulta"]): x for x in O["tempos"]}
+    vul = (_json(EV3 / "vulnerabilidades-depois.json") or {}).get("resumo") or {}
+    reqs = [
+        ("IA", "Casos de teste com métrica e análise das falhas", "ia/casos-de-teste-final.md",
+         f"{B['metricas']['acertos']}/16 e {B['fora']['acertos']}/{B['fora']['total']} fora de escopo; acurácia, F1, matriz e intervalo de 95%" if B.get("fora") else f"{B['metricas']['acertos']}/16"),
+        ("IA", "RAG (com embeddings)", "ia/rag-embeddings.md",
+         f"{R['escolha']}: {R['metodos'][R['escolha']]['parafrases']['acertos']}/{R['metodos'][R['escolha']]['parafrases']['total']} paráfrases" if R and R["escolha"] else "—"),
+        ("IA", "Fine-tuning: base, base + RAG, ajustado, ajustado + RAG; custo e latência; fora do treino", "ia/finetuning/comparacao-final.md",
+         f"4 configurações em {len(F['conjuntos'])} conjuntos (finais, fora de escopo, teste do treino)" if F else "—"),
+        ("IA", "Prompt injection testado e as defesas", "ia/casos-de-teste-final.md",
+         f"bateria {B['injecao_metricas']['ataques_detectados']}/{B['injecao_metricas']['ataques']}, validação cega {B['validacao_metricas']['ataques_detectados']}/{B['validacao_metricas']['ataques']}, 8 camadas"),
+        ("IA", "Versionamento do prompt (qual fluxo usa qual)", "ia/prompts/CHANGELOG.md", f"análise de fatura v{B['servico']['prompt_version']}; triagem v4.2"),
+        ("IA", "Fluxo do n8n sem segredo", "ia/segredos-n8n.md", S["segredos"]["resultado"]),
+        ("BD", "Papéis e permissões com DENY justificado", "seguranca/matriz-permissoes.md", f"{S['matriz']['denys']} DENY, cada um com motivo e teste"),
+        ("BD", "Dados sensíveis (RLS, mascaramento e TDE)", "seguranca/protecao-dados-sensiveis.md", f"TDE: {S['tde']['resultado']}" if S.get("tde") else "—"),
+        ("BD", "Duas consultas lentas: plano (scan × seek, custo) e tempos", "seguranca/otimizacao-consultas.md",
+         f"{br_(q[('A', 1)]['mediana'] / q[('D', 1)]['mediana'])}× e {br_(q[('A', 2)]['mediana'] / q[('C', 2)]['mediana'])}×"),
+        ("BD", "Ataque e correção (escalonamento)", "seguranca/ataque-escalonamento.md", "falha reproduzida e barrada"),
+        ("BD", "Trilha 'quem fez o quê', protegida contra alteração", "seguranca/trilha-auditoria.md", f"ledger: {(S.get('ledger') or {}).get('resultado', '—')}"),
+        ("BD", "Auditoria do que a IA respondeu e a IA por perfil", "seguranca/auditoria-e-ia-por-perfil.md", S["ia_perfis"]["resultado"] or "—"),
+        ("BD", "Vulnerabilidades, restauração do backup e injeção de SQL", "seguranca/avaliacao-vulnerabilidades.md",
+         f"{vul.get('PASSOU', '?')} regras passando, {vul.get('FALHOU', '?')} falhas"),
+        ("IA e BD", "Histórico de falhas, correções e retestes", "historico-evolucao.md", f"{len(d['historico'])} itens"),
+        ("IA e BD", "Mudanças desde a Entrega 2", "MUDANCAS-DESDE-ENTREGA-2.md", "melhorado, corrigido e inalterado"),
+        ("IA e BD", "Respostas aos comentários da professora", "README.md", f"{len(d['respostas_professora'])} comentários"),
+        ("IA e BD", "Relatório de limitações (até 2 páginas)", "relatorio-limitacoes.pdf", "gerado das evidências"),
+        ("IA e BD", "Relatório final e contribuição individual", "relatorio-final.pdf", f"{len(d['projeto']['integrantes'])} integrantes"),
+        ("IA e BD", "Instalação reproduzível com base fictícia", "GUIA-INSTALACAO.md", "um comando; janela própria no Windows"),
+    ]
+    return [{"disciplina": a, "requisito": r, "documento": doc, "resultado": res, "existe": (ENTREGA / doc).exists()} for a, r, doc, res in reqs]
 
 
 def br_(v, casas=1):
@@ -391,13 +527,15 @@ def _historico() -> list[dict]:
 def carregar() -> dict:
     d = _carregar()
     d["respostas_professora"] = _respostas(d)
+    d["mudancas"] = _mudancas(d)
+    d["requisitos"] = _requisitos(d)
     return d
 
 
 def _carregar() -> dict:
     ident = _json(ENTREGA / "identificacao.json") or {}
     return {
-        "projeto": {"repositorio": ident.get("repositorio"), "repositorio_pacote": ident.get("repositorio_pacote"), "disciplinas": ident.get("disciplinas", []),
+        "projeto": {"repositorio": ident.get("repositorio"), "disciplinas": ident.get("disciplinas", []),
                     "integrantes": [{"nome": i["nome"], "contribuicao": i.get("contribuicao_final") or i.get("contribuicao", "")} for i in ident.get("integrantes", [])]},
         "ia_antes": _resumo_casos(_json(EV3 / "ia-avaliacao-antes.json")),
         # "depois" = a rodada final, no serviço com o mesmo prompt, modelo e busca do pacote entregue.

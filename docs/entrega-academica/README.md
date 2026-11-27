@@ -2,13 +2,14 @@
 
 **Grupo e integrantes:** ver [`identificacao.json`](identificacao.json) (a mesma identificação de todos os PDFs).  
 **Disciplinas:** Projeto de Inteligência Artificial; Segurança e Otimização de Banco de Dados.  
-**Repositórios:** sistema completo em <https://github.com/FredsonSistema/sigp>; pacote de instalação com base fictícia em <https://github.com/FredsonSistema/sigp-entrega>.
+**Repositório da entrega:** <https://github.com/FredsonSistema/sigp-entrega> (só o fluxo avaliado, a parte acadêmica e uma base fictícia).
 
 ## Entrega final (01/12/2026)
 - **Instalação e configuração:** [`GUIA-INSTALACAO.md`](GUIA-INSTALACAO.md) (máquina sem nada instalado até o sistema funcionando),
   [`GUIA-CONFIGURACAO.md`](GUIA-CONFIGURACAO.md) (endereços, chaves, Gmail, alertas e o assistente da IA) e [`ENDPOINTS.md`](ENDPOINTS.md) (o que testar e o resultado esperado).
-- **Apresentação (10 min):** roteiro com quem fala, tempos, falas, lista de conferência, plano B e perguntas prováveis em [`roteiro-apresentacao.md`](roteiro-apresentacao.md); demonstração ao vivo passo a passo em [`demo-final.ps1`](demo-final.ps1) (`pwsh -File docs/entrega-academica/demo-final.ps1`; com `-SemPausa` grava `sqlserver/evidence/parte3/demo-final-saida.txt`); página interativa dos resultados em [`apresentacao.html`](apresentacao.html) (abre sem internet).
-- **Relatórios:** [`relatorio-apresentacao.pdf`](relatorio-apresentacao.pdf) e [`relatorio-limitacoes.pdf`](relatorio-limitacoes.pdf). Histórico de cada falha, correção e reteste: [`historico-evolucao.md`](historico-evolucao.md).
+- **Mudanças desde a Entrega 2:** [`MUDANCAS-DESDE-ENTREGA-2.md`](MUDANCAS-DESDE-ENTREGA-2.md) (o que melhorou, o que foi corrigido, o que permaneceu inalterado e a mudança da web para uma janela do Windows).
+- **Resultados:** página interativa com os mesmos dados dos relatórios em [`apresentacao.html`](apresentacao.html) (abre sem internet); demonstração guiada, passo a passo, em [`demo-final.ps1`](demo-final.ps1) (`pwsh -File docs/entrega-academica/demo-final.ps1`; com `-SemPausa` grava `sqlserver/evidence/parte3/demo-final-saida.txt`).
+- **Relatórios:** [`relatorio-final.pdf`](relatorio-final.pdf) e [`relatorio-limitacoes.pdf`](relatorio-limitacoes.pdf). Histórico de cada falha, correção e reteste: [`historico-evolucao.md`](historico-evolucao.md).
 - **IA:** [`ia/casos-de-teste-final.md`](ia/casos-de-teste-final.md) (casos finais e fora de escopo no sistema entregue, injeção, validação cega congelada e intervalos de 95%), [`ia/rag-embeddings.md`](ia/rag-embeddings.md) (RAG: busca por palavras × embeddings, critério em [`ia/rag-embeddings-criterio.md`](ia/rag-embeddings-criterio.md)), [`ia/escolha-modelo-triagem.md`](ia/escolha-modelo-triagem.md) (critério, medição e escolha do modelo), [`ia/finetuning/comparacao-final.md`](ia/finetuning/comparacao-final.md) (4 configurações fora e dentro do treino, custo e latência), [`ia/segredos-n8n.md`](ia/segredos-n8n.md) e [`ia/prompts/CHANGELOG.md`](ia/prompts/CHANGELOG.md).
 - **Segurança e otimização:** [`seguranca/matriz-permissoes.md`](seguranca/matriz-permissoes.md), [`seguranca/protecao-dados-sensiveis.md`](seguranca/protecao-dados-sensiveis.md), [`seguranca/otimizacao-consultas.md`](seguranca/otimizacao-consultas.md), [`seguranca/ataque-escalonamento.md`](seguranca/ataque-escalonamento.md), [`seguranca/trilha-auditoria.md`](seguranca/trilha-auditoria.md) e [`seguranca/auditoria-e-ia-por-perfil.md`](seguranca/auditoria-e-ia-por-perfil.md) e [`seguranca/avaliacao-vulnerabilidades.md`](seguranca/avaliacao-vulnerabilidades.md) (27 regras no estilo do SQL Vulnerability Assessment e do CIS, antes e depois), [`seguranca/restauracao-tde.md`](seguranca/restauracao-tde.md) (backup em outro servidor, sem e com o certificado) e [`seguranca/injecao-sql.md`](seguranca/injecao-sql.md) (ataques pela API, nos procedimentos e na primitiva do banco). Banco, papéis e RLS: [`sqlserver/README.md`](sqlserver/README.md).
 - **Evidências:** [`sqlserver/evidence/parte3/`](sqlserver/evidence/parte3/). Nenhum número dos documentos foi digitado à mão: os geradores leem esses arquivos. Em [`sqlserver/evidence/parte2/`](sqlserver/evidence/parte2/) ficaram só os cinco arquivos da Entrega 2 que os documentos finais usam como comparação (casos da API, tempos do benchmark, demonstração de perfis, memória de exemplos e teste inverso).
@@ -27,7 +28,33 @@ Devolutiva da Entrega 2 (Prof.ª Bruna). Seção gerada por `docs/entrega-academ
 | BD | Explicar nos planos o que mudou (scan × seek, custo). | Cada operador dos planos reais lido do XML: tipo de acesso (scan ou seek), linhas lidas e devolvidas, custo próprio e da consulta, por configuração, com o porquê da mudança. | [`seguranca/otimizacao-consultas.md`](seguranca/otimizacao-consultas.md) (seção "O que mudou no plano") · [`evidence/parte3/otimizacao/*.sqlplan`](sqlserver/evidence/parte3/otimizacao/) |
 | BD | Melhorar a consulta 1 (ganho ainda pequeno). | Só com índice o ganho era 1,4× (o plano mostra que sobra somar as notas da janela). Com o resumo diário (desnormalização com gatilho e RLS): 168,7 → 25,3 ms (6,7×) e 3.281 → 13 leituras lógicas, com a mesma resposta. | [`seguranca/otimizacao-consultas.md`](seguranca/otimizacao-consultas.md) · [`evidence/parte3/otimizacao/`](sqlserver/evidence/parte3/otimizacao/) |
 | BD | Proteger a tabela de auditoria contra alteração. | audit.Eventos virou tabela ledger só de inserção: antes o sa reescrevia 280 e apagava 61 eventos; agora ninguém altera nem apaga (erro 37359), e a trilha é conferida contra o digest guardado fora do banco (APROVADO). | [`sqlserver/evidence/parte3/ledger-antes.txt`](sqlserver/evidence/parte3/ledger-antes.txt) e ledger-verificacao.json |
-| IA e BD | Repositório só com a parte acadêmica, com commits de todos os integrantes. | Repositório de entrega separado (pacote com base fictícia, instalação em um comando). Commits de cada integrante: cada um faz os seus, na própria conta. | <https://github.com/FredsonSistema/sigp-entrega> |
+| IA e BD | Repositório só com a parte acadêmica, com commits de todos os integrantes. | A entrega é o repositório do pacote: só o fluxo avaliado (gestão de contas de provedores), a parte acadêmica e uma base fictícia, com instalação em um comando. É o único repositório citado nos documentos. | <https://github.com/FredsonSistema/sigp-entrega> |
+
+## Onde está cada requisito
+
+Conferido pelo gerador: cada documento abaixo existe no repositório da entrega; o resultado vem das evidências.
+
+| Disciplina | Requisito | Documento | Resultado |
+|---|---|---|---|
+| IA | Casos de teste com métrica e análise das falhas | [`ia/casos-de-teste-final.md`](ia/casos-de-teste-final.md) | 16/16 e 12/12 fora de escopo; acurácia, F1, matriz e intervalo de 95% |
+| IA | RAG (com embeddings) | [`ia/rag-embeddings.md`](ia/rag-embeddings.md) | embedding:embeddinggemma: 13/14 paráfrases |
+| IA | Fine-tuning: base, base + RAG, ajustado, ajustado + RAG; custo e latência; fora do treino | [`ia/finetuning/comparacao-final.md`](ia/finetuning/comparacao-final.md) | 4 configurações em 3 conjuntos (finais, fora de escopo, teste do treino) |
+| IA | Prompt injection testado e as defesas | [`ia/casos-de-teste-final.md`](ia/casos-de-teste-final.md) | bateria 13/13, validação cega 4/8, 8 camadas |
+| IA | Versionamento do prompt (qual fluxo usa qual) | [`ia/prompts/CHANGELOG.md`](ia/prompts/CHANGELOG.md) | análise de fatura v3.1; triagem v4.2 |
+| IA | Fluxo do n8n sem segredo | [`ia/segredos-n8n.md`](ia/segredos-n8n.md) | APROVADO |
+| BD | Papéis e permissões com DENY justificado | [`seguranca/matriz-permissoes.md`](seguranca/matriz-permissoes.md) | 23 DENY, cada um com motivo e teste |
+| BD | Dados sensíveis (RLS, mascaramento e TDE) | [`seguranca/protecao-dados-sensiveis.md`](seguranca/protecao-dados-sensiveis.md) | TDE: APROVADO |
+| BD | Duas consultas lentas: plano (scan × seek, custo) e tempos | [`seguranca/otimizacao-consultas.md`](seguranca/otimizacao-consultas.md) | 6,7× e 5,1× |
+| BD | Ataque e correção (escalonamento) | [`seguranca/ataque-escalonamento.md`](seguranca/ataque-escalonamento.md) | falha reproduzida e barrada |
+| BD | Trilha 'quem fez o quê', protegida contra alteração | [`seguranca/trilha-auditoria.md`](seguranca/trilha-auditoria.md) | ledger: APROVADO |
+| BD | Auditoria do que a IA respondeu e a IA por perfil | [`seguranca/auditoria-e-ia-por-perfil.md`](seguranca/auditoria-e-ia-por-perfil.md) | APROVADO |
+| BD | Vulnerabilidades, restauração do backup e injeção de SQL | [`seguranca/avaliacao-vulnerabilidades.md`](seguranca/avaliacao-vulnerabilidades.md) | 25 regras passando, 0 falhas |
+| IA e BD | Histórico de falhas, correções e retestes | [`historico-evolucao.md`](historico-evolucao.md) | 48 itens |
+| IA e BD | Mudanças desde a Entrega 2 | [`MUDANCAS-DESDE-ENTREGA-2.md`](MUDANCAS-DESDE-ENTREGA-2.md) | melhorado, corrigido e inalterado |
+| IA e BD | Respostas aos comentários da professora | [`README.md`](README.md) | 8 comentários |
+| IA e BD | Relatório de limitações (até 2 páginas) | [`relatorio-limitacoes.pdf`](relatorio-limitacoes.pdf) | gerado das evidências |
+| IA e BD | Relatório final e contribuição individual | [`relatorio-final.pdf`](relatorio-final.pdf) | 4 integrantes |
+| IA e BD | Instalação reproduzível com base fictícia | [`GUIA-INSTALACAO.md`](GUIA-INSTALACAO.md) | um comando; janela própria no Windows |
 
 <!-- respostas-professora:fim -->
 

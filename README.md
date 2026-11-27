@@ -20,7 +20,33 @@ Devolutiva da Entrega 2 (Prof.ª Bruna). Seção gerada por `docs/entrega-academ
 | BD | Explicar nos planos o que mudou (scan × seek, custo). | Cada operador dos planos reais lido do XML: tipo de acesso (scan ou seek), linhas lidas e devolvidas, custo próprio e da consulta, por configuração, com o porquê da mudança. | [`seguranca/otimizacao-consultas.md`](docs/entrega-academica/seguranca/otimizacao-consultas.md) (seção "O que mudou no plano") · [`evidence/parte3/otimizacao/*.sqlplan`](docs/entrega-academica/sqlserver/evidence/parte3/otimizacao/) |
 | BD | Melhorar a consulta 1 (ganho ainda pequeno). | Só com índice o ganho era 1,4× (o plano mostra que sobra somar as notas da janela). Com o resumo diário (desnormalização com gatilho e RLS): 168,7 → 25,3 ms (6,7×) e 3.281 → 13 leituras lógicas, com a mesma resposta. | [`seguranca/otimizacao-consultas.md`](docs/entrega-academica/seguranca/otimizacao-consultas.md) · [`evidence/parte3/otimizacao/`](docs/entrega-academica/sqlserver/evidence/parte3/otimizacao/) |
 | BD | Proteger a tabela de auditoria contra alteração. | audit.Eventos virou tabela ledger só de inserção: antes o sa reescrevia 280 e apagava 61 eventos; agora ninguém altera nem apaga (erro 37359), e a trilha é conferida contra o digest guardado fora do banco (APROVADO). | [`sqlserver/evidence/parte3/ledger-antes.txt`](docs/entrega-academica/sqlserver/evidence/parte3/ledger-antes.txt) e ledger-verificacao.json |
-| IA e BD | Repositório só com a parte acadêmica, com commits de todos os integrantes. | Repositório de entrega separado (pacote com base fictícia, instalação em um comando). Commits de cada integrante: cada um faz os seus, na própria conta. | <https://github.com/FredsonSistema/sigp-entrega> |
+| IA e BD | Repositório só com a parte acadêmica, com commits de todos os integrantes. | A entrega é o repositório do pacote: só o fluxo avaliado (gestão de contas de provedores), a parte acadêmica e uma base fictícia, com instalação em um comando. É o único repositório citado nos documentos. | <https://github.com/FredsonSistema/sigp-entrega> |
+
+## Onde está cada requisito
+
+Conferido pelo gerador: cada documento abaixo existe no repositório da entrega; o resultado vem das evidências.
+
+| Disciplina | Requisito | Documento | Resultado |
+|---|---|---|---|
+| IA | Casos de teste com métrica e análise das falhas | [`ia/casos-de-teste-final.md`](docs/entrega-academica/ia/casos-de-teste-final.md) | 16/16 e 12/12 fora de escopo; acurácia, F1, matriz e intervalo de 95% |
+| IA | RAG (com embeddings) | [`ia/rag-embeddings.md`](docs/entrega-academica/ia/rag-embeddings.md) | embedding:embeddinggemma: 13/14 paráfrases |
+| IA | Fine-tuning: base, base + RAG, ajustado, ajustado + RAG; custo e latência; fora do treino | [`ia/finetuning/comparacao-final.md`](docs/entrega-academica/ia/finetuning/comparacao-final.md) | 4 configurações em 3 conjuntos (finais, fora de escopo, teste do treino) |
+| IA | Prompt injection testado e as defesas | [`ia/casos-de-teste-final.md`](docs/entrega-academica/ia/casos-de-teste-final.md) | bateria 13/13, validação cega 4/8, 8 camadas |
+| IA | Versionamento do prompt (qual fluxo usa qual) | [`ia/prompts/CHANGELOG.md`](docs/entrega-academica/ia/prompts/CHANGELOG.md) | análise de fatura v3.1; triagem v4.2 |
+| IA | Fluxo do n8n sem segredo | [`ia/segredos-n8n.md`](docs/entrega-academica/ia/segredos-n8n.md) | APROVADO |
+| BD | Papéis e permissões com DENY justificado | [`seguranca/matriz-permissoes.md`](docs/entrega-academica/seguranca/matriz-permissoes.md) | 23 DENY, cada um com motivo e teste |
+| BD | Dados sensíveis (RLS, mascaramento e TDE) | [`seguranca/protecao-dados-sensiveis.md`](docs/entrega-academica/seguranca/protecao-dados-sensiveis.md) | TDE: APROVADO |
+| BD | Duas consultas lentas: plano (scan × seek, custo) e tempos | [`seguranca/otimizacao-consultas.md`](docs/entrega-academica/seguranca/otimizacao-consultas.md) | 6,7× e 5,1× |
+| BD | Ataque e correção (escalonamento) | [`seguranca/ataque-escalonamento.md`](docs/entrega-academica/seguranca/ataque-escalonamento.md) | falha reproduzida e barrada |
+| BD | Trilha 'quem fez o quê', protegida contra alteração | [`seguranca/trilha-auditoria.md`](docs/entrega-academica/seguranca/trilha-auditoria.md) | ledger: APROVADO |
+| BD | Auditoria do que a IA respondeu e a IA por perfil | [`seguranca/auditoria-e-ia-por-perfil.md`](docs/entrega-academica/seguranca/auditoria-e-ia-por-perfil.md) | APROVADO |
+| BD | Vulnerabilidades, restauração do backup e injeção de SQL | [`seguranca/avaliacao-vulnerabilidades.md`](docs/entrega-academica/seguranca/avaliacao-vulnerabilidades.md) | 25 regras passando, 0 falhas |
+| IA e BD | Histórico de falhas, correções e retestes | [`historico-evolucao.md`](docs/entrega-academica/historico-evolucao.md) | 48 itens |
+| IA e BD | Mudanças desde a Entrega 2 | [`MUDANCAS-DESDE-ENTREGA-2.md`](docs/entrega-academica/MUDANCAS-DESDE-ENTREGA-2.md) | melhorado, corrigido e inalterado |
+| IA e BD | Respostas aos comentários da professora | [`README.md`](docs/entrega-academica/README.md) | 8 comentários |
+| IA e BD | Relatório de limitações (até 2 páginas) | [`relatorio-limitacoes.pdf`](docs/entrega-academica/relatorio-limitacoes.pdf) | gerado das evidências |
+| IA e BD | Relatório final e contribuição individual | [`relatorio-final.pdf`](docs/entrega-academica/relatorio-final.pdf) | 4 integrantes |
+| IA e BD | Instalação reproduzível com base fictícia | [`GUIA-INSTALACAO.md`](docs/entrega-academica/GUIA-INSTALACAO.md) | um comando; janela própria no Windows |
 
 <!-- respostas-professora:fim -->
 
@@ -69,7 +95,7 @@ irm https://raw.githubusercontent.com/FredsonSistema/sigp-entrega/main/instalar-
 Ou clique duas vezes em [`Instalar SIGp.cmd`](Instalar%20SIGp.cmd). O `instalar-sigp.ps1` liga o WSL 2 se faltar (a única
 janela de administrador, seguida de um reinício; depois a instalação continua sozinha), instala o Docker Desktop no modo do
 usuário, baixa o PowerShell 7 portátil e este pacote (sem Git) e roda o `instalar.ps1`. No fim, cria o atalho **SIGp** na
-área de trabalho e abre a tela. Detalhes e problemas comuns: [`docs/entrega-academica/GUIA-INSTALACAO.md`](docs/entrega-academica/GUIA-INSTALACAO.md).
+área de trabalho e abre o SIGp numa janela própria do Windows (`abrir-sigp.ps1`). Detalhes e problemas comuns: [`docs/entrega-academica/GUIA-INSTALACAO.md`](docs/entrega-academica/GUIA-INSTALACAO.md).
 
 Com o Docker Desktop já instalado, dá para rodar só o instalador do pacote: `pwsh -File instalar.ps1`. Ele:
 1. confere o Docker;
@@ -101,7 +127,7 @@ Pode rodar de novo: o que já existe é mantido. Opções: `-ModeloTriagem qwen2
 
 ## Usar
 
-1. **Tela:** clique no atalho **SIGp** (ou abra http://127.0.0.1:8000/agencias.html) e entre com o usuário e a senha que
+1. **Tela:** clique no atalho **SIGp**, que abre a janela própria do SIGp no Windows (`abrir-sigp.ps1`; também dá para abrir http://127.0.0.1:8000/agencias.html no navegador) e entre com o usuário e a senha que
    você criou. Em **Notas recebidas** estão as 3 faturas fictícias: associe cada uma ao local e ao provedor e veja a
    comparação com o contrato. Fatura que não chega por e-mail: **Adicionar documento** (PDF e/ou XML), que passa pela
    mesma leitura e IA do e-mail (WF-10).
@@ -131,13 +157,13 @@ Sem o Gmail, todo o resto funciona com a base fictícia.
 | `agencias.html`, `frontend/`, `web/` | Tela do SIGp |
 | `ocr/` | Serviço de OCR do PDF |
 | `n8n/workflows/` | Workflows importados pelo instalador; `n8n/wf08`, `n8n/wf06` e `n8n/lib` são as fontes deles |
-| `docs/entrega-academica/` | Tudo da entrega: relatórios, IA (`ia/`), segurança (`seguranca/`), SQL Server (`sqlserver/`), evidências e a apresentação |
+| `docs/entrega-academica/` | Tudo da entrega: relatórios, IA (`ia/`), segurança (`seguranca/`), SQL Server (`sqlserver/`), evidências e a página de resultados |
 | `entrega/base_ficticia.py` | Base de demonstração (locais, provedores e faturas inventados) |
 | `tests/` | Testes unitários (`python -m unittest discover -s tests`) e dos workflows |
 
 ## Documentos da entrega
 
-- Roteiro da apresentação de 10 minutos: [`docs/entrega-academica/roteiro-apresentacao.md`](docs/entrega-academica/roteiro-apresentacao.md)
+- Mudanças desde a Entrega 2: [`docs/entrega-academica/MUDANCAS-DESDE-ENTREGA-2.md`](docs/entrega-academica/MUDANCAS-DESDE-ENTREGA-2.md)
 - Resultados interativos (abre sem internet): [`docs/entrega-academica/apresentacao.html`](docs/entrega-academica/apresentacao.html)
 - Relatório de limitações: [`docs/entrega-academica/relatorio-limitacoes.pdf`](docs/entrega-academica/relatorio-limitacoes.pdf)
 - Índice de todos os documentos e evidências: [`docs/entrega-academica/README.md`](docs/entrega-academica/README.md)

@@ -11,3 +11,5 @@ tests/e2e/out/
 *.bak
 # Certificado do TDE e outros segredos gerados na instalação
 segredos-locais/
+# Ícone do atalho, desenhado na instalação
+sigp.ico

@@ -34,7 +34,7 @@ O instalador pula o que a máquina já tem:
 6. **cria o seu acesso**: pede seu nome, um usuário, seu e-mail e uma senha (8 a 64 caracteres, com maiúscula e número),
    que vale para a tela do SIGp e para o n8n. A senha é digitada por você, não aparece na tela, não vai para a área de
    transferência e não é gravada em arquivo. O SIGp guarda só o hash;
-7. cria o atalho **SIGp** na área de trabalho e abre a tela.
+7. cria o atalho **SIGp** na área de trabalho e abre a tela: o SIGp abre numa **janela própria do Windows** (sem barra de endereço nem abas, com ícone na barra de tarefas; é o Edge em modo aplicativo, que já vem no Windows). Se o computador foi reiniciado, o atalho liga os containers e espera a tela responder.
 
 Para você sobram: colar a linha, aceitar a janela de administrador e reiniciar (só se o WSL faltava) e digitar seu acesso.
 
@@ -55,7 +55,7 @@ Guarde os três juntos num lugar seguro (um gerenciador de senhas, por exemplo),
 
 ## 3. Usar
 
-Clique no atalho **SIGp** (ou abra http://127.0.0.1:8000/agencias.html) e entre com o usuário e a senha que você criou.
+Clique no atalho **SIGp** (janela própria; sem o atalho, rode `powershell -File abrir-sigp.ps1` na pasta do pacote ou abra http://127.0.0.1:8000/agencias.html no navegador) e entre com o usuário e a senha que você criou.
 O n8n fica em http://127.0.0.1:5678 (login: seu e-mail e a mesma senha).
 
 | O que conferir | Onde | Esperado |
@@ -85,7 +85,7 @@ Invoke-RestMethod -Method Post http://127.0.0.1:5678/webhook/sigp-academic-ai -C
 ```
 
 Esperado: `classification: DIVERGENTE` (o contrato não inclui IP adicional), as fontes do contrato em `source_ids` e
-`automatic_payment: False`. O roteiro completo da apresentação está em [`roteiro-apresentacao.md`](roteiro-apresentacao.md).
+`automatic_payment: False`. Onde está cada requisito e o resultado de cada um: [`README.md`](README.md).
 
 ## 5. Parar, religar e remover
 

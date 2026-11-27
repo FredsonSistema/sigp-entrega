@@ -1,4 +1,4 @@
-"""Escreve a seção "Respostas aos comentários da professora" nos READMEs, entre os marcadores
+"""Escreve as seções "Respostas aos comentários da professora" e "Onde está cada requisito" nos READMEs, entre os marcadores
 <!-- respostas-professora:inicio --> e <!-- respostas-professora:fim -->, com os mesmos dados dos relatórios (dados.py).
 Nenhum número é digitado à mão: as respostas são montadas em dados._respostas a partir das evidências.
 
@@ -49,6 +49,14 @@ def secao(prefixo: str) -> str:
          "| Disciplina | Comentário | O que foi feito | Evidência |", "|---|---|---|---|"]
     for r in d["respostas_professora"]:
         L.append(f"| {r['disciplina']} | {r['comentario']} | {r['resposta']} | {_evidencia(r['evidencia'], prefixo)} |")
+    L += ["", "## Onde está cada requisito", "",
+          "Conferido pelo gerador: cada documento abaixo existe no repositório da entrega; o resultado vem das evidências.", "",
+          "| Disciplina | Requisito | Documento | Resultado |", "|---|---|---|---|"]
+    for r in d["requisitos"]:
+        if not r["existe"]:
+            raise SystemExit(f"Documento de requisito ausente: {r['documento']}")
+        alvo = prefixo + r["documento"]
+        L.append(f"| {r['disciplina']} | {r['requisito']} | [`{r['documento']}`]({alvo}) | {r['resultado']} |")
     L += ["", FIM]
     return "\n".join(L)
 

@@ -2,7 +2,7 @@
 
 [![testes](https://github.com/FredsonSistema/sigp-entrega/actions/workflows/testes.yml/badge.svg)](https://github.com/FredsonSistema/sigp-entrega/actions/workflows/testes.yml) Testes de unidade e links dos documentos a cada push, num Windows limpo (`.github/workflows/testes.yml`).
 
-**Comece por aqui:** [`docs/entrega-academica/guia-de-correcao.pdf`](docs/entrega-academica/guia-de-correcao.pdf) (1 página: cada comentário da professora, o resultado e onde conferir).
+**Comece por aqui:** [`docs/entrega-academica/guia-de-correcao.pdf`](docs/entrega-academica/guia-de-correcao.pdf) (1 página: cada comentário da professora, o resultado e onde conferir). Para enviar em separado: [`relatorio-final.html`](docs/entrega-academica/relatorio-final.html) e [`apresentacao-sistema.html`](docs/entrega-academica/apresentacao-sistema.html) (HTML simples, sem internet). Contribuições individuais: [`contribuicoes/`](contribuicoes/README.md).
 
 
 Projeto de Inteligência Artificial · Segurança e Otimização de Banco de Dados. Integrantes e matrículas:
@@ -51,6 +51,7 @@ Conferido pelo gerador: cada documento abaixo existe no repositório da entrega;
 | IA e BD | Respostas aos comentários da professora | [`README.md`](docs/entrega-academica/README.md) | 8 comentários |
 | IA e BD | Relatório de limitações (até 2 páginas) | [`relatorio-limitacoes.pdf`](docs/entrega-academica/relatorio-limitacoes.pdf) | gerado das evidências |
 | IA e BD | Guia de correção (1 página) | [`guia-de-correcao.pdf`](docs/entrega-academica/guia-de-correcao.pdf) | comentários, resultados e como conferir |
+| IA e BD | Apresentação do sistema (HTML), com as mudanças desde a Entrega 2 | [`apresentacao-sistema.html`](docs/entrega-academica/apresentacao-sistema.html) | um arquivo, sem internet |
 | IA e BD | Relatório final e contribuição individual | [`relatorio-final.pdf`](docs/entrega-academica/relatorio-final.pdf) | 4 integrantes |
 | IA e BD | Instalação reproduzível com base fictícia | [`GUIA-INSTALACAO.md`](docs/entrega-academica/GUIA-INSTALACAO.md) | um comando; janela própria no Windows |
 

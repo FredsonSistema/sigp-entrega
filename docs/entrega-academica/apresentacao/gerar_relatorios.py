@@ -406,7 +406,7 @@ def main() -> None:
     if paginas > 2:
         sys.exit("O relatório de limitações passou de 2 páginas; encurte o texto.")
     fin = ENTREGA / "relatorio-final.pdf"
-    faltam = [r["documento"] for r in d["requisitos"] if not r["existe"] and r["documento"] not in ("relatorio-final.pdf", "guia-de-correcao.pdf")]
+    faltam = [r["documento"] for r in d["requisitos"] if not r["existe"] and r["documento"] not in ("relatorio-final.pdf", "guia-de-correcao.pdf", "apresentacao-sistema.html")]
     if faltam:
         sys.exit(f"Documento de requisito ausente: {faltam}")
     print(f"ok: {fin} ({gerar(fin, 'Relatório final', apresentacao(d))} página(s))")

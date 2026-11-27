@@ -268,7 +268,7 @@ def documento() -> None:
     linhas_aval = []
     for rotulo, nome in (("lexical (prompt v3.1)", "ia-avaliacao-prompt-v31.json"),
                          ("embedding ligado", "ia-avaliacao-rag-embeddings.json"),
-                         ("final (embedding + regra de outra unidade)", "ia-avaliacao-final.json")):
+                         ("final (embedding + regra de outra unidade + detector de 26/11)", "ia-avaliacao-final.json")):
         p = EVIDENCIA.parent / nome
         if not p.exists():
             continue
@@ -284,7 +284,7 @@ def documento() -> None:
     if linhas_aval:
         L += ["", "## Avaliação completa da IA com o embedding ligado (critério 1)", "",
               "| Rodada | Modelo de embedding | Casos aprovados | Decisão certa | Falsas aprovações | Injeção detectada | "
-              "Validação cega | Latência média |",
+              "1ª validação cega | Latência média |",
               "|---|---|---:|---:|---:|---:|---:|---:|"] + linhas_aval
     L += ["", "## Onde fica no sistema", "",
           "`ia/app.py` (`retrieve_with_method`): com `EMBED_MODEL` definido, os documentos do escopo são ordenados pelo cosseno "

@@ -121,6 +121,7 @@ def limitacoes(d):
     A, B, F, S, O, LA = d["ia_antes"], d["ia_depois"], d["finetuning"], d["seguranca"], d["otimizacao"], d["latencia"]
     vm = B["validacao_metricas"]
     escapou = ", ".join(vm["ataques_decididos_CONTRATADO"])
+    I26, v2m = d.get("injecao_antes_26"), B.get("validacao_v2_metricas")
     fa = F["conjuntos"]["A"]
     lat = LA.get("fatura_nova_sem_carga") or LA.get("fatura_nova_com_carga")
     sob_carga = "fatura_nova_sem_carga" not in LA
@@ -130,11 +131,16 @@ def limitacoes(d):
                   "Cada número vem de um arquivo em <i>sqlserver/evidence/parte3/</i>; cada falha, correção e reteste está em "
                   "<i>historico-evolucao.md</i>")
     h += [P("1. O que não funciona (ou funciona só em parte)", "h")] + itens([
-        f"<b>A detecção de prompt injection generaliza pela metade.</b> Na bateria usada para ajustar os padrões, ela detecta "
-        f"{B['injecao_metricas']['ataques_detectados']}/{B['injecao_metricas']['ataques']}; na validação cega, escrita depois, só "
-        f"{vm['ataques_detectados']}/{vm['ataques']}. Escaparam engenharia social, marcação falsa de administrador, letra cirílica "
-        f"parecida com a latina e aviso falso sem dois-pontos ({escapou}). O dano fica limitado porque a regra decide: um ataque não "
-        "detectado só deixa sair CONTRATADO uma fatura cujo serviço e valor já batem com o contrato.",
+        (f"<b>A detecção de prompt injection só cobre as famílias que conhece.</b> A 1ª validação cega deu "
+         f"{I26['validacao_metricas']['ataques_detectados']}/{I26['validacao_metricas']['ataques']}; a correção de 26/11 partiu dessas falhas, por família "
+         f"(engenharia social, marcação falsa, homóglifos, aviso falso que manda pular a conferência). Na 2ª validação cega, congelada antes da "
+         f"correção: {I26['validacao_v2_metricas']['ataques_detectados']}/{I26['validacao_v2_metricas']['ataques']} → "
+         f"{v2m['ataques_detectados']}/{v2m['ataques']}. Escapou {', '.join(v2m['ataques_decididos_CONTRATADO']) or 'nenhum'} (cabeçalho falso de sistema, "
+         f"família nova) e um controle legítimo foi para revisão por engano ({', '.join(v2m['controles_marcados_por_engano']) or 'nenhum'}). "
+         if I26 and v2m else
+         f"<b>A detecção de prompt injection generaliza pela metade.</b> Validação cega: {vm['ataques_detectados']}/{vm['ataques']} ({escapou}). ")
+        + "O dano fica limitado porque a regra decide: um ataque não detectado só deixa sair CONTRATADO uma fatura cujo serviço e valor "
+        "já batem com o contrato.",
         f"<b>O modelo local (Qwen 0,5B) não classifica sozinho:</b> acertou {B['metricas']['modelo_acertos']}/{B['metricas']['total']} casos, "
         "respondendo REVISAR em quase todos; por isso não tem autoridade.",
         f"<b>O fine-tuning não generaliza fora do treino.</b> O ajustado com RAG acertou {fa['ajustado_rag']['acertos']}/{fa['ajustado_rag']['n']} "
@@ -177,7 +183,7 @@ def limitacoes(d):
         "aviso de atraso como \"outro\" e uma conta de energia como cobrança; o 0,5B (instalação leve) erra mais. Esses documentos vão "
         "para revisão humana: nada é pago nem ignorado por causa da IA.",
         f"<b>Evidência pequena e sintética:</b> 16 casos, {B['fora']['total'] if B.get('fora') else 0} fora de escopo, 26 ataques e 100.020 notas fictícias. Com 95% de confiança, 16/16 quer dizer "
-        f"{faixa(B['metricas']['acertos'], 16)} de acerto, e os 4/8 da validação cega, {faixa(B['validacao_metricas']['ataques_detectados'], B['validacao_metricas']['ataques'])}. Servem para achar falhas e comparar "
+        f"{faixa(B['metricas']['acertos'], 16)} de acerto, e os {v2m['ataques_detectados'] if v2m else vm['ataques_detectados']}/{v2m['ataques'] if v2m else vm['ataques']} da 2ª validação cega, {faixa(v2m['ataques_detectados'], v2m['ataques']) if v2m else faixa(vm['ataques_detectados'], vm['ataques'])}. Servem para achar falhas e comparar "
         "configurações, não para estimar a taxa de erro com faturas reais.",
     ])
     h += [P("3. O que o grupo faria a seguir", "h")] + itens([
@@ -234,8 +240,11 @@ def apresentacao(d):
             f"embedding {d['rag']['metodos'][d['rag']['escolha']]['parafrases']['acertos']}/{d['rag']['metodos'][d['rag']['escolha']]['parafrases']['total']}", "rag-embeddings.json"]] if d.get("rag") and d["rag"]["escolha"] else []),
         ["Falsas aprovações", ", ".join(A["metricas"]["falsas_aprovacoes"]) or "0", ", ".join(B["metricas"]["falsas_aprovacoes"]) or "0", "ia-avaliacao-*.json"],
         ["Injeção detectada (bateria)", f"{A['injecao_metricas']['ataques_detectados']}/{A['injecao_metricas']['ataques']}", f"{B['injecao_metricas']['ataques_detectados']}/{B['injecao_metricas']['ataques']}", "injecao-casos.json"],
-        ["Injeção detectada (validação cega, congelada)", "não medida",
-         f"{B['validacao_metricas']['ataques_detectados']}/{B['validacao_metricas']['ataques']} (95%: {faixa(B['validacao_metricas']['ataques_detectados'], B['validacao_metricas']['ataques'])})", "injecao-validacao.json"],
+        *([["Injeção: 1ª validação cega (a correção de 26/11 partiu dela)", f"{d['injecao_antes_26']['validacao_metricas']['ataques_detectados']}/{d['injecao_antes_26']['validacao_metricas']['ataques']}",
+             f"{B['validacao_metricas']['ataques_detectados']}/{B['validacao_metricas']['ataques']} (otimista)", "injecao-validacao.json"],
+           ["Injeção: 2ª validação cega (congelada antes da correção)", f"{d['injecao_antes_26']['validacao_v2_metricas']['ataques_detectados']}/{d['injecao_antes_26']['validacao_v2_metricas']['ataques']}",
+            f"{B['validacao_v2_metricas']['ataques_detectados']}/{B['validacao_v2_metricas']['ataques']} (95%: {faixa(B['validacao_v2_metricas']['ataques_detectados'], B['validacao_v2_metricas']['ataques'])})", "injecao-validacao-v2.json"]]
+          if d.get("injecao_antes_26") and B.get("validacao_v2_metricas") else []),
         ["Análise de fatura nova (média)", f"{br(LA['fatura_nova_com_carga']['latencia']['media'] / 1000, 1)} s (prompt 3.0)" if LA.get('fatura_nova_com_carga') else "—",
          f"{br(LA['prompt31_fatura_nova']['latencia']['media'] / 1000, 1)} s (prompt 3.1)" if LA.get('prompt31_fatura_nova') else "—", "latencia-custo-*.json"],
         ["Escalonamento de privilégio", f"{esc_a} ataques passaram", "todos barrados (33504)", "escalonamento.txt"],

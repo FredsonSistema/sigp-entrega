@@ -1,5 +1,8 @@
 # SIGp: gestão de contas de internet de provedores (entrega acadêmica)
 
+[![testes](https://github.com/FredsonSistema/sigp-entrega/actions/workflows/testes.yml/badge.svg)](https://github.com/FredsonSistema/sigp-entrega/actions/workflows/testes.yml) Testes de unidade e links dos documentos a cada push, num Windows limpo (`.github/workflows/testes.yml`).
+
+
 Projeto de Inteligência Artificial · Segurança e Otimização de Banco de Dados. Integrantes e matrículas:
 [`docs/entrega-academica/identificacao.json`](docs/entrega-academica/identificacao.json).
 
@@ -31,7 +34,7 @@ Conferido pelo gerador: cada documento abaixo existe no repositório da entrega;
 | IA | Casos de teste com métrica e análise das falhas | [`ia/casos-de-teste-final.md`](docs/entrega-academica/ia/casos-de-teste-final.md) | 16/16 e 12/12 fora de escopo; acurácia, F1, matriz e intervalo de 95% |
 | IA | RAG (com embeddings) | [`ia/rag-embeddings.md`](docs/entrega-academica/ia/rag-embeddings.md) | embedding:embeddinggemma: 13/14 paráfrases |
 | IA | Fine-tuning: base, base + RAG, ajustado, ajustado + RAG; custo e latência; fora do treino | [`ia/finetuning/comparacao-final.md`](docs/entrega-academica/ia/finetuning/comparacao-final.md) | 4 configurações em 3 conjuntos (finais, fora de escopo, teste do treino) |
-| IA | Prompt injection testado e as defesas | [`ia/casos-de-teste-final.md`](docs/entrega-academica/ia/casos-de-teste-final.md) | bateria 13/13, validação cega 4/8, 8 camadas |
+| IA | Prompt injection testado e as defesas | [`ia/casos-de-teste-final.md`](docs/entrega-academica/ia/casos-de-teste-final.md) | bateria 13/13; 2ª validação cega 11/12; 8 camadas |
 | IA | Versionamento do prompt (qual fluxo usa qual) | [`ia/prompts/CHANGELOG.md`](docs/entrega-academica/ia/prompts/CHANGELOG.md) | análise de fatura v3.1; triagem v4.2 |
 | IA | Fluxo do n8n sem segredo | [`ia/segredos-n8n.md`](docs/entrega-academica/ia/segredos-n8n.md) | APROVADO |
 | BD | Papéis e permissões com DENY justificado | [`seguranca/matriz-permissoes.md`](docs/entrega-academica/seguranca/matriz-permissoes.md) | 23 DENY, cada um com motivo e teste |
@@ -41,7 +44,7 @@ Conferido pelo gerador: cada documento abaixo existe no repositório da entrega;
 | BD | Trilha 'quem fez o quê', protegida contra alteração | [`seguranca/trilha-auditoria.md`](docs/entrega-academica/seguranca/trilha-auditoria.md) | ledger: APROVADO |
 | BD | Auditoria do que a IA respondeu e a IA por perfil | [`seguranca/auditoria-e-ia-por-perfil.md`](docs/entrega-academica/seguranca/auditoria-e-ia-por-perfil.md) | APROVADO |
 | BD | Vulnerabilidades, restauração do backup e injeção de SQL | [`seguranca/avaliacao-vulnerabilidades.md`](docs/entrega-academica/seguranca/avaliacao-vulnerabilidades.md) | 25 regras passando, 0 falhas |
-| IA e BD | Histórico de falhas, correções e retestes | [`historico-evolucao.md`](docs/entrega-academica/historico-evolucao.md) | 49 itens |
+| IA e BD | Histórico de falhas, correções e retestes | [`historico-evolucao.md`](docs/entrega-academica/historico-evolucao.md) | 50 itens |
 | IA e BD | Mudanças desde a Entrega 2 | [`MUDANCAS-DESDE-ENTREGA-2.md`](docs/entrega-academica/MUDANCAS-DESDE-ENTREGA-2.md) | melhorado, corrigido e inalterado |
 | IA e BD | Respostas aos comentários da professora | [`README.md`](docs/entrega-academica/README.md) | 8 comentários |
 | IA e BD | Relatório de limitações (até 2 páginas) | [`relatorio-limitacoes.pdf`](docs/entrega-academica/relatorio-limitacoes.pdf) | gerado das evidências |

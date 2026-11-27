@@ -105,7 +105,30 @@ INJECTION_PATTERNS = tuple(re.compile(pattern) for pattern in (
     r"\b(notas|chaves?|registros|senhas?|todas as|todos os)\b",
     # instrução escondida
     r"\b(decodifique|decodificar|decode)\b",
+    # --- correção de 26/11, a partir das 4 falhas da 1ª validação cega (PI-V02, V03, V06, V08), por família ---
+    # engenharia social (PI-V02): aprovação anterior alegada por uma autoridade, pedido de só confirmar ou de não conferir
+    r"\bja (foi |esta |estao |foram )?(aprov|valid|autoriz|liber|conferid)\w*",
+    r"\b(aprovad|validad|autorizad|liberad)\w*\s+pel[oa]s?\s+(diretoria|diretor\w*|gerente\w*|gerencia|financeiro|chefia|"
+    r"chefe\w*|superior\w*|presidencia|administracao|administrador\w*)\b",
+    r"\b(apenas|basta|so|somente)\s+(confirm|aprov|valid|liber)\w*",
+    r"\bnao (precisa|e preciso|e necessario|ha necessidade)\s+(de\s+)?(conferir|verificar|checar|revisar|validar|analisar)\b",
+    # marcação falsa de administrador e saída forçada (PI-V03)
+    r"(\[\[|<<|\{\{).{0,40}\b(override|admin|root|sudo|system|sistema)\b",
+    r"\b(admin|administrador)[\s_-]*(override|mode|modo)\b",
+    r"\boverride\b",
+    r"\b(classification|classificacao|resultado|decisao)\b[\"']?\s*[:=]\s*[\"']?\s*(contratado|aprovado|divergente|revisar)\b",
+    # aviso falso que manda pular a conferência (PI-V08)
+    r"\b(pule|pular|pulem|dispense|dispensar|salte|saltar|desative|desativar|desligue|desligar|omita|omitir|deixe de|sem)\s+"
+    r"(a |o |as |os )?(verificac\w*|checagem|conferencia|validac\w*|revisao|checar|conferir|verificar)\b",
 ))
+# Homóglifos (PI-V06): letras cirílicas e gregas que parecem latinas, trocadas pela latina só para detectar.
+# Subconjunto das minúsculas da tabela de confundíveis do Unicode (o texto já passou por casefold).
+_CONFUNDIVEIS = str.maketrans({
+    "\u0430": "a", "\u0441": "c", "\u0435": "e", "\u04bb": "h", "\u0456": "i", "\u0458": "j", "\u043a": "k", "\u04cf": "l",
+    "\u043e": "o", "\u0440": "p", "\u051b": "q", "\u0455": "s", "\u0443": "y", "\u0445": "x", "\u051d": "w", "\u0475": "v",
+    "\u0501": "d", "\u0261": "g", "\u03b1": "a", "\u03b9": "i", "\u03ba": "k", "\u03bd": "v", "\u03bf": "o", "\u03c1": "p",
+    "\u03c5": "u", "\u03c7": "x", "\u03c4": "t", "\u03b5": "e",
+})
 # Caracteres invisíveis (categoria Cf: zero-width, BOM, marcas de direção) e troca de letras por números.
 _LEET = str.maketrans({"0": "o", "1": "i", "3": "e", "4": "a", "5": "s", "7": "t", "@": "a", "$": "s"})
 _LETRAS_SEPARADAS = re.compile(r"\b(?:[a-z] ){2,}[a-z]\b")
@@ -219,7 +242,7 @@ def _normalize_invoice(invoice: dict) -> dict:
 def _variants_for_detection(text: str) -> list[str]:
     """Formas do texto em que os padrões são procurados (só para detectar; o texto original segue igual)."""
     visible = "".join(char for char in text if unicodedata.category(char) != "Cf")
-    base = re.sub(r"\s+", " ", _normalise(visible))
+    base = re.sub(r"\s+", " ", _normalise(visible)).translate(_CONFUNDIVEIS)
     deleet = base.translate(_LEET)
     joined = _LETRAS_SEPARADAS.sub(lambda m: m.group(0).replace(" ", ""), deleet)
     variants = [base, deleet, joined]

@@ -15,7 +15,7 @@ Na Entrega 2 o SIGp abria como uma aba do navegador. Agora o atalho **SIGp** da 
 | IA: casos fora de escopo (novos) | não havia | 12/12, depois de corrigir a aprovação de fatura de outra unidade | [`ia/casos-fora-escopo.json`](ia/casos-fora-escopo.json) · [`ia/casos-de-teste-final.md`](ia/casos-de-teste-final.md) |
 | IA: RAG (fonte certa nas paráfrases) | busca por palavras, 7/14 | embedding embeddinggemma, 13/14 | [`ia/rag-embeddings.md`](ia/rag-embeddings.md) |
 | IA: tempo da análise de uma fatura nova | 31,3 s (prompt 3.0) | 3,1 s (prompt 3.1) | [`ia/finetuning/comparacao-final.md`](ia/finetuning/comparacao-final.md) |
-| IA: prompt injection detectado | 2/13 na bateria | 13/13 na bateria; 4/8 na validação cega (nova, congelada) | [`ia/casos-de-teste-final.md`](ia/casos-de-teste-final.md) |
+| IA: prompt injection detectado | 2/13 na bateria | 13/13 na bateria; 1ª validação cega 4/8 → 8/8 (otimista: a correção partiu dela); 2ª validação cega, congelada antes da correção, 4/12 → 11/12 | [`ia/casos-de-teste-final.md`](ia/casos-de-teste-final.md) |
 | IA: fine-tuning | medido só no teste do próprio treino | medido fora do treino: 7/16 nos casos finais e 6/12 fora de escopo (não generaliza) | [`ia/finetuning/comparacao-final.md`](ia/finetuning/comparacao-final.md) |
 | BD: consulta 1 (mediana) | 168,7 ms, 3.281 leituras | 25,3 ms, 13 leituras (resumo diário) | [`seguranca/otimizacao-consultas.md`](seguranca/otimizacao-consultas.md) |
 | BD: consulta 2 (mediana) | 54,4 ms, 4.956 leituras | 10,7 ms, 1.012 leituras (índice filtrado) | [`seguranca/otimizacao-consultas.md`](seguranca/otimizacao-consultas.md) |
@@ -89,7 +89,7 @@ Cada linha é um teste que **reprovou** na primeira execução, foi corrigido e 
 | Escopo | o local vem da credencial do serviço, não do pedido; RLS por local no banco | [`sqlserver/README.md`](sqlserver/README.md) |
 | Adaptador LoRA | o mesmo da Entrega 2 (não foi treinado de novo; só medido de novo); último commit do arquivo: 2026-11-14 | [`ia/finetuning/output/qwen2.5-0.5b-lora/adapter_model.safetensors`](ia/finetuning/output/qwen2.5-0.5b-lora/adapter_model.safetensors) |
 | Corpus do RAG | os mesmos 20 documentos fictícios (mudou a forma de buscar, não o conteúdo); último commit do arquivo: 2026-11-14 | [`ia/rag_documents.json`](ia/rag_documents.json) |
-| Validação cega da injeção | congelada por SHA-256 e nunca usada para ajustar; o resultado (4/8) é relatado como saiu; último commit do arquivo: 2026-11-20 | [`ia/injecao-validacao.json`](ia/injecao-validacao.json) |
+| Validações cegas da injeção | os dois conjuntos cegos, congelados por SHA-256, não foram editados (a correção de 26/11 partiu das falhas da 1ª; a 2ª foi congelada antes e nunca serviu para ajustar); último commit do arquivo: 2026-11-20 | [`ia/injecao-validacao.json`](ia/injecao-validacao.json) |
 | Regras de competência e vencimento | as regras do SIGp que definem a competência e o vencimento das notas não mudaram nesta etapa (a regra de decisão da IA ganhou uma verificação, H-46) | [`historico-evolucao.md`](historico-evolucao.md) |
 | Telas | as mesmas telas do SIGp; mudou só onde elas abrem (janela própria em vez de aba do navegador) | [`abrir-sigp.ps1`](../../abrir-sigp.ps1) |
 | Dados | base 100% fictícia no pacote e 100.020 notas sintéticas no banco acadêmico; nenhum dado real | [`entrega/base_ficticia.py`](../../entrega/base_ficticia.py) |

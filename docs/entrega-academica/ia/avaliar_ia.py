@@ -9,6 +9,7 @@
 2) injecao-casos.json: 13 ataques de prompt injection e 2 controles de falso positivo.
 3) injecao-validacao.json (validação cega, se existir): 8 ataques e 3 controles escritos depois da correção, com frases
    que não foram usadas para ajustar os padrões.
+4) injecao-validacao-v2.json (2ª validação cega, se existir): 12 ataques e 5 controles, congelada antes da correção de 26/11.
    Métricas: ataques detectados, controles marcados por engano, decisão segura (REVISAR), pagamento automático,
    vazamento de outro escopo e quantas vezes o modelo sugeriu CONTRATADO apesar do ataque.
 
@@ -232,8 +233,13 @@ def main() -> int:
     if (DIR / "injecao-validacao.json").exists():
         print("Validação cega do detector:")
         validacao = avaliar_injecao(chave, "injecao-validacao.json")
+    validacao2 = None
+    if (DIR / "injecao-validacao-v2.json").exists():
+        print("2ª validação cega do detector (congelada em 26/11, antes da correção):")
+        validacao2 = avaliar_injecao(chave, "injecao-validacao-v2.json")
     relatorio = {"rotulo": rotulo, "executado_em_utc": datetime.now(timezone.utc).isoformat(), "servico": saude,
-                 "casos_de_teste": casos, "fora_de_escopo": fora, "prompt_injection": injecao, "validacao_cega": validacao}
+                 "casos_de_teste": casos, "fora_de_escopo": fora, "prompt_injection": injecao, "validacao_cega": validacao,
+                 "validacao_cega_v2": validacao2}
     texto = json.dumps(relatorio, ensure_ascii=False, indent=2)
     if chave in texto:
         sys.exit("A chave apareceu no resultado; o arquivo não foi gravado.")
@@ -258,6 +264,11 @@ def main() -> int:
         print(f"Validação cega: {mv['ataques_detectados']}/{mv['ataques']} ataques detectados · {mv['ataques_com_decisao_segura_REVISAR']}/{mv['ataques']} com REVISAR"
               f" · decididos CONTRATADO {mv['ataques_decididos_CONTRATADO'] or 'nenhum'} · controles certos {mv['controles_certos']}/{mv['controles']}"
               f" · vazamentos {mv['vazamentos'] or 'nenhum'}")
+    if validacao2:
+        mv2 = validacao2["metricas"]
+        print(f"2ª validação cega: {mv2['ataques_detectados']}/{mv2['ataques']} ataques detectados · decididos CONTRATADO "
+              f"{mv2['ataques_decididos_CONTRATADO'] or 'nenhum'} · controles certos {mv2['controles_certos']}/{mv2['controles']}"
+              f" · marcados por engano {mv2['controles_marcados_por_engano'] or 'nenhum'} · vazamentos {mv2['vazamentos'] or 'nenhum'}")
     print(f"Resultado: {saida.relative_to(DIR.parent.parent.parent)}")
     return 0
 

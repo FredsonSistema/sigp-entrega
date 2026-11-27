@@ -55,11 +55,11 @@ Documento gerado por `ia/medir_rag_embeddings.py documento` a partir de [`sqlser
 
 ## Avaliação completa da IA com o embedding ligado (critério 1)
 
-| Rodada | Modelo de embedding | Casos aprovados | Decisão certa | Falsas aprovações | Injeção detectada | Validação cega | Latência média |
+| Rodada | Modelo de embedding | Casos aprovados | Decisão certa | Falsas aprovações | Injeção detectada | 1ª validação cega | Latência média |
 |---|---|---:|---:|---:|---:|---:|---:|
 | lexical (prompt v3.1) ([`ia-avaliacao-prompt-v31.json`](../sqlserver/evidence/parte3/ia-avaliacao-prompt-v31.json)) | — | 16/16 | 16/16 | 0 | 13/13 | 4/8 | 3572 ms |
 | embedding ligado ([`ia-avaliacao-rag-embeddings.json`](../sqlserver/evidence/parte3/ia-avaliacao-rag-embeddings.json)) | embeddinggemma | 16/16 | 16/16 | 0 | 13/13 | 4/8 | 3623 ms |
-| final (embedding + regra de outra unidade) ([`ia-avaliacao-final.json`](../sqlserver/evidence/parte3/ia-avaliacao-final.json)) | embeddinggemma | 16/16 | 16/16 | 0 | 13/13 | 4/8 | 4595 ms |
+| final (embedding + regra de outra unidade + detector de 26/11) ([`ia-avaliacao-final.json`](../sqlserver/evidence/parte3/ia-avaliacao-final.json)) | embeddinggemma | 16/16 | 16/16 | 0 | 13/13 | 8/8 | 4741 ms |
 
 ## Onde fica no sistema
 

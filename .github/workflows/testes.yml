@@ -1,0 +1,26 @@
+# Testes do repositório da entrega, a cada push (GitHub Actions). Copiado para .github/workflows/testes.yml pelo
+# entrega/montar-entrega.ps1. Roda no Windows, como a máquina de quem instala o pacote; não precisa de Docker:
+# são os testes de unidade (API, IA acadêmica com o modelo simulado, workflows, conjuntos congelados, pacote = avaliação)
+# e a conferência dos links dos documentos.
+name: testes
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  unidade:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    env:
+      PYTHONIOENCODING: utf-8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - name: Dependências
+        run: python -m pip install -r requirements.txt
+      - name: Testes de unidade e links dos documentos
+        run: python -W ignore -m unittest discover -s tests -v

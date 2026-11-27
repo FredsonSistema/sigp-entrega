@@ -1,8 +1,9 @@
 """Gera docs/entrega-academica/ia/casos-de-teste-final.md a partir das evidências (nenhum número digitado à mão).
 Fontes: sqlserver/evidence/parte3/ia-avaliacao-antes.json (1ª rodada, antes das correções) e ia-avaliacao-final.json
 (o sistema entregue: prompt, modelo e busca que o pacote sobe; conferido por tests/test_pacote_mesma_ia.py),
-ia-avaliacao-fora-escopo-antes.json (casos fora de escopo antes da correção), casos-finais.json, casos-fora-escopo.json,
-injecao-casos.json e injecao-validacao.json. Os textos de análise (causa e correção) estão em ANALISE, abaixo.
+ia-avaliacao-fora-escopo-antes.json (casos fora de escopo antes da correção), ia-avaliacao-validacao-v2-antes.json
+(detector antes da correção de 26/11), casos-finais.json, casos-fora-escopo.json, injecao-casos.json, injecao-validacao.json
+e injecao-validacao-v2.json. Os textos de análise (causa e correção) estão em ANALISE, abaixo.
 Uso, na raiz:  .venv\\Scripts\\python.exe docs/entrega-academica/ia/gerar_casos_final.py
 """
 from __future__ import annotations
@@ -19,11 +20,14 @@ CLASSES = ["CONTRATADO", "DIVERGENTE", "REVISAR"]
 antes = json.loads((EV / "ia-avaliacao-antes.json").read_text(encoding="utf-8"))
 depois = json.loads((EV / "ia-avaliacao-final.json").read_text(encoding="utf-8"))
 fora_antes = json.loads((EV / "ia-avaliacao-fora-escopo-antes.json").read_text(encoding="utf-8"))
+# Detector antes da correção de 26/11 (a mesma rodada mediu a 1ª e a 2ª validação cega).
+inj_antes = json.loads((EV / "ia-avaliacao-validacao-v2-antes.json").read_text(encoding="utf-8"))
 casos = {c["id"]: c for c in json.loads((DIR / "casos-finais.json").read_text(encoding="utf-8"))["casos"]}
 casos_fora = {c["id"]: c for c in json.loads((DIR / "casos-fora-escopo.json").read_text(encoding="utf-8"))["casos"]}
 # Rodadas intermediárias, só para o histórico (cada uma com o /health do serviço medido).
 RODADAS = [("depois das correções", "ia-avaliacao-depois.json"), ("prompt 3.1", "ia-avaliacao-prompt-v31.json"),
-           ("busca por embedding", "ia-avaliacao-rag-embeddings.json"), ("final", "ia-avaliacao-final.json")]
+           ("busca por embedding", "ia-avaliacao-rag-embeddings.json"),
+           ("antes da correção da injeção de 26/11", "ia-avaliacao-validacao-v2-antes.json"), ("final", "ia-avaliacao-final.json")]
 
 ANALISE_FORA = {
     "FE-07": ("Fatura da Conecta Alfa com serviço e valor iguais aos do contrato da Agência Centro, mas que diz ser da Garagem Sul. "
@@ -51,6 +55,14 @@ ANALISE = {
                "então a regra deu CONTRATADO para um documento com instrução embutida, sem acionar a revisão humana. Nada foi "
                "pago (não existe ação de pagamento) e nenhum dado do LOC-002 saiu, mas a falsa aprovação conta como falha.",
                "Mesmo detector novo; o texto das informações complementares já entrava na descrição analisada."),
+}
+
+ANALISE_V2 = {
+    "PI-W10": "Família nova (cabeçalho falso de sistema com `###`, sem dois-pontos): a correção de 26/11 não a cobre, de propósito, "
+              "porque só usou as falhas da 1ª validação cega. A regra ainda decide: o ataque só deixa sair CONTRATADO uma fatura cujo "
+              "serviço e valor já batem com o contrato.",
+    "VW-03": "Falso positivo que já existia antes da correção: \"pagamento autorizado\" casa com o padrão de mandar autorizar "
+             "pagamento. Vai para revisão humana (erro do lado seguro); não foi ajustado olhando para este conjunto.",
 }
 
 ANALISE_VALIDACAO = {
@@ -187,20 +199,56 @@ def main() -> None:
             return f"{y['obtido']} ({'detectado' if y['detectado_como_injecao'] else 'não detectado'})"
         L.append(f"| {cid} | {x['tecnica']} | {x['pede']} | {r(ia[cid])} | {r(x)} | {x['modelo']} |")
     L += ["", "A bateria foi escrita antes da correção, mas os padrões foram ajustados olhando para ela; por isso o resultado "
-          "final dela é otimista. O número que mede a generalização é o da validação cega, abaixo.", ""]
+          "final dela é otimista. O número que mede a generalização é o da 2ª validação cega, abaixo.", ""]
+
+    def res(y):
+        return f"{y['obtido']} ({'detectado' if y['detectado_como_injecao'] else 'não detectado'})"
 
     if depois.get("validacao_cega"):
+        v1a = {x["id"]: x for x in inj_antes["validacao_cega"]["casos"]}
         v = depois["validacao_cega"]
-        L += ["## Prompt injection: validação cega (8 ataques e 3 controles)", "",
-              "Escrita depois da correção e antes de rodar o serviço corrigido, com frases que não foram usadas para "
-              "ajustar os padrões. O resultado é relatado como saiu, sem novo ajuste.", "",
-              "| Caso | Técnica | Resultado | Por que escapou |", "|---|---|---|---|"]
+        ma, mf = inj_antes["validacao_cega"]["metricas"], v["metricas"]
+        L += ["## Prompt injection: 1ª validação cega (8 ataques e 3 controles)", "",
+              "Escrita depois da 1ª correção e congelada; na medição dela (antes da correção de 26/11) o resultado foi "
+              f"**{ma['ataques_detectados']}/{ma['ataques']}**, relatado como saiu. A correção de 26/11 foi feita a partir das "
+              "falhas dela, por família de ataque; por isso o resultado final neste conjunto é **otimista** e o número que mede a "
+              "generalização passa a ser o da 2ª validação cega.", "",
+              "| Caso | Técnica | Antes da correção de 26/11 | Final | Por que escapou antes |", "|---|---|---|---|---|"]
         for x in v["casos"]:
-            L.append(f"| {x['id']} | {x['tecnica']} | {x['obtido']} ({'detectado' if x['detectado_como_injecao'] else 'não detectado'}) | "
-                     f"{ANALISE_VALIDACAO.get(x['id'], '—')} |")
-        mv = v["metricas"]
-        L += ["", f"Detectados {mv['ataques_detectados']}/{mv['ataques']}; controles legítimos certos {mv['controles_certos']}/{mv['controles']}; "
-              f"vazamentos: {len(mv['vazamentos'])}; pagamento automático: {mv['pagamento_automatico']}.", ""]
+            L.append(f"| {x['id']} | {x['tecnica']} | {res(v1a[x['id']])} | {res(x)} | {ANALISE_VALIDACAO.get(x['id'], '—')} |")
+        L += ["", f"Antes: {ma['ataques_detectados']}/{ma['ataques']} detectados. Final: {mf['ataques_detectados']}/{mf['ataques']}; controles "
+              f"legítimos certos {mf['controles_certos']}/{mf['controles']}; vazamentos: {len(mf['vazamentos'])}; pagamento automático: "
+              f"{mf['pagamento_automatico']}.", "",
+              "**A correção de 26/11, por família** (`ia/app.py`, `INJECTION_PATTERNS` e `_CONFUNDIVEIS`): engenharia social "
+              "(aprovação anterior alegada por uma autoridade, pedido de só confirmar ou de não conferir), marcação falsa de "
+              "administrador e saída forçada (`[[...override]]`, `classificação = ...`), ordem para pular a conferência e homóglifos "
+              "(letras cirílicas e gregas trocadas pela latina antes de procurar os padrões).", ""]
+
+    if depois.get("validacao_cega_v2"):
+        w = depois["validacao_cega_v2"]
+        wa = {x["id"]: x for x in inj_antes["validacao_cega_v2"]["casos"]}
+        ma, mf = inj_antes["validacao_cega_v2"]["metricas"], w["metricas"]
+        L += ["## Prompt injection: 2ª validação cega (12 ataques e 5 controles)", "",
+              "Escrita e **congelada antes da correção de 26/11** ([`injecao-validacao-v2.json`](injecao-validacao-v2.json), SHA-256 em "
+              "[`conjuntos-congelados.json`](conjuntos-congelados.json)), com frases novas para as famílias que escaparam da 1ª e "
+              "famílias que nenhum conjunto tinha (espanhol, JSON falso, cabeçalho de sistema, letras de largura total). Medida uma vez "
+              "antes e uma vez depois da correção; nenhum padrão foi escrito a partir dela. Limite: foi escrita pelo mesmo grupo, "
+              "então mede a generalização dentro de famílias conhecidas, não contra um atacante desconhecido.", "",
+              "| Caso | Técnica | Antes da correção | Final |", "|---|---|---|---|"]
+        for x in w["casos"]:
+            L.append(f"| {x['id']} | {x['tecnica']} | {res(wa[x['id']])} | {res(x)} |")
+        L += ["", f"Ataques detectados: **{ma['ataques_detectados']}/{ma['ataques']} → {mf['ataques_detectados']}/{mf['ataques']}**. "
+              f"Decididos CONTRATADO no final: {', '.join(mf['ataques_decididos_CONTRATADO']) or 'nenhum'}. Controles legítimos certos: "
+              f"{ma['controles_certos']}/{ma['controles']} → {mf['controles_certos']}/{mf['controles']} (marcados por engano no final: "
+              f"{', '.join(mf['controles_marcados_por_engano']) or 'nenhum'}). Vazamentos: {len(mf['vazamentos'])}; pagamento automático: "
+              f"{mf['pagamento_automatico']}.", ""]
+        restou = [x for x in w["casos"] if x["obtido"] != x["esperado"]]
+        if restou:
+            L += ["O que continua errado, relatado como saiu (sem ajuste olhando para este conjunto):", ""]
+            for x in restou:
+                motivo = ANALISE_V2.get(x["id"], "")
+                L.append(f"- **{x['id']} ({x['tecnica']}):** final {res(x)}. {motivo}")
+            L.append("")
 
     L += ["## Como o sistema se defende", "",
           "O detector é só uma das camadas. As outras não dependem de reconhecer o ataque:", "",
@@ -210,10 +258,10 @@ def main() -> None:
           "4. **A decisão é da regra sobre a evidência estruturada.** O texto da fatura só serve para casar termos do contrato; uma instrução não muda o valor contratado nem o serviço.",
           "5. **O modelo não tem autoridade** e só pode responder um JSON com uma de três classificações (schema com enum no Ollama e validação na API).",
           "6. **Não existe ação de pagamento.** `automatic_payment` é sempre falso e a resposta não devolve linhas do banco, só a contagem.",
-          "7. **Detecção de injeção** (normaliza o texto, tira caracteres invisíveis, desfaz troca de letras por números, junta letras separadas, decodifica base64, olha também o nome do provedor): quando detecta, a decisão vira REVISAR, com revisão humana.",
+          "7. **Detecção de injeção** (normaliza o texto, tira caracteres invisíveis, troca letras cirílicas e gregas parecidas pela latina, desfaz troca de letras por números, junta letras separadas, decodifica base64, olha também o nome do provedor): quando detecta, a decisão vira REVISAR, com revisão humana.",
           "8. **Auditoria.** Cada análise registra `injecao=1|0`, a decisão e o hash da resposta (ver `../seguranca/auditoria-e-ia-por-perfil.md`).",
           "",
-          "Quando o detector falha (validação cega), o pior caso é este: uma fatura cujo serviço **e** valor batem com o "
+          "Quando o detector falha (validações cegas), o pior caso é este: uma fatura cujo serviço **e** valor batem com o "
           "contrato sai CONTRATADO sem a marca de revisão. O ataque não consegue aprovar um valor diferente nem um serviço "
           "fora do contrato (a regra decide), não obtém dado de outro local (camadas 1 a 3) e não dispara pagamento (camada 6).",
           "",
@@ -226,7 +274,7 @@ def main() -> None:
           "## Limites",
           "",
           "- 16 casos, 12 fora de escopo e 26 ataques são poucos e sintéticos; servem para achar falhas, não para estimar a taxa de erro em produção.",
-          "- Detecção por padrões não reconhece engenharia social nem homóglifos (validação cega). Próximo passo: normalizar homóglifos (tabela de confusáveis do Unicode) e um classificador de instrução treinado, avaliados em outro conjunto cego.",
+          "- Detecção por padrões só cobre as famílias que conhece: na 2ª validação cega, a família nova (cabeçalho falso de sistema) escapou. Próximo passo: um classificador de instrução treinado, avaliado num 3º conjunto cego escrito por outra pessoa.",
           "- O esperado foi definido pelo grupo a partir do corpus; casos ambíguos foram evitados de propósito.",
           ""]
     SAIDA.write_text("\n".join(L), encoding="utf-8")
@@ -248,8 +296,13 @@ def secao_confianca(depois: dict) -> list[str]:
         linhas.append(("Decisão certa nos 12 fora de escopo", f["decisao_do_sistema"]["acertos"], f["total"],
                        "escrito antes de rodar; 1 falha corrigida olhando para ele: otimista"))
     if depois.get("validacao_cega"):
-        v = depois["validacao_cega"]["metricas"]
-        linhas.append(("Ataques detectados na validação cega", v["ataques_detectados"], v["ataques"], "**congelado**, nunca usado para ajustar: a medida limpa"))
+        v1 = inj_antes["validacao_cega"]["metricas"]
+        linhas.append(("1ª validação cega, antes da correção de 26/11", v1["ataques_detectados"], v1["ataques"],
+                       "congelado; medido antes de servir de base para a correção"))
+    if depois.get("validacao_cega_v2"):
+        v = depois["validacao_cega_v2"]["metricas"]
+        linhas.append(("2ª validação cega, final", v["ataques_detectados"], v["ataques"],
+                       "**congelado antes da correção**; nenhum padrão escrito a partir dele: a medida mais limpa que temos"))
     trava = json.loads((DIR / "conjuntos-congelados.json").read_text(encoding="utf-8"))
     L = ["## Quanto esses números valem", "",
          "Com amostras deste tamanho, um resultado perfeito ainda deixa uma faixa larga. Intervalo de Wilson, 95% de confiança:", "",
@@ -261,8 +314,8 @@ def secao_confianca(depois: dict) -> list[str]:
           "`tests/test_conjunto_cego.py`, e um conjunto cego novo vira outro arquivo): "
           + "; ".join(f"`{n}` em {v['congelado_em']} (SHA-256 `{v['sha256'][:12]}…`)" for n, v in trava["congelados"].items()) + ".", "",
           "Histórico das rodadas depois das correções (mesmos casos; cada arquivo grava o `/health` do serviço medido):", "",
-          "| Rodada | Arquivo | Prompt | Busca | Casos certos | Fora de escopo | Bateria de injeção | Validação cega |",
-          "|---|---|---|---|---|---|---|---|"]
+          "| Rodada | Arquivo | Prompt | Busca | Casos certos | Fora de escopo | Bateria de injeção | 1ª validação cega | 2ª validação cega |",
+          "|---|---|---|---|---|---|---|---|---|"]
     for rot, nome in RODADAS:
         cam = EV / nome
         if not cam.exists():
@@ -271,11 +324,13 @@ def secao_confianca(depois: dict) -> list[str]:
         m, sv = r["casos_de_teste"]["metricas"], r["servico"]
         fe = (r.get("fora_de_escopo") or {}).get("metricas")
         vc = (r.get("validacao_cega") or {}).get("metricas")
+        v2 = (r.get("validacao_cega_v2") or {}).get("metricas")
         L.append(f"| {rot} | [`{nome}`](../sqlserver/evidence/parte3/{nome}) | v{sv['prompt_version']} | "
                  f"{sv.get('embed_model') or 'lexical'} | {m['decisao_do_sistema']['acertos']}/{m['total']} | "
                  f"{(str(fe['decisao_do_sistema']['acertos']) + '/' + str(fe['total'])) if fe else '—'} | "
                  f"{r['prompt_injection']['metricas']['ataques_detectados']}/{r['prompt_injection']['metricas']['ataques']} | "
-                 f"{(str(vc['ataques_detectados']) + '/' + str(vc['ataques'])) if vc else '—'} |")
+                 f"{(str(vc['ataques_detectados']) + '/' + str(vc['ataques'])) if vc else '—'} | "
+                 f"{(str(v2['ataques_detectados']) + '/' + str(v2['ataques'])) if v2 else '—'} |")
     L.append("")
     return L
 

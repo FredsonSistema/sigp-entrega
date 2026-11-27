@@ -39,7 +39,7 @@ Conferido pelo gerador: cada documento abaixo existe no repositório da entrega;
 | IA | Casos de teste com métrica e análise das falhas | [`ia/casos-de-teste-final.md`](ia/casos-de-teste-final.md) | 16/16 e 12/12 fora de escopo; acurácia, F1, matriz e intervalo de 95% |
 | IA | RAG (com embeddings) | [`ia/rag-embeddings.md`](ia/rag-embeddings.md) | embedding:embeddinggemma: 13/14 paráfrases |
 | IA | Fine-tuning: base, base + RAG, ajustado, ajustado + RAG; custo e latência; fora do treino | [`ia/finetuning/comparacao-final.md`](ia/finetuning/comparacao-final.md) | 4 configurações em 3 conjuntos (finais, fora de escopo, teste do treino) |
-| IA | Prompt injection testado e as defesas | [`ia/casos-de-teste-final.md`](ia/casos-de-teste-final.md) | bateria 13/13, validação cega 4/8, 8 camadas |
+| IA | Prompt injection testado e as defesas | [`ia/casos-de-teste-final.md`](ia/casos-de-teste-final.md) | bateria 13/13; 2ª validação cega 11/12; 8 camadas |
 | IA | Versionamento do prompt (qual fluxo usa qual) | [`ia/prompts/CHANGELOG.md`](ia/prompts/CHANGELOG.md) | análise de fatura v3.1; triagem v4.2 |
 | IA | Fluxo do n8n sem segredo | [`ia/segredos-n8n.md`](ia/segredos-n8n.md) | APROVADO |
 | BD | Papéis e permissões com DENY justificado | [`seguranca/matriz-permissoes.md`](seguranca/matriz-permissoes.md) | 23 DENY, cada um com motivo e teste |
@@ -49,7 +49,7 @@ Conferido pelo gerador: cada documento abaixo existe no repositório da entrega;
 | BD | Trilha 'quem fez o quê', protegida contra alteração | [`seguranca/trilha-auditoria.md`](seguranca/trilha-auditoria.md) | ledger: APROVADO |
 | BD | Auditoria do que a IA respondeu e a IA por perfil | [`seguranca/auditoria-e-ia-por-perfil.md`](seguranca/auditoria-e-ia-por-perfil.md) | APROVADO |
 | BD | Vulnerabilidades, restauração do backup e injeção de SQL | [`seguranca/avaliacao-vulnerabilidades.md`](seguranca/avaliacao-vulnerabilidades.md) | 25 regras passando, 0 falhas |
-| IA e BD | Histórico de falhas, correções e retestes | [`historico-evolucao.md`](historico-evolucao.md) | 49 itens |
+| IA e BD | Histórico de falhas, correções e retestes | [`historico-evolucao.md`](historico-evolucao.md) | 50 itens |
 | IA e BD | Mudanças desde a Entrega 2 | [`MUDANCAS-DESDE-ENTREGA-2.md`](MUDANCAS-DESDE-ENTREGA-2.md) | melhorado, corrigido e inalterado |
 | IA e BD | Respostas aos comentários da professora | [`README.md`](README.md) | 8 comentários |
 | IA e BD | Relatório de limitações (até 2 páginas) | [`relatorio-limitacoes.pdf`](relatorio-limitacoes.pdf) | gerado das evidências |

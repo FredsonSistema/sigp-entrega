@@ -173,7 +173,7 @@ details.item .corpo b{color:var(--txt);font-weight:600}
   <div class="tw"><table><thead><tr><th>Caso</th><th>Técnica</th><th>Pede</th><th>Antes</th><th>Final</th><th>Modelo</th></tr></thead><tbody id="tabInj"></tbody></table></div>
   <h3>Por que um ataque não detectado ainda não aprova nada</h3>
   <ol class="camadas" id="camadas"></ol>
-  <div class="fonte">Fonte: <code>ia/injecao-casos.json</code>, <code>ia/injecao-validacao.json</code> e as avaliações em <code>sqlserver/evidence/parte3/</code></div>
+  <div class="fonte">Fonte: <code>ia/injecao-casos.json</code>, <code>ia/injecao-validacao.json</code>, <code>ia/injecao-validacao-v2.json</code> e as avaliações em <code>sqlserver/evidence/parte3/</code></div>
 </section>
 
 <section id="ft" data-titulo="Fine-tuning">
@@ -294,7 +294,8 @@ $('#kpis').innerHTML = [
   kpi('Ataques de injeção detectados', `${A.injecao_metricas.ataques_detectados}/${A.injecao_metricas.ataques}`, `${B.injecao_metricas.ataques_detectados}/${B.injecao_metricas.ataques}`, 'bateria (13 técnicas)'),
   ...(B.fora ? [kpi('Casos fora de escopo', null, `${B.fora.acertos}/${B.fora.total}`, `falsas aprovações: ${B.fora.falsas_aprovacoes.length}`)] : []),
   ...(D.rag && D.rag.escolha ? [kpi('RAG: paráfrases com a fonte certa', `${D.rag.metodos.lexical.parafrases.acertos}/${D.rag.metodos.lexical.parafrases.total}`, `${D.rag.metodos[D.rag.escolha].parafrases.acertos}/${D.rag.metodos[D.rag.escolha].parafrases.total}`, 'lexical → embedding')] : []),
-  kpi('Validação cega da injeção', null, `${B.validacao_metricas.ataques_detectados}/${B.validacao_metricas.ataques}`, 'frases novas, sem ajuste: o número honesto', 'warn'),
+  B.validacao_v2_metricas && D.injecao_antes_26 ? kpi('2ª validação cega da injeção', `${D.injecao_antes_26.validacao_v2_metricas.ataques_detectados}/${D.injecao_antes_26.validacao_v2_metricas.ataques}`, `${B.validacao_v2_metricas.ataques_detectados}/${B.validacao_v2_metricas.ataques}`, 'congelada antes da correção: o número honesto', 'warn')
+    : kpi('Validação cega da injeção', null, `${B.validacao_metricas.ataques_detectados}/${B.validacao_metricas.ataques}`, 'frases novas, sem ajuste', 'warn'),
   kpi('Escalonamento de privilégio', `${escAntes} passaram`, `${escDepois}/${S.escalonamento.filter((x) => x.fase === 'depois').length} OK`, 'operador gravava no local de outro'),
   kpi('Trilha de auditoria', `${tAntes} falhas`, `${tDepois}/${(S.trilha.depois || []).length}`, 'quem fez o quê, sem como forjar'),
   S.ledger ? kpi('Trilha à prova de adulteração', `sa apagou ${S.ledger.antes.DELETE ?? '?'}`, S.ledger.resultado === 'APROVADO' ? 'ninguém altera' : S.ledger.resultado, 'ledger do SQL Server 2022; digest no Git', S.ledger.resultado === 'APROVADO' ? '' : 'bad') : '',
@@ -318,7 +319,7 @@ const marcos = [
   ['Entrega 2 · LoRA no teste do treino', `Acerto ${br(L.treino_lora.base * 100, 0)}% → ${br(L.treino_lora.ajustado * 100, 0)}% (F1 ${br(L.treino_lora.f1_base, 3)} → ${br(L.treino_lora.f1_ajustado, 3)}), ${L.treino_lora.exemplos_treino} exemplos, ${br(L.treino_lora.segundos / 60, 0)} min em CPU.`],
   ['Produção · alertas pela IA (prompt v5.0)', `${L.wf06_alertas.llm_aceitas} de ${L.wf06_alertas.cenarios} cenários com o texto da LLM aceito pela checagem; ${L.wf06_alertas.texto_padrao} caiu no texto fixo (${esc(L.wf06_alertas.modelo)}).`],
   ['Final · 16 casos, antes das correções', `Decisão certa ${A.metricas.acertos}/16; falsa aprovação em ${A.metricas.falsas_aprovacoes.join(', ') || 'nenhum'}; injeção detectada ${A.injecao_metricas.ataques_detectados}/${A.injecao_metricas.ataques}.`],
-  ['Final · depois das correções', `Decisão certa ${B.metricas.acertos}/16, nenhuma falsa aprovação, injeção ${B.injecao_metricas.ataques_detectados}/${B.injecao_metricas.ataques}; validação cega ${B.validacao_metricas.ataques_detectados}/${B.validacao_metricas.ataques}.`],
+  ['Final · depois das correções', `Decisão certa ${B.metricas.acertos}/16, nenhuma falsa aprovação, injeção ${B.injecao_metricas.ataques_detectados}/${B.injecao_metricas.ataques}; 1ª validação cega ${B.validacao_metricas.ataques_detectados}/${B.validacao_metricas.ataques} (otimista)${B.validacao_v2_metricas ? `; 2ª validação cega, congelada antes da correção, ${B.validacao_v2_metricas.ataques_detectados}/${B.validacao_v2_metricas.ataques}` : ""}.`],
   ['Final · o modelo sozinho', `O Qwen 0,5B acertou ${B.metricas.modelo_acertos}/16 respondendo REVISAR em quase tudo: sozinho, não classifica.`],
   ...(D.rag && D.rag.escolha ? [['Final · RAG com embeddings', `Fonte certa nas paráfrases: lexical ${D.rag.metodos.lexical.parafrases.acertos}/${D.rag.metodos.lexical.parafrases.total} → ${D.rag.escolha.split(':')[1]} ${D.rag.metodos[D.rag.escolha].parafrases.acertos}/${D.rag.metodos[D.rag.escolha].parafrases.total}, sem perder caso final; ligado no sistema entregue.`]] : []),
   ...(B.fora ? [['Final · fora de escopo', `${B.fora.acertos}/${B.fora.total} depois de corrigir uma falsa aprovação (fatura de outra unidade aprovada com o contrato da Agência Centro).`]] : []),
@@ -376,18 +377,20 @@ $('#tabCasos').addEventListener('click', (e) => {
 desenhaCasos();
 
 /* ---------- injeção */
-const im = B.injecao_metricas, vm = B.validacao_metricas, ia = A.injecao_metricas;
+const im = B.injecao_metricas, vm = B.validacao_metricas, ia = A.injecao_metricas, I26 = D.injecao_antes_26, vm2 = B.validacao_v2_metricas;
 $('#kpiInj').innerHTML = [kpi('Bateria: detectados', `${ia.ataques_detectados}/${ia.ataques}`, `${im.ataques_detectados}/${im.ataques}`, 'otimista: os padrões foram ajustados olhando a bateria'),
-  kpi('Validação cega: detectados', null, `${vm.ataques_detectados}/${vm.ataques}`, `escaparam ${vm.ataques_decididos_CONTRATADO.join(', ')}`, 'warn'),
+  kpi('1ª validação cega', I26 ? `${I26.validacao_metricas.ataques_detectados}/${I26.validacao_metricas.ataques}` : null, `${vm.ataques_detectados}/${vm.ataques}`, 'otimista: a correção de 26/11 partiu das falhas dela'),
+  ...(vm2 ? [kpi('2ª validação cega (congelada antes)', I26 ? `${I26.validacao_v2_metricas.ataques_detectados}/${I26.validacao_v2_metricas.ataques}` : null, `${vm2.ataques_detectados}/${vm2.ataques}`, `escapou ${vm2.ataques_decididos_CONTRATADO.join(', ') || 'nenhum'}; controle por engano ${vm2.controles_marcados_por_engano.join(', ') || 'nenhum'}`, 'warn')] : []),
   kpi('Vazamentos e pagamentos automáticos', null, `${im.vazamentos.length + vm.vazamentos.length} · ${im.pagamento_automatico}`, `controles legítimos certos: ${im.controles_certos}/${im.controles} e ${vm.controles_certos}/${vm.controles}`)].join('');
 let conjInj = 'bateria';
 function desenhaInj() {
   const res = (x) => x ? `${pill(x.obtido, corClasse(x.obtido))} ${x.detectado_como_injecao ? pill('detectado', 'ok') : x.ataque ? pill('não detectado', 'bad') : pill('controle', 'info')}` : '—';
-  const lista = conjInj === 'bateria' ? B.injecao : B.validacao;
-  $('#tabInj').innerHTML = lista.map((x) => { const a = conjInj === 'bateria' ? A.injecao.find((y) => y.id === x.id) : null;
-    return `<tr><td class="mono">${esc(x.id)}</td><td>${esc(x.tecnica)}</td><td>${esc(x.pede)}</td><td>${conjInj === 'bateria' ? res(a) : '<span class="nota">não medida</span>'}</td><td>${res(x)}</td><td>${pill(x.modelo || '—')}</td></tr>`; }).join('');
+  const lista = conjInj === 'bateria' ? B.injecao : conjInj === 'cega' ? B.validacao : B.validacao_v2;
+  const antesDe = (x) => conjInj === 'bateria' ? A.injecao.find((y) => y.id === x.id) : I26 ? (conjInj === 'cega' ? I26.validacao : I26.validacao_v2).find((y) => y.id === x.id) : null;
+  $('#tabInj').innerHTML = lista.map((x) => { const a = antesDe(x);
+    return `<tr><td class="mono">${esc(x.id)}</td><td>${esc(x.tecnica)}</td><td>${esc(x.pede)}</td><td>${a ? res(a) : '<span class="nota">não medida</span>'}</td><td>${res(x)}</td><td>${pill(x.modelo || '—')}</td></tr>`; }).join('');
 }
-segmento('#segInj', [['bateria', 'Bateria (13 + 2 controles)'], ['cega', 'Validação cega (8 + 3 controles)']], conjInj, (v) => { conjInj = v; desenhaInj(); });
+segmento('#segInj', [['bateria', 'Bateria (13 + 2 controles)'], ['cega', '1ª validação cega (8 + 3)'], ...(B.validacao_v2 ? [['cega2', '2ª validação cega (12 + 5)']] : [])], conjInj, (v) => { conjInj = v; desenhaInj(); });
 desenhaInj();
 $('#camadas').innerHTML = [
   '<b>O local vem da credencial, não do pedido.</b> O corpo não pode trazer local_id (HTTP 400).',

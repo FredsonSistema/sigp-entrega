@@ -79,6 +79,9 @@ def _resumo_casos(av: dict | None) -> dict | None:
         "validacao": ([{k: x.get(k) for k in ("id", "tecnica", "pede", "ataque", "esperado", "obtido", "detectado_como_injecao", "modelo")}
                        for x in v["casos"]] if v else None),
         "validacao_metricas": v["metricas"] if v else None,
+        "validacao_v2": ([{k: x.get(k) for k in ("id", "tecnica", "pede", "ataque", "esperado", "obtido", "detectado_como_injecao", "modelo")}
+                          for x in av["validacao_cega_v2"]["casos"]] if av.get("validacao_cega_v2") else None),
+        "validacao_v2_metricas": av["validacao_cega_v2"]["metricas"] if av.get("validacao_cega_v2") else None,
         "servico": {k: (av.get("servico") or {}).get(k) for k in ("model", "prompt_version", "prompt_sha256", "embed_model", "database_scope")},
         "fora": ({"casos": [{k: x.get(k) for k in ("id", "categoria", "descricao", "esperado", "obtido", "modelo", "ok")}
                             for x in av["fora_de_escopo"]["casos"]],
@@ -114,8 +117,15 @@ def _confianca(depois: dict | None, ft: dict | None) -> dict:
         if depois.get("fora"):
             f = depois["fora"]
             add("Decisão certa nos casos fora de escopo", f["acertos"], f["total"], False, "escrito antes de rodar; 1 falha corrigida olhando para ele")
-        if vm:
-            add("Ataques detectados na validação cega", vm["ataques_detectados"], vm["ataques"], True, "conjunto congelado, nunca usado para ajustar: a medida limpa")
+        a26 = _resumo_casos(_json(EV3 / "ia-avaliacao-validacao-v2-antes.json"))
+        if a26 and a26.get("validacao_metricas"):
+            v1 = a26["validacao_metricas"]
+            add("1ª validação cega, antes da correção de 26/11", v1["ataques_detectados"], v1["ataques"], False,
+                "congelada; a correção de 26/11 partiu das falhas dela (o resultado final nela é otimista)")
+        v2 = depois.get("validacao_v2_metricas")
+        if v2:
+            add("2ª validação cega, final", v2["ataques_detectados"], v2["ataques"], True,
+                "congelada antes da correção; nenhum padrão escrito a partir dela: a medida mais limpa")
     if ft:
         a = ft["conjuntos"]["A"]["ajustado_rag"]
         add("Fine-tuning (ajustado com RAG) nos casos finais", a["acertos"], a["n"], True, "fora do treino")
@@ -302,8 +312,14 @@ def _mudancas(d: dict) -> dict:
         m.append({"tema": "IA: tempo da análise de uma fatura nova", "antes": f"{br_(LA['fatura_nova_com_carga']['latencia']['media'] / 1000)} s (prompt 3.0)",
                   "depois": f"{br_(LA['prompt31_fatura_nova']['latencia']['media'] / 1000)} s (prompt 3.1)", "evidencia": "ia/finetuning/comparacao-final.md"})
     m.append({"tema": "IA: prompt injection detectado", "antes": f"{A['injecao_metricas']['ataques_detectados']}/{A['injecao_metricas']['ataques']} na bateria",
-              "depois": f"{B['injecao_metricas']['ataques_detectados']}/{B['injecao_metricas']['ataques']} na bateria; "
-                        f"{B['validacao_metricas']['ataques_detectados']}/{B['validacao_metricas']['ataques']} na validação cega (nova, congelada)",
+              "depois": f"{B['injecao_metricas']['ataques_detectados']}/{B['injecao_metricas']['ataques']} na bateria; 1ª validação cega "
+                        + (f"{d['injecao_antes_26']['validacao_metricas']['ataques_detectados']}/{d['injecao_antes_26']['validacao_metricas']['ataques']} → "
+                           if d.get("injecao_antes_26") else "")
+                        + f"{B['validacao_metricas']['ataques_detectados']}/{B['validacao_metricas']['ataques']} (otimista: a correção partiu dela); "
+                        + (f"2ª validação cega, congelada antes da correção, "
+                           f"{d['injecao_antes_26']['validacao_v2_metricas']['ataques_detectados']}/{d['injecao_antes_26']['validacao_v2_metricas']['ataques']} → "
+                           f"{B['validacao_v2_metricas']['ataques_detectados']}/{B['validacao_v2_metricas']['ataques']}"
+                           if B.get("validacao_v2_metricas") and d.get("injecao_antes_26") else ""),
               "evidencia": "ia/casos-de-teste-final.md"})
     if F and "C" in F["conjuntos"]:
         m.append({"tema": "IA: fine-tuning", "antes": "medido só no teste do próprio treino",
@@ -351,7 +367,8 @@ def _mudancas(d: dict) -> dict:
     inal.append({"item": "Escopo", "como": "o local vem da credencial do serviço, não do pedido; RLS por local no banco", "evidencia": "sqlserver/README.md"})
     for rotulo, rel, desc in (("Adaptador LoRA", "ia/finetuning/output/qwen2.5-0.5b-lora/adapter_model.safetensors", "o mesmo da Entrega 2 (não foi treinado de novo; só medido de novo)"),
                               ("Corpus do RAG", "ia/rag_documents.json", "os mesmos 20 documentos fictícios (mudou a forma de buscar, não o conteúdo)"),
-                              ("Validação cega da injeção", "ia/injecao-validacao.json", "congelada por SHA-256 e nunca usada para ajustar; o resultado (4/8) é relatado como saiu")):
+                              ("Validações cegas da injeção", "ia/injecao-validacao.json", "os dois conjuntos cegos, congelados por SHA-256, não foram editados "
+                               "(a correção de 26/11 partiu das falhas da 1ª; a 2ª foi congelada antes e nunca serviu para ajustar)")):
         datas = _git_datas(ENTREGA / rel)
         inal.append({"item": rotulo, "como": desc + (f"; último commit do arquivo: {datas[0]}" if datas else ""), "evidencia": rel})
     inal.append({"item": "Regras de competência e vencimento", "como": "as regras do SIGp que definem a competência e o vencimento das notas não mudaram nesta etapa (a regra de decisão da IA ganhou uma verificação, H-46)", "evidencia": "historico-evolucao.md"})
@@ -375,7 +392,9 @@ def _requisitos(d: dict) -> list[dict]:
         ("IA", "Fine-tuning: base, base + RAG, ajustado, ajustado + RAG; custo e latência; fora do treino", "ia/finetuning/comparacao-final.md",
          f"4 configurações em {len(F['conjuntos'])} conjuntos (finais, fora de escopo, teste do treino)" if F else "—"),
         ("IA", "Prompt injection testado e as defesas", "ia/casos-de-teste-final.md",
-         f"bateria {B['injecao_metricas']['ataques_detectados']}/{B['injecao_metricas']['ataques']}, validação cega {B['validacao_metricas']['ataques_detectados']}/{B['validacao_metricas']['ataques']}, 8 camadas"),
+         f"bateria {B['injecao_metricas']['ataques_detectados']}/{B['injecao_metricas']['ataques']}; 2ª validação cega "
+         + (f"{B['validacao_v2_metricas']['ataques_detectados']}/{B['validacao_v2_metricas']['ataques']}" if B.get("validacao_v2_metricas") else "—")
+         + "; 8 camadas"),
         ("IA", "Versionamento do prompt (qual fluxo usa qual)", "ia/prompts/CHANGELOG.md", f"análise de fatura v{B['servico']['prompt_version']}; triagem v4.2"),
         ("IA", "Fluxo do n8n sem segredo", "ia/segredos-n8n.md", S["segredos"]["resultado"]),
         ("BD", "Papéis e permissões com DENY justificado", "seguranca/matriz-permissoes.md", f"{S['matriz']['denys']} DENY, cada um com motivo e teste"),
@@ -549,6 +568,7 @@ def _carregar() -> dict:
         "triagem_modelos": _triagem_modelos(),
         "confianca": _confianca(_resumo_casos(_json(EV3 / "ia-avaliacao-final.json")), _finetuning()),
         "rag": _rag(),
+        "injecao_antes_26": _resumo_casos(_json(EV3 / "ia-avaliacao-validacao-v2-antes.json")),
         "sobreposicao": _sobreposicao(),
     }
 

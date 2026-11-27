@@ -5,6 +5,11 @@
       "papel": "validação cega do detector de prompt injection (8 ataques e 3 controles)",
       "congelado_em": "2026-11-21",
       "sha256": "d95ee4ef54fc5e2dc37c50460646b1371c7cf6b80b370920e944c3844a80a94d"
+    },
+    "injecao-validacao-v2.json": {
+      "papel": "2ª validação cega do detector de prompt injection (12 ataques e 5 controles), escrita e congelada antes da correção de 26/11",
+      "congelado_em": "2026-11-26",
+      "sha256": "4ace3d1f297681a723acdc40523d02e16b6fe472adc8e6bdce38bab752a81a3e"
     }
   },
   "desenvolvimento": {

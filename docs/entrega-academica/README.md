@@ -2,7 +2,8 @@
 
 **Grupo e integrantes:** ver [`identificacao.json`](identificacao.json) (a mesma identificação de todos os PDFs).  
 **Disciplinas:** Projeto de Inteligência Artificial; Segurança e Otimização de Banco de Dados.  
-**Repositório da entrega:** <https://github.com/FredsonSistema/sigp-entrega> (só o fluxo avaliado, a parte acadêmica e uma base fictícia).
+**Repositório da entrega:** <https://github.com/FredsonSistema/sigp-entrega> (só o fluxo avaliado, a parte acadêmica e uma base fictícia).  
+**Comece por aqui:** [`guia-de-correcao.pdf`](guia-de-correcao.pdf) (1 página: cada comentário da professora, o resultado e onde conferir).
 
 ## Entrega final (01/12/2026)
 - **Instalação e configuração:** [`GUIA-INSTALACAO.md`](GUIA-INSTALACAO.md) (máquina sem nada instalado até o sistema funcionando),
@@ -53,6 +54,7 @@ Conferido pelo gerador: cada documento abaixo existe no repositório da entrega;
 | IA e BD | Mudanças desde a Entrega 2 | [`MUDANCAS-DESDE-ENTREGA-2.md`](MUDANCAS-DESDE-ENTREGA-2.md) | melhorado, corrigido e inalterado |
 | IA e BD | Respostas aos comentários da professora | [`README.md`](README.md) | 8 comentários |
 | IA e BD | Relatório de limitações (até 2 páginas) | [`relatorio-limitacoes.pdf`](relatorio-limitacoes.pdf) | gerado das evidências |
+| IA e BD | Guia de correção (1 página) | [`guia-de-correcao.pdf`](guia-de-correcao.pdf) | comentários, resultados e como conferir |
 | IA e BD | Relatório final e contribuição individual | [`relatorio-final.pdf`](relatorio-final.pdf) | 4 integrantes |
 | IA e BD | Instalação reproduzível com base fictícia | [`GUIA-INSTALACAO.md`](GUIA-INSTALACAO.md) | um comando; janela própria no Windows |
 

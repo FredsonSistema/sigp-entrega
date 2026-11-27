@@ -1,5 +1,6 @@
 """Gera os PDFs da entrega final a partir das evidências (mesmos dados da página apresentacao.html, via dados.py):
 
+  docs/entrega-academica/guia-de-correcao.pdf       guia de correção (1 página; o script confere): por onde começar
   docs/entrega-academica/relatorio-limitacoes.pdf   relatório de limitações (1 a 2 páginas; o script confere)
   docs/entrega-academica/relatorio-final.pdf        relatório final (respostas à professora, mudanças desde a Entrega 2,
                                                     requisitos, resultados, histórico e contribuição individual)
@@ -341,15 +342,71 @@ def apresentacao(d):
     return h
 
 
+# ------------------------------------------------------------------ guia de correção (1 página)
+def guia(d):
+    B, F, R, O, S, I26 = d["ia_depois"], d["finetuning"], d.get("rag"), d["otimizacao"], d["seguranca"], d.get("injecao_antes_26")
+    q = {(t["cfg"], t["consulta"]): t for t in O["tempos"]}
+    sv, v2 = B["servico"], B.get("validacao_v2_metricas")
+    lex, emb = R["metodos"]["lexical"]["parafrases"], R["metodos"][R["escolha"]]["parafrases"]
+    fa, fc = F["conjuntos"]["A"]["ajustado_rag"], F["conjuntos"]["C"]["ajustado_rag"]
+    L = S.get("ledger") or {}
+    h = [P("Guia de correção", "titulo"),
+         P(f"SIGp · gestão de contas de internet de provedores com IA local e banco seguro · {' · '.join(d['projeto']['disciplinas'])}<br/>"
+           f"{', '.join(i['nome'] for i in d['projeto']['integrantes'])} · repositório da entrega: {d['projeto']['repositorio']} · "
+           f"gerado em {date.today().strftime('%d/%m/%Y')} das evidências (nenhum número digitado à mão)", "sub"),
+         P("Comentários da professora (Entrega 2) e o que foi feito", "h")]
+    linhas = [
+        ["IA", "Prompt citado ≠ prompt avaliado", f"análise de fatura v{sv['prompt_version']}, triagem v4.2; avaliação final no sistema entregue "
+         "(um teste compara pacote e avaliação)", "ia/prompts/CHANGELOG.md · ia/casos-de-teste-final.md"],
+        ["IA", "RAG com embeddings", f"{R['escolha'].split(':', 1)[1]}, escolhido por critério versionado antes: fonte certa {lex['acertos']}/{lex['total']} → "
+         f"{emb['acertos']}/{emb['total']} paráfrases", "ia/rag-embeddings.md"],
+        ["IA", "Mais casos, fora de escopo", f"{B['fora']['total']} casos novos: {B['fora']['acertos']}/{B['fora']['total']} (1 falsa aprovação achada e corrigida)",
+         "ia/casos-de-teste-final.md"],
+        ["IA", "Fine-tuning fora do treino", f"ajustado + RAG {fa['acertos']}/{fa['n']} e {fc['acertos']}/{fc['n']}; regra {B['metricas']['acertos']}/16 e "
+         f"{B['fora']['acertos']}/{B['fora']['total']}: não generaliza", "ia/finetuning/comparacao-final.md"],
+        ["BD", "Planos: scan × seek e custo", "cada operador do plano real: acesso, linhas lidas/devolvidas, custo próprio", "seguranca/otimizacao-consultas.md"],
+        ["BD", "Consulta 1 (ganho pequeno)", f"{br(q[('A', 1)]['mediana'] / q[('C', 1)]['mediana'])}× → {br(q[('A', 1)]['mediana'] / q[('D', 1)]['mediana'])}× "
+         f"({br(q[('A', 1)]['mediana'])} → {br(q[('D', 1)]['mediana'])} ms) com o resumo diário", "seguranca/otimizacao-consultas.md"],
+        ["BD", "Auditoria protegida", f"tabela ledger só de inserção; o sa não altera nem apaga (37359); verificação {L.get('resultado', '—')}",
+         "seguranca/trilha-auditoria.md"],
+        ["IA e BD", "Repositório só acadêmico", "sigp-entrega: fluxo avaliado, parte acadêmica e base fictícia; instalação em um comando", "README.md"],
+    ]
+    h.append(tabela(["", "Comentário", "Resultado", "Onde"], linhas, [14, 38, 78, 44]))
+    h += [P("Além do pedido", "h")] + itens([
+        "<b>Da web para uma janela do Windows:</b> o atalho SIGp abre o sistema numa janela própria (sem barra de endereço nem abas) e liga "
+        "os containers se o computador foi reiniciado.",
+        (f"<b>Prompt injection medido de forma limpa:</b> 2ª validação cega, congelada antes da correção, "
+         f"{I26['validacao_v2_metricas']['ataques_detectados']}/{I26['validacao_v2_metricas']['ataques']} → {v2['ataques_detectados']}/{v2['ataques']}; "
+         "o que escapou está relatado." if I26 and v2 else "<b>Prompt injection:</b> bateria e validação cega congelada."),
+        f"<b>Banco:</b> vulnerabilidades 27 regras (0 falhas), TDE com restauração provada em outro servidor, injeção de SQL em três níveis, "
+        f"{S['matriz']['denys']} DENY justificados.",
+        f"<b>Histórico honesto:</b> {len(d['mudancas']['corrigido'])} testes que reprovaram, com a correção e o reteste "
+        "(historico-evolucao.md); o que não funciona está no relatório de limitações.",
+    ])
+    h += [P("Como conferir em 5 minutos", "h")] + itens([
+        "<b>1.</b> README.md do repositório: as mesmas respostas acima, com links para cada evidência, e \"Onde está cada requisito\".",
+        "<b>2.</b> O selo \"testes\" no topo do README: os testes de unidade e os links dos documentos rodam a cada push num Windows limpo.",
+        "<b>3.</b> docs/entrega-academica/apresentacao.html: todos os resultados, interativos, sem internet e sem instalar nada.",
+        "<b>4.</b> docs/entrega-academica/MUDANCAS-DESDE-ENTREGA-2.md: o que melhorou, o que foi corrigido e o que ficou igual.",
+        "<b>5.</b> relatorio-final.pdf e relatorio-limitacoes.pdf. Para rodar o sistema: Instalar SIGp.cmd (GUIA-INSTALACAO.md).",
+    ])
+    return h
+
+
 def main() -> None:
     d = dados.carregar()
+    gc = ENTREGA / "guia-de-correcao.pdf"
+    pg = gerar(gc, "Guia de correção", guia(d))
+    print(f"ok: {gc} ({pg} página(s))")
+    if pg > 1:
+        sys.exit("O guia de correção passou de 1 página; encurte o texto.")
     lim = ENTREGA / "relatorio-limitacoes.pdf"
     paginas = gerar(lim, "Relatório de limitações", limitacoes(d))
     print(f"ok: {lim} ({paginas} página(s))")
     if paginas > 2:
         sys.exit("O relatório de limitações passou de 2 páginas; encurte o texto.")
     fin = ENTREGA / "relatorio-final.pdf"
-    faltam = [r["documento"] for r in d["requisitos"] if not r["existe"] and r["documento"] != "relatorio-final.pdf"]
+    faltam = [r["documento"] for r in d["requisitos"] if not r["existe"] and r["documento"] not in ("relatorio-final.pdf", "guia-de-correcao.pdf")]
     if faltam:
         sys.exit(f"Documento de requisito ausente: {faltam}")
     print(f"ok: {fin} ({gerar(fin, 'Relatório final', apresentacao(d))} página(s))")

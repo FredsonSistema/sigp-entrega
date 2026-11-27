@@ -410,6 +410,7 @@ def _requisitos(d: dict) -> list[dict]:
         ("IA e BD", "Mudanças desde a Entrega 2", "MUDANCAS-DESDE-ENTREGA-2.md", "melhorado, corrigido e inalterado"),
         ("IA e BD", "Respostas aos comentários da professora", "README.md", f"{len(d['respostas_professora'])} comentários"),
         ("IA e BD", "Relatório de limitações (até 2 páginas)", "relatorio-limitacoes.pdf", "gerado das evidências"),
+        ("IA e BD", "Guia de correção (1 página)", "guia-de-correcao.pdf", "comentários, resultados e como conferir"),
         ("IA e BD", "Relatório final e contribuição individual", "relatorio-final.pdf", f"{len(d['projeto']['integrantes'])} integrantes"),
         ("IA e BD", "Instalação reproduzível com base fictícia", "GUIA-INSTALACAO.md", "um comando; janela própria no Windows"),
     ]

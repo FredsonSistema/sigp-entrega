@@ -6,5 +6,5 @@
 
 ## O que conferi no material entregue
 - Li seguranca/matriz-permissoes.md e conferi os 23 DENY, cada um com motivo e teste.
-Li seguranca/trilha-auditoria.md e conferi que o ledger impede alterar e apagar eventos e que a verificação deu APROVADO.
+- Li seguranca/trilha-auditoria.md e conferi que o ledger impede alterar e apagar eventos e que a verificação deu APROVADO.
 - Li GUIA-INSTALACAO.md e conferi os passos até o sistema funcionar.
